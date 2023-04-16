@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="rounded_high">32dp</dimen>
+    <dimen name="rounded_medium">16dp</dimen>
+    <dimen name="rounded_low">8dp</dimen>
+</resources>
