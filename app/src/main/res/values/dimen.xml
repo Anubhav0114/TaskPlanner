@@ -3,4 +3,11 @@
     <dimen name="rounded_high">32dp</dimen>
     <dimen name="rounded_medium">16dp</dimen>
     <dimen name="rounded_low">8dp</dimen>
+
+    <dimen name="very_small_text">8sp</dimen>
+    <dimen name="small_text">12sp</dimen>
+    <dimen name="medium_text">16sp</dimen>
+    <dimen name="big_text">20sp</dimen>
+    <dimen name="very_big_text">24sp</dimen>
+
 </resources>

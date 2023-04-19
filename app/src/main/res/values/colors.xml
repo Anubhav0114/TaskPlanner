@@ -8,7 +8,10 @@
 
     <color name="green_600">#1FC5A5</color>
     <color name="red_600">#F87979</color>
+    <color name="red_100">#FFE9E9</color>
+    <color name="red_900">#D31E1B</color>
     <color name="black_600">#9A000000</color>
+    <color name="blue_700">#1E7EE4</color>
 
 <!--    Purple theme-->
     <color name="purple_100">#F0ECFF</color>
