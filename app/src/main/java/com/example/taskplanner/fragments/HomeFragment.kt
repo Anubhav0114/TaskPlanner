@@ -25,6 +25,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        findNavController().navigate(R.id.action_homeFragment_to_projectFragment)
+        //findNavController().navigate(R.id.action_homeFragment_to_projectFragment)
     }
 }
