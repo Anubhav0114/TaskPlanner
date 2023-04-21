@@ -1,31 +1,26 @@
-package com.example.taskplanner.fragments
+package com.example.taskplanner
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-import com.example.taskplanner.R
-import com.example.taskplanner.databinding.FragmentProjectBinding
+import com.example.taskplanner.databinding.FragmentPinnedProjectBinding
 
+class PinnedProjectFragment : Fragment() {
 
-class ProjectFragment : Fragment() {
-
-
-    private lateinit var binding: FragmentProjectBinding
+    private lateinit var binding: FragmentPinnedProjectBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentProjectBinding.inflate(inflater, container, false)
+        binding = FragmentPinnedProjectBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //findNavController().navigate(R.id.action_projectFragment_to_taskFragment)
     }
 }
