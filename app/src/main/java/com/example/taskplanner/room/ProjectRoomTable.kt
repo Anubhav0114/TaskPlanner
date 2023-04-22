@@ -23,7 +23,7 @@ data class Project(
 @Dao
 interface ProjectDao {
 
-    @Query("SELECT * FROM projects WHERE id = :projectId")
+    @Query("SELECT * FROM projects WHERE id = :projectId LIMIT 1")
     fun getProjectById(projectId: Int): Project
 
     @Query("SELECT * FROM projects")
