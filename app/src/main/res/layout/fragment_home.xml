@@ -5,18 +5,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
-    tools:openDrawer="end"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    <com.google.android.material.navigation.NavigationView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="end"-->
-<!--        app:menu="@menu/navigation_drawer" />-->
+    <com.google.android.material.navigation.NavigationView
+        android:background="@color/white"
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:itemIconTint="?attr/colorOnPrimary"
+        app:itemTextColor="?attr/colorOnPrimary"
+        app:headerLayout="@layout/nav_drawer_header"
+        app:menu="@menu/navigation_drawer" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#E4DDF1"
@@ -52,7 +55,7 @@
                     android:id="@+id/textView2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="Hello, Pathak"
@@ -60,7 +63,7 @@
                     android:textSize="@dimen/very_big_text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/materialButton2"
-                    app:layout_constraintStart_toStartOf="@+id/toolbar"
+                    app:layout_constraintStart_toEndOf="@+id/nav_button"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
@@ -79,11 +82,10 @@
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/nav_button"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
-
                     android:id="@+id/nav_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -92,12 +94,13 @@
                     android:insetTop="0dp"
                     android:insetRight="0dp"
                     android:insetBottom="0dp"
+                    android:rotationY="180"
                     app:backgroundTint="@android:color/transparent"
                     app:icon="@drawable/icon_menu"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/toolbar"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -133,11 +136,11 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/very_small_rounded_bg"
             android:backgroundTint="@color/blue_700"
-            android:paddingHorizontal="18dp"
-            android:paddingVertical="3dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="2dp"
             android:text="3"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/medium_text"
             app:layout_constraintBottom_toBottomOf="@+id/textView5"
             app:layout_constraintStart_toEndOf="@+id/textView5"
             app:layout_constraintTop_toTopOf="@+id/textView5" />
