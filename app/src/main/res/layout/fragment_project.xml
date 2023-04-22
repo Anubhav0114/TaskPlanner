@@ -33,7 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button"
+                android:id="@+id/back_btn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
@@ -42,7 +42,9 @@
                 android:insetTop="0dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
-
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:contentDescription="@string/addNew"
                 app:backgroundTint="@android:color/transparent"
                 app:icon="@drawable/icon_back"
                 app:iconGravity="textStart"
@@ -59,12 +61,12 @@
                 android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Project Name"
+                android:text="@string/project_name"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/checkBox"
-                app:layout_constraintStart_toEndOf="@+id/button"
+                app:layout_constraintStart_toEndOf="@+id/back_btn"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <CheckBox
@@ -91,6 +93,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/checkBox2"
                 app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/AddTask"
                 app:layout_constraintVertical_bias="0.5" />
 
 
@@ -128,12 +131,13 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/icon_add"
         app:backgroundTint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="#4DFFFFFF"
         app:tint="@color/white"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/app_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

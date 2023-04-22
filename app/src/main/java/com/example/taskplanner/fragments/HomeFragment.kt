@@ -1,6 +1,5 @@
 package com.example.taskplanner.fragments
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.databinding.FragmentHomeBinding
@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun dialog(){
-        val dialogView = LayoutInflater.from(contextApp).inflate(R.layout.custom_dialog, null)
+        val dialogView = LayoutInflater.from(contextApp).inflate(R.layout.add_project_dialog, null)
         val builder = AlertDialog.Builder(contextApp)
         builder.setView(dialogView)
 
@@ -70,6 +70,7 @@ class HomeFragment : Fragment() {
         dialogView.findViewById<Button>(R.id.dialog_ok)?.setOnClickListener {
             // handle OK button click
             Toast.makeText(contextApp,"Add Project To Db",Toast.LENGTH_LONG).show()
+            findNavController().navigate(R.id.action_homeFragment_to_projectFragment)
             dialog.dismiss()
         }
 
