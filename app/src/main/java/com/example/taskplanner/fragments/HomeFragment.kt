@@ -24,6 +24,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.navButton.setOnClickListener {
+            binding.drawerLayout.open()
+        }
+
 
         //findNavController().navigate(R.id.action_homeFragment_to_projectFragment)
     }
