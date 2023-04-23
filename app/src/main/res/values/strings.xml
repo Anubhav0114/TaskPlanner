@@ -11,4 +11,6 @@
     <string name="createNew">Create</string>
     <string name="addNew">Add Task</string>
     <string name="project_name">Project Name</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
