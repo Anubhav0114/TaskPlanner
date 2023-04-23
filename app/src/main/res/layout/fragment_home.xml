@@ -22,7 +22,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E4DDF1"
+        android:background="?attr/colorSurface"
         android:fitsSystemWindows="true"
         tools:context=".fragments.HomeFragment">
 

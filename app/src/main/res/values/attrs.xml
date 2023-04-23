@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+
+    <!-- Circular Progress bar -->
+    <declare-styleable name="CircularProgress">
+
+        <attr name="trackColor" format="color" />
+        <attr name="progressColor" format="color" />
+        <attr name="trackWidth" format="dimension" />
+        <attr name="maxProgress" format="float" />
+        <attr name="progress" format="float" />
+
+    </declare-styleable>
+</resources>
