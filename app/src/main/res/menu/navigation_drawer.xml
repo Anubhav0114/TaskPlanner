@@ -3,31 +3,32 @@
     <group
         android:id="@+id/group1">
         <item
-            android:id="@+id/item2"
+            android:id="@+id/notification_item"
             android:icon="@drawable/icon_bell_off"
             android:title="Notifications" />
 
         <item
-            android:id="@+id/item3"
+            android:id="@+id/feedback_item"
             android:icon="@drawable/icon_feedback"
             android:title="Feedback" />
 
         <item
-            android:id="@+id/item4"
+            android:id="@+id/rating_item"
             android:icon="@drawable/icon_star"
             android:title="Rating" />
 
         <item
-            android:id="@+id/item5"
+            android:id="@+id/about_item"
             android:icon="@drawable/icon_about"
             android:title="About" />
-        <item
-            android:id="@+id/item6"
-            android:icon="@drawable/icon_help"
-            android:title="Helps" />
 
         <item
-            android:id="@+id/item7"
+            android:id="@+id/shareItem"
+            android:icon="@drawable/icon_share"
+            android:title="Share" />
+
+        <item
+            android:id="@+id/moreApps_item"
             android:icon="@drawable/icon_more_apps"
             android:title="More apps" />
 
