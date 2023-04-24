@@ -26,7 +26,7 @@
         <attr name="infoBackgroundColor" format="color" />
         <attr name="activeInfoBackgroundColor" format="color" />
         <attr name="infoTextColor" format="dimension" />
-        <attr name="activeInfoTextColor" format="dimension" />
+        <attr name="activeInfoTextColor" format="color" />
         <attr name="infoTextSize" format="dimension" />
 
         <attr name="cornerRadius" format="dimension" />
