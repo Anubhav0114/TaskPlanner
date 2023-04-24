@@ -5,7 +5,6 @@ import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
@@ -17,7 +16,6 @@ import android.widget.Button
 import android.widget.Toast
 
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
@@ -157,7 +155,7 @@ class HomeFragment : Fragment() {
 
         val dialog = builder.create()
 
-        dialogView.findViewById<Button>(R.id.dialog_ok)?.setOnClickListener {
+        dialogView.findViewById<Button>(R.id.dialog_create)?.setOnClickListener {
             // handle OK button click
             Toast.makeText(contextApp,"Add Project To Db",Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_homeFragment_to_projectFragment)
