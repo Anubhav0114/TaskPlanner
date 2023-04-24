@@ -108,7 +108,6 @@ class CustomChip(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private fun createDrawable(){
         iconDrawable = AppCompatResources.getDrawable(context, R.drawable.icon_add)!!.mutate()
         iconDrawable.colorFilter = PorterDuffColorFilter(iconTint, PorterDuff.Mode.SRC_IN)
-        iconDrawable.setBounds(paddingLeft, paddingTop, (paddingLeft + iconSize).toInt(), (paddingTop + iconSize).toInt())
 
     }
 
@@ -165,6 +164,8 @@ class CustomChip(context: Context, attrs: AttributeSet) : View(context, attrs) {
         if(isAdd){
 
             // icon
+            val iconX = ((width - iconSize) / 2).roundToInt()
+            iconDrawable.setBounds( iconX, paddingTop, (iconX + iconSize).toInt(), (paddingTop + iconSize).toInt())
             iconDrawable.draw(canvas)
         }else{
 

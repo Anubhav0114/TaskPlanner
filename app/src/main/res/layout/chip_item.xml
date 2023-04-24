@@ -1,41 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:background="@drawable/very_small_rounded_bg"
-    android:backgroundTint="?attr/colorPrimary"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp">
+    android:layout_margin="4dp">
 
-    <TextView
-        android:id="@+id/name"
+    <com.example.taskplanner.customview.CustomChip
+        android:id="@+id/customChip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
-        android:text="All"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="12dp"
+        app:isIcon="true"
+        app:iconTint="@color/white"
+        app:textSize="@dimen/medium_text"
+        app:isChecked="true"
+        app:text="Android"
+        app:infoBackgroundRadius="12dp"
+        app:cornerRadius="@dimen/rounded_low"
+        app:activeInfoTextColor="@color/white"
+        app:gap="16dp"
+        app:infoTextSize="@dimen/small_text"
+        app:activeInfoBackgroundColor="#4FFFFFFF"
+        app:activeBackgroundColor="?attr/colorPrimary"
 
-    <TextView
-        android:id="@+id/number"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/full_rounded_background"
-        android:backgroundTint="#4DFFFFFF"
-        android:gravity="center"
-        android:text="5"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/name" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        />
+
+</RelativeLayout>
