@@ -59,7 +59,7 @@ class ProjectFragment : Fragment() {
 
         val dialog = builder.create()
 
-        dialogView.findViewById<Button>(R.id.dialog_ok)?.setOnClickListener {
+        dialogView.findViewById<Button>(R.id.dialog_create)?.setOnClickListener {
             // handle OK button click
             Toast.makeText(contextApp,"Add Task To Db", Toast.LENGTH_LONG).show()
             dialog.dismiss()
