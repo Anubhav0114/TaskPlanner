@@ -36,15 +36,14 @@
                 android:id="@+id/back_btn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="8dp"
                 android:background="@android:color/transparent"
+                android:contentDescription="@string/addNew"
                 android:insetLeft="0dp"
                 android:insetTop="0dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
-                android:contentDescription="@string/addNew"
                 app:backgroundTint="@android:color/transparent"
                 app:icon="@drawable/icon_back"
                 app:iconGravity="textStart"
@@ -54,7 +53,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/projectName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -65,16 +64,16 @@
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/checkBox"
+                app:layout_constraintEnd_toStartOf="@+id/pinCheckbox"
                 app:layout_constraintStart_toEndOf="@+id/back_btn"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <CheckBox
 
-                android:id="@+id/checkBox2"
+                android:id="@+id/notifyCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="4dp"
                 android:button="@drawable/notification_toggle_button"
                 android:checked="true"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -85,13 +84,13 @@
 
             <CheckBox
 
-                android:id="@+id/checkBox"
+                android:id="@+id/pinCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/pin_toggle_button"
                 app:buttonTint="?attr/colorOnPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/checkBox2"
+                app:layout_constraintEnd_toStartOf="@+id/notifyCheckbox"
                 app:layout_constraintTop_toTopOf="parent"
                 android:contentDescription="@string/AddTask"
                 app:layout_constraintVertical_bias="0.5" />

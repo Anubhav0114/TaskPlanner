@@ -22,7 +22,9 @@ import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taskplanner.MainActivity
 import com.example.taskplanner.ProjectApplication
@@ -31,6 +33,7 @@ import com.example.taskplanner.Task
 import com.example.taskplanner.adapters.HomeChipListAdapter
 import com.example.taskplanner.adapters.HomeProjectListAdapter
 import com.example.taskplanner.databinding.FragmentHomeBinding
+import com.example.taskplanner.room.Project
 import com.example.taskplanner.utils.ChipData
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
@@ -207,13 +210,26 @@ class HomeFragment : Fragment() {
 
         // 2
         // setup data in project adapter
-        projectListAdapter = HomeProjectListAdapter()
+        projectListAdapter = HomeProjectListAdapter(object: HomeProjectListAdapter.OnItemClickListener{
+            override fun onItemClick(project: Project) {
+
+                val bundle = Bundle().apply {
+                    putString("project_id", project.projectId)
+                }
+
+
+                findNavController().navigate(R.id.action_homeFragment_to_projectFragment, bundle, null)
+            }
+        })
         val projectLayoutManager = LinearLayoutManager(contextApp)
         binding.allProjectRecyclerView.adapter = projectListAdapter
         binding.allProjectRecyclerView.layoutManager = projectLayoutManager
 
+        binding.allProjectRecyclerView.addItemDecoration(
+            DividerItemDecoration(contextApp, projectLayoutManager.orientation)
+        )
+
         mainActivityViewModel.getAllProjectsTask {
-            Toast.makeText(contextApp, "Room Working ${it.size}", Toast.LENGTH_SHORT).show()
             projectListAdapter.submitList(it)
         }
 

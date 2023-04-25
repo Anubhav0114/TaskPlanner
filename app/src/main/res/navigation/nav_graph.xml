@@ -41,7 +41,12 @@
         android:id="@+id/taskFragment"
         android:name="com.example.taskplanner.fragments.TaskFragment"
         android:label="fragment_task"
-        tools:layout="@layout/fragment_task" />
+        tools:layout="@layout/fragment_task" >
+        <argument
+            android:name="isToCreate"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <fragment
         android:id="@+id/projectFragment"
         android:name="com.example.taskplanner.fragments.ProjectFragment"
@@ -52,5 +57,8 @@
             app:destination="@id/taskFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim" />
+        <argument
+            android:name="project_id"
+            app:argType="string" />
     </fragment>
 </navigation>

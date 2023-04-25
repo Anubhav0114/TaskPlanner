@@ -17,6 +17,7 @@ import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
+    private var isOpenTypeCreate: Boolean = false
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -35,7 +36,14 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         contextApp = requireContext()
+
+        isOpenTypeCreate = requireArguments().getBoolean("isToCreate", false)
+        setupData()
+    }
+
+
+    private fun setupData(){
+
     }
 }
