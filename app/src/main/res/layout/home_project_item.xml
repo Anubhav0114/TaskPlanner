@@ -7,7 +7,7 @@
     android:layout_marginBottom="10dp">
 
     <TextView
-        android:id="@+id/tv_task_title"
+        android:id="@+id/project_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -17,12 +17,13 @@
         android:maxLines="1"
         android:text="Create two ad banners"
         android:textColor="@color/black"
-        android:textSize="@dimen/big_text"
+        android:textSize="@dimen/medium_text"
         app:layout_constraintEnd_toStartOf="@+id/circularProgress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/collection_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -30,13 +31,13 @@
         android:layout_marginBottom="8dp"
         android:text="Social App"
         android:textColor="@color/purple_600"
-        android:textSize="@dimen/medium_text"
+        android:textSize="@dimen/small_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_task_title" />
+        app:layout_constraintTop_toBottomOf="@id/project_title" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/progress_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="45%"
@@ -49,17 +50,17 @@
 
     <com.example.taskplanner.customview.CircularProgress
         android:id="@+id/circularProgress"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="8dp"
-        app:maxProgress="1000"
-        app:progress="100"
-        app:trackColor="@color/green_100"
-        app:trackWidth="4dp"
-        app:progressColor="@color/green_600"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:maxProgress="1000"
+        app:progress="100"
+        app:progressColor="@color/green_600"
+        app:trackColor="@color/green_100"
+        app:trackWidth="4dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

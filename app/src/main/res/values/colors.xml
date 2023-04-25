@@ -39,12 +39,12 @@
 
 <!--    Purple theme-->
     <color name="purple_100">#F0ECFF</color>
+    <color name="purple_200">#DBD1FF</color>
     <color name="purple_600">#6E4BFF</color>
 
 
 
 
-    <color name="purple_200">#630707</color>
     <color name="purple_700">#4CAF50</color>
     <color name="teal_200">#00106A</color>
 
