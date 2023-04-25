@@ -49,21 +49,25 @@ class CustomChip(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val backgroundPaint = Paint().apply {
         style = Paint.Style.FILL
         color = backgroundColor
+        isAntiAlias = true
     }
 
     private val textPaint = Paint().apply {
         color = textColor
         textSize = textSize
+        isAntiAlias = true
     }
 
     private val infoTextPaint = Paint().apply {
         color = infoTextColor
         textSize = infoTextSize
+        isAntiAlias = true
     }
 
     private val infoBackgroundPaint = Paint().apply {
         style = Paint.Style.FILL
         color = infoBackgroundColor
+        isAntiAlias = true
     }
 
 

@@ -186,9 +186,9 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView2"
+            android:id="@+id/homeChipRecyclerview"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="44dp"
             android:layout_marginTop="16dp"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
@@ -205,7 +205,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView2"
+            app:layout_constraintTop_toBottomOf="@+id/homeChipRecyclerview"
             tools:itemCount="3"
             tools:listitem="@layout/home_project_item" />
 

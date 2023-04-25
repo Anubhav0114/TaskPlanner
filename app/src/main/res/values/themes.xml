@@ -14,6 +14,7 @@
         <item name="colorOnSurface">@color/black_600</item>
         <item name="colorPrimarySurface">@color/white</item>
 
+        <item name="colorAccent">@color/purple_200</item>
         <item name="colorSurface">@color/purple_100</item>
 
         <!-- Status bar color. -->

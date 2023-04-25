@@ -21,12 +21,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taskplanner.MainActivity
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.Task
+import com.example.taskplanner.adapters.HomeChipListAdapter
 import com.example.taskplanner.databinding.FragmentHomeBinding
+import com.example.taskplanner.utils.ChipData
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 
@@ -57,6 +61,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         contextApp = requireContext()
+
+        setupData()
 
         binding.navButton.setOnClickListener{
             (activity as MainActivity).openNavDrawer()
@@ -179,6 +185,36 @@ class HomeFragment : Fragment() {
         dialog.show()
 
     }
+
+
+    private fun setupData(){
+        setupRecentRecyclerView()
+    }
+
+
+    private lateinit var listAdapter: HomeChipListAdapter
+    private fun setupRecentRecyclerView(){
+
+        listAdapter = HomeChipListAdapter()
+        binding.homeChipRecyclerview.adapter = listAdapter
+
+
+        // disable vertically scrolling
+        val layoutManager = LinearLayoutManager(contextApp, LinearLayoutManager.HORIZONTAL, false)
+
+
+        binding.homeChipRecyclerview.layoutManager = layoutManager
+
+        val chipList = arrayListOf<ChipData>()
+        chipList.add(ChipData("All", 5, true))
+        chipList.add(ChipData("Android", 10, false))
+        chipList.add(ChipData("Game", 17, false))
+        chipList.add(ChipData("", 0, false))
+
+        listAdapter.submitList(chipList)
+
+    }
+
 }
 
 class StartTimeReceiver : BroadcastReceiver() {
