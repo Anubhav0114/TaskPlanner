@@ -17,7 +17,7 @@
 
 
     <TextView
-        android:id="@+id/tv_task_title"
+        android:id="@+id/project_title"
         android:layout_width="0dp"
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
@@ -49,7 +49,7 @@
         android:textSize="@dimen/small_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_task_title"
+        app:layout_constraintTop_toBottomOf="@id/project_title"
         tools:layout_conversion_absoluteHeight="16dp"
         tools:layout_conversion_absoluteWidth="140dp" />
 

@@ -29,6 +29,7 @@ import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.Task
 import com.example.taskplanner.adapters.HomeChipListAdapter
+import com.example.taskplanner.adapters.HomeProjectListAdapter
 import com.example.taskplanner.databinding.FragmentHomeBinding
 import com.example.taskplanner.utils.ChipData
 import com.example.taskplanner.viewmodel.MainActivityViewModel
@@ -67,12 +68,6 @@ class HomeFragment : Fragment() {
         binding.navButton.setOnClickListener{
             (activity as MainActivity).openNavDrawer()
         }
-
-
-        mainActivityViewModel.getAllProjectsTask {
-            Toast.makeText(contextApp, "Room Working", Toast.LENGTH_SHORT).show()
-        }
-
 
         binding.newProjectBtn.setOnClickListener {
             // Alert Box
@@ -192,26 +187,35 @@ class HomeFragment : Fragment() {
     }
 
 
-    private lateinit var listAdapter: HomeChipListAdapter
+    private lateinit var chipListAdapter: HomeChipListAdapter
+    private lateinit var projectListAdapter: HomeProjectListAdapter
     private fun setupRecentRecyclerView(){
-
-        listAdapter = HomeChipListAdapter()
-        binding.homeChipRecyclerview.adapter = listAdapter
-
-
-        // disable vertically scrolling
-        val layoutManager = LinearLayoutManager(contextApp, LinearLayoutManager.HORIZONTAL, false)
-
-
-        binding.homeChipRecyclerview.layoutManager = layoutManager
+        // 1
+        // setup data in chips
+        chipListAdapter = HomeChipListAdapter()
+        binding.homeChipRecyclerview.adapter = chipListAdapter
+        val chipLayoutManager = LinearLayoutManager(contextApp, LinearLayoutManager.HORIZONTAL, false)
+        binding.homeChipRecyclerview.layoutManager = chipLayoutManager
 
         val chipList = arrayListOf<ChipData>()
         chipList.add(ChipData("All", 5, true))
         chipList.add(ChipData("Android", 10, false))
         chipList.add(ChipData("Game", 17, false))
         chipList.add(ChipData("", 0, false))
+        chipListAdapter.submitList(chipList)
 
-        listAdapter.submitList(chipList)
+
+        // 2
+        // setup data in project adapter
+        projectListAdapter = HomeProjectListAdapter()
+        val projectLayoutManager = LinearLayoutManager(contextApp)
+        binding.allProjectRecyclerView.adapter = projectListAdapter
+        binding.allProjectRecyclerView.layoutManager = projectLayoutManager
+
+        mainActivityViewModel.getAllProjectsTask {
+            Toast.makeText(contextApp, "Room Working ${it.size}", Toast.LENGTH_SHORT).show()
+            projectListAdapter.submitList(it)
+        }
 
     }
 

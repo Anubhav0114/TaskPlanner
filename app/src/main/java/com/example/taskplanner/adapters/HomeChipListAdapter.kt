@@ -37,9 +37,10 @@ class HomeChipListAdapter(): ListAdapter<ChipData, HomeChipListAdapter.CustomVie
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.bind(getItem(position), (itemCount - 1) == position)
     }
+
+     class ItemDiffCallback : DiffUtil.ItemCallback<ChipData>() {
+        override fun areItemsTheSame(oldItem: ChipData, newItem: ChipData): Boolean = oldItem == newItem
+        override fun areContentsTheSame(oldItem: ChipData, newItem: ChipData): Boolean = oldItem == newItem
+    }
 }
 
-class ItemDiffCallback : DiffUtil.ItemCallback<ChipData>() {
-    override fun areItemsTheSame(oldItem: ChipData, newItem: ChipData): Boolean = oldItem == newItem
-    override fun areContentsTheSame(oldItem: ChipData, newItem: ChipData): Boolean = oldItem == newItem
-}
