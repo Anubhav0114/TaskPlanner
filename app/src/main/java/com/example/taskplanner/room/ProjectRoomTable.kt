@@ -15,6 +15,7 @@ import androidx.room.Update
 @Entity(tableName = "projects")
 data class Project(
     @PrimaryKey(autoGenerate = true) var id: Int,
+    @ColumnInfo(name = "project_id") var projectId: String,
     @ColumnInfo(name = "project_name") var projectName: String,
     @ColumnInfo(name = "is_notify") var isNotify: Boolean,
     @ColumnInfo(name = "is_pinned") var isPinned: Boolean,
@@ -23,8 +24,8 @@ data class Project(
 @Dao
 interface ProjectDao {
 
-    @Query("SELECT * FROM projects WHERE id = :projectId LIMIT 1")
-    fun getProjectById(projectId: Int): Project
+    @Query("SELECT * FROM projects WHERE project_id = :projectId LIMIT 1")
+    fun getProjectById(projectId: String): Project
 
     @Query("SELECT * FROM projects")
     fun getAllProjects(): List<Project>
@@ -32,8 +33,8 @@ interface ProjectDao {
     @Query("SELECT * FROM projects WHERE is_pinned = 1")
     fun getAllPinnedProjects(): List<Project>
 
-    @Update
-    fun updateProject(project: Project)
+    @Query("UPDATE projects SET project_name = :projectName, is_notify = :isNotify, is_pinned = :isPinned WHERE project_id = :projectId")
+    fun updateProject(projectId: String, projectName: String, isNotify: Boolean, isPinned: Boolean)
 
     @Insert
     fun addProject(project: Project)
@@ -56,7 +57,7 @@ class ProjectRepository(private val projectDao: ProjectDao) {
 
     @WorkerThread
     suspend fun update(project: Project) {
-       projectDao.updateProject(project)
+       projectDao.updateProject(project.projectId, project.projectName, project.isNotify, project.isPinned)
     }
 
     @WorkerThread
@@ -71,7 +72,7 @@ class ProjectRepository(private val projectDao: ProjectDao) {
     }
 
     @WorkerThread
-    suspend fun getProjectById(projectId: Int): Project {
+    suspend fun getProjectById(projectId: String): Project {
         return projectDao.getProjectById(projectId)
     }
 
