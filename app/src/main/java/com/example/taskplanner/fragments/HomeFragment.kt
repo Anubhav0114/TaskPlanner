@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taskplanner.MainActivity
 import com.example.taskplanner.ProjectApplication
@@ -212,8 +213,11 @@ class HomeFragment : Fragment() {
         binding.allProjectRecyclerView.adapter = projectListAdapter
         binding.allProjectRecyclerView.layoutManager = projectLayoutManager
 
+        binding.allProjectRecyclerView.addItemDecoration(
+            DividerItemDecoration(contextApp, projectLayoutManager.orientation)
+        )
+
         mainActivityViewModel.getAllProjectsTask {
-            Toast.makeText(contextApp, "Room Working ${it.size}", Toast.LENGTH_SHORT).show()
             projectListAdapter.submitList(it)
         }
 
