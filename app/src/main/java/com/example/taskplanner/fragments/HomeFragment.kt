@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 
 import androidx.annotation.RequiresApi
@@ -156,10 +157,17 @@ class HomeFragment : Fragment() {
         val dialog = builder.create()
 
         dialogView.findViewById<Button>(R.id.dialog_create)?.setOnClickListener {
-            // handle OK button click
-            Toast.makeText(contextApp,"Add Project To Db",Toast.LENGTH_LONG).show()
-            findNavController().navigate(R.id.action_homeFragment_to_projectFragment)
-            dialog.dismiss()
+
+            val name = dialogView.findViewById<EditText>(R.id.dialog_input).text.toString().trim().replace("\\s+", " ")
+            if(name.isBlank()){
+                Toast.makeText(contextApp, "Name must not be empty!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            mainActivityViewModel.createNewProject(name){
+                dialog.dismiss()
+                Toast.makeText(contextApp, "Project created", Toast.LENGTH_SHORT).show()
+            }
         }
 
         dialogView.findViewById<Button>(R.id.dialog_cancel)?.setOnClickListener {

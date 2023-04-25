@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.room.ProjectRepository
 import com.example.taskplanner.room.ProjectTaskRepository
+import com.example.taskplanner.utils.generateUniqueId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,6 +20,17 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         val projects = projectRepository.getAllProjects()
         withContext(Dispatchers.Main){
             callback(projects)
+        }
+    }
+
+    fun createNewProject(projectName: String, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+        val newProject = Project(0, generateUniqueId(), projectName,
+            isNotify = true,
+            isPinned = false
+        )
+        projectRepository.insert(newProject)
+        withContext(Dispatchers.Main){
+            callback()
         }
     }
 
