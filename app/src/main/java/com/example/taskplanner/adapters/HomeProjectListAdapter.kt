@@ -11,12 +11,20 @@ import com.example.taskplanner.R
 import com.example.taskplanner.room.Project
 
 
-class HomeProjectListAdapter(): ListAdapter<Project, HomeProjectListAdapter.CustomViewHolder>(ItemDiffCallback()){
+class HomeProjectListAdapter(private val itemClickListener: OnItemClickListener): ListAdapter<Project, HomeProjectListAdapter.CustomViewHolder>(ItemDiffCallback()){
 
-    inner class CustomViewHolder(itemView: ConstraintLayout) : RecyclerView.ViewHolder(itemView) {
+    interface OnItemClickListener {
+        fun onItemClick(project: Project)
+    }
+
+    inner class CustomViewHolder(itemView: ConstraintLayout, private val itemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(project: Project){
             itemView.findViewById<TextView>(R.id.project_title).text = project.projectName
             itemView.findViewById<TextView>(R.id.collection_name).text = project.collectionName
+
+            itemView.setOnClickListener {
+                itemClickListener.onItemClick(project)
+            }
         }
     }
 
@@ -24,7 +32,7 @@ class HomeProjectListAdapter(): ListAdapter<Project, HomeProjectListAdapter.Cust
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.home_project_item, parent, false) as ConstraintLayout
 
-        return CustomViewHolder(view)
+        return CustomViewHolder(view, itemClickListener)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {

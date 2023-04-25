@@ -14,14 +14,16 @@ import androidx.navigation.fragment.findNavController
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.databinding.FragmentProjectBinding
+import com.example.taskplanner.room.Project
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.google.android.material.transition.MaterialContainerTransform
 
 
 class ProjectFragment : Fragment() {
 
-
     private lateinit var binding: FragmentProjectBinding
+    private lateinit var openedProject: Project
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -30,6 +32,7 @@ class ProjectFragment : Fragment() {
         )
     }
     private lateinit var contextApp: Context
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,37 +44,25 @@ class ProjectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         contextApp = requireContext()
+        val projectId = requireArguments().getString("project_id")!!
+        setupData(projectId)
 
-        //findNavController().navigate(R.id.action_projectFragment_to_taskFragment)
+
         binding.editTask.setOnClickListener {
-            dialog()
+            findNavController().navigate(R.id.action_projectFragment_to_taskFragment)
         }
-        binding.backBtn.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        binding.backBtn.setOnClickListener {}
     }
-    private fun dialog(){
-        val dialogView = LayoutInflater.from(contextApp).inflate(R.layout.add_task_dialog, null)
-        val builder = AlertDialog.Builder(contextApp)
-        builder.setView(dialogView)
 
-        val dialog = builder.create()
 
-        dialogView.findViewById<Button>(R.id.dialog_create)?.setOnClickListener {
-            // handle OK button click
-            Toast.makeText(contextApp,"Add Task To Db", Toast.LENGTH_LONG).show()
-            dialog.dismiss()
+    private fun setupData(projectId: String){
+        mainActivityViewModel.getProjectById(projectId){
+            openedProject = it
+            binding.projectName.text = it.projectName
+            binding.notifyCheckbox.isChecked = it.isNotify
+            binding.pinCheckbox.isChecked = it.isPinned
         }
-
-        dialogView.findViewById<Button>(R.id.dialog_cancel)?.setOnClickListener {
-            // handle Cancel button click
-            Toast.makeText(contextApp,"Close It", Toast.LENGTH_LONG).show()
-            dialog.dismiss()
-        }
-
-        dialog.show()
 
     }
 }
