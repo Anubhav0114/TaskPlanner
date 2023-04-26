@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.databinding.FragmentTaskBinding
+import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 
@@ -18,6 +19,7 @@ class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
     private var isOpenTypeCreate: Boolean = false
+    private lateinit var projectTask: ProjectTask
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -38,12 +40,26 @@ class TaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         contextApp = requireContext()
 
-        isOpenTypeCreate = requireArguments().getBoolean("isToCreate", false)
-        setupData()
+//        isOpenTypeCreate = requireArguments().getBoolean("isCreating", false)
+//
+//        setupData()
     }
 
 
     private fun setupData(){
+
+        if(isOpenTypeCreate){
+            binding.projectName.text = "Create"
+        }else{
+            val projectId = requireArguments().getLong("projectId")
+            val taskId = requireArguments().getLong("taskId")
+            binding.projectName.text = "View"
+
+            loadTaskData(projectId, taskId)
+        }
+    }
+
+    private fun loadTaskData(projectId: Long, taskId: Long){
 
     }
 }

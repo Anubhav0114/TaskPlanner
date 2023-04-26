@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.room.ProjectRepository
+import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.room.ProjectTaskRepository
 import com.example.taskplanner.utils.generateUniqueId
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,7 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
 
     // ------------------------- Room Project Handler Code ------------------------------------
-    fun getAllProjectsTask(callback: (List<Project>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+    fun getAllProjects(callback: (List<Project>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
         val projects = projectRepository.getAllProjects()
         withContext(Dispatchers.Main){
             callback(projects)
@@ -34,7 +35,7 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         }
     }
 
-    fun getProjectById(projectId: String, callback: (Project) -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+    fun getProjectById(projectId: Long, callback: (Project) -> Unit) = viewModelScope.launch(Dispatchers.Default) {
         val project = projectRepository.getProjectById(projectId)
         withContext(Dispatchers.Main){
             callback(project)
@@ -44,6 +45,12 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
 
     // ------------------------- Room Task Handler Code ------------------------------------
+    fun getProjectTaskById(projectId: Long, taskId: Long , callback: (ProjectTask) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+        val projects = taskRepository.getTaskById(projectId, taskId)
+        withContext(Dispatchers.Main){
+            callback(projects)
+        }
+    }
 
 
 }

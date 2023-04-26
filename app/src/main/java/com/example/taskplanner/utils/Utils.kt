@@ -15,6 +15,6 @@ val Number.spToPx get() = TypedValue.applyDimension(
 
 
 
-fun generateUniqueId(): String{
-    return System.currentTimeMillis().toString()
+fun generateUniqueId(): Long{
+    return System.currentTimeMillis()
 }

@@ -43,9 +43,17 @@
         android:label="fragment_task"
         tools:layout="@layout/fragment_task" >
         <argument
-            android:name="isToCreate"
+            android:name="isCreating"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="projectId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="taskId"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
     <fragment
         android:id="@+id/projectFragment"
@@ -59,6 +67,6 @@
             app:exitAnim="@anim/nav_default_pop_exit_anim" />
         <argument
             android:name="project_id"
-            app:argType="string" />
+            app:argType="long" />
     </fragment>
 </navigation>
