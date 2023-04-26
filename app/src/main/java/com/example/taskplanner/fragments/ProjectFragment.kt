@@ -2,6 +2,7 @@ package com.example.taskplanner.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,18 +46,22 @@ class ProjectFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         contextApp = requireContext()
-        val projectId = requireArguments().getString("project_id")!!
+        val projectId = requireArguments().getLong("project_id")
+        Log.e("=============", projectId.toString())
         setupData(projectId)
 
 
-        binding.editTask.setOnClickListener {
-            findNavController().navigate(R.id.action_projectFragment_to_taskFragment)
+        binding.createTask.setOnClickListener {
+            val bundle = Bundle().apply {
+                putBoolean("isCreating", true)
+            }
+            findNavController().navigate(R.id.action_projectFragment_to_taskFragment, bundle)
         }
         binding.backBtn.setOnClickListener {}
     }
 
 
-    private fun setupData(projectId: String){
+    private fun setupData(projectId: Long){
         mainActivityViewModel.getProjectById(projectId){
             openedProject = it
             binding.projectName.text = it.projectName

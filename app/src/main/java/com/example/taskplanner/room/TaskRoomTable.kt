@@ -16,7 +16,8 @@ import androidx.room.Update
 @Entity(tableName = "project_task")
 data class ProjectTask(
     @PrimaryKey(autoGenerate = true) var id: Int,
-    @ColumnInfo(name = "project_id") var projectId: Int,
+    @ColumnInfo(name = "task_id") var taskId: Long,
+    @ColumnInfo(name = "project_id") var projectId: Long,
     @ColumnInfo(name = "task_name") var taskName: String,
     @ColumnInfo(name = "description") var description: String,
     @ColumnInfo(name = "is_remind") var isRemind: Boolean,
@@ -35,8 +36,8 @@ interface ProjectTaskDao {
     fun getAllTaskFromProject(projectId: Int): List<ProjectTask>
 
 
-    @Query("SELECT * FROM project_task WHERE project_id = :id LIMIT 1")
-    fun getTaskById(id: Int): ProjectTask
+    @Query("SELECT * FROM project_task WHERE project_id = :projectId AND task_id = :taskId LIMIT 1")
+    fun getTaskById(projectId: Long, taskId: Long): ProjectTask
 
     @Update
     fun updateTask(task: ProjectTask)
@@ -72,8 +73,8 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     }
 
     @WorkerThread
-    suspend fun getTaskById(taskId: Int): ProjectTask {
-        return projectTaskDao.getTaskById(taskId)
+    suspend fun getTaskById(projectId: Long, taskId: Long): ProjectTask {
+        return projectTaskDao.getTaskById(projectId, taskId)
     }
 
 }

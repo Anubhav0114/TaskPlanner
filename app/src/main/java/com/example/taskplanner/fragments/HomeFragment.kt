@@ -214,7 +214,7 @@ class HomeFragment : Fragment() {
             override fun onItemClick(project: Project) {
 
                 val bundle = Bundle().apply {
-                    putString("project_id", project.projectId)
+                    putLong("project_id", project.projectId)
                 }
 
 
@@ -229,7 +229,7 @@ class HomeFragment : Fragment() {
             DividerItemDecoration(contextApp, projectLayoutManager.orientation)
         )
 
-        mainActivityViewModel.getAllProjectsTask {
+        mainActivityViewModel.getAllProjects {
             projectListAdapter.submitList(it)
         }
 
