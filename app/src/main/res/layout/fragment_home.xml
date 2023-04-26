@@ -190,7 +190,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/homeChipRecyclerview"
             android:layout_width="0dp"
-            android:layout_height="44dp"
+            android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"

@@ -88,11 +88,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/pin_toggle_button"
+                android:contentDescription="@string/AddTask"
                 app:buttonTint="?attr/colorOnPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/notifyCheckbox"
                 app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/AddTask"
                 app:layout_constraintVertical_bias="0.5" />
 
 
@@ -100,27 +100,138 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <HorizontalScrollView
+        android:id="@+id/scrollview"
         android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <com.example.taskplanner.customview.CustomChip
+                android:id="@+id/customChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="12dp"
+                app:activeBackgroundColor="?attr/colorPrimary"
+                app:activeInfoBackgroundColor="#4FFFFFFF"
+                app:activeInfoTextColor="@color/white"
+                app:backgroundColor="?attr/colorSurface"
+                app:cornerRadius="@dimen/rounded_low"
+                app:gap="16dp"
+                app:iconTint="?attr/colorPrimary"
+                app:infoBackgroundColor="?attr/colorAccent"
+                app:infoBackgroundRadius="11dp"
+                app:infoTextColor="?attr/colorOnPrimary"
+                app:infoTextSize="@dimen/small_text"
+                app:isChecked="true"
+                app:isIcon="false"
+                app:text="All"
+                app:textColor="?attr/colorOnPrimary"
+                app:textSize="@dimen/small_text" />
+
+            <com.example.taskplanner.customview.CustomChip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:paddingStart="12dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="12dp"
+                app:activeBackgroundColor="?attr/colorPrimary"
+                app:activeInfoBackgroundColor="#4FFFFFFF"
+                app:activeInfoTextColor="@color/white"
+                app:backgroundColor="@color/white"
+                app:cornerRadius="@dimen/rounded_low"
+                app:gap="16dp"
+                app:iconTint="?attr/colorPrimary"
+                app:infoBackgroundColor="?attr/colorSurface"
+                app:infoBackgroundRadius="11dp"
+                app:infoTextColor="?attr/colorOnPrimary"
+                app:infoTextSize="@dimen/small_text"
+                app:isChecked="false"
+                app:isIcon="false"
+                app:text="Progress"
+                app:textColor="?attr/colorOnPrimary"
+                app:textSize="@dimen/small_text" />
+
+            <com.example.taskplanner.customview.CustomChip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:paddingStart="12dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="12dp"
+                app:activeBackgroundColor="?attr/colorPrimary"
+                app:activeInfoBackgroundColor="#4FFFFFFF"
+                app:activeInfoTextColor="@color/white"
+                app:backgroundColor="@color/white"
+                app:cornerRadius="@dimen/rounded_low"
+                app:gap="16dp"
+                app:iconTint="?attr/colorPrimary"
+                app:infoBackgroundColor="?attr/colorSurface"
+                app:infoBackgroundRadius="11dp"
+                app:infoTextColor="?attr/colorOnPrimary"
+                app:infoTextSize="@dimen/small_text"
+                app:isChecked="false"
+                app:isIcon="false"
+                app:text="Done"
+                app:textColor="?attr/colorOnPrimary"
+                app:textSize="@dimen/small_text" />
+
+            <com.example.taskplanner.customview.CustomChip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:paddingStart="12dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="12dp"
+                app:activeBackgroundColor="?attr/colorPrimary"
+                app:activeInfoBackgroundColor="#4FFFFFFF"
+                app:activeInfoTextColor="@color/white"
+                app:backgroundColor="@color/white"
+                app:cornerRadius="@dimen/rounded_low"
+                app:gap="16dp"
+                app:iconTint="?attr/colorPrimary"
+                app:infoBackgroundColor="?attr/colorSurface"
+                app:infoBackgroundRadius="11dp"
+                app:infoTextColor="?attr/colorOnPrimary"
+                app:infoTextSize="@dimen/small_text"
+                app:isChecked="false"
+                app:isIcon="false"
+                app:text="Undone"
+                app:textColor="?attr/colorOnPrimary"
+                app:textSize="@dimen/small_text" />
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/top_rounded_background"
         android:paddingTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/scrollview"
         tools:listitem="@layout/task_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
