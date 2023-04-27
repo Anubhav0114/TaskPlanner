@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.databinding.FragmentTaskBinding
 import com.example.taskplanner.room.ProjectTask
+import com.example.taskplanner.utils.DateManager
 import com.example.taskplanner.utils.TaskMode
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
@@ -27,6 +30,9 @@ class TaskFragment : Fragment() {
     private lateinit var binding: FragmentTaskBinding
     private val projectTask = ProjectTask(0,0,0,"","", false,0L,0L,"", "")
     private var taskMode = TaskMode.View
+    private var isInProgress = false
+
+    private val dateManager = DateManager()
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -47,7 +53,14 @@ class TaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         contextApp = requireContext()
 
-        val isOpenTypeCreate = requireArguments().getBoolean("isCreating", false)
+        val arg = requireArguments()
+        val isOpenTypeCreate = arg.getBoolean("isCreating", false)
+        val taskId = arg.getLong("taskId")
+        val projectId = arg.getLong("projectId")
+
+        projectTask.taskId = taskId
+        projectTask.projectId = projectId
+
         taskMode = if(isOpenTypeCreate){
             TaskMode.Create
         }else{
@@ -60,17 +73,49 @@ class TaskFragment : Fragment() {
 
 
     private fun setupListener(){
-        binding.startTime.setOnClickListener {
+        binding.startDateText.setOnClickListener {
             if(taskMode != TaskMode.View){
                 openDatePicker(true)
             }
-
         }
 
-        binding.endTime.setOnClickListener {
+        binding.endDateText.setOnClickListener {
             if(taskMode != TaskMode.View){
                 openDatePicker(false)
             }
+        }
+
+        binding.startTimeText.setOnClickListener {
+            if(taskMode != TaskMode.View){
+                openTimePicker(true)
+            }
+        }
+
+        binding.endTimeText.setOnClickListener {
+            if(taskMode != TaskMode.View){
+                openTimePicker(false)
+            }
+        }
+
+
+        binding.saveTask.setOnClickListener {
+
+            if(isInProgress) return@setOnClickListener
+
+            // TODO check if everything is filled
+            isInProgress = true
+            mainActivityViewModel.createProjectTask(projectTask){
+                Toast.makeText(contextApp, "Created",Toast.LENGTH_SHORT).show()
+                isInProgress = false
+            }
+        }
+
+        binding.titleText.addTextChangedListener {
+            projectTask.taskName = it!!.toString()
+        }
+
+        binding.description.addTextChangedListener {
+            projectTask.description= it!!.toString()
         }
     }
 
@@ -130,14 +175,18 @@ class TaskFragment : Fragment() {
         datePicker.addOnPositiveButtonClickListener {milliSec ->
             if(isOpenedForStart){
                 projectTask.startTime = milliSec
+                binding.startDateText.text = dateManager.unixMillToDateString(milliSec)
             }else{
                 projectTask.endTime = milliSec
+                binding.endDateText.text = dateManager.unixMillToDateString(milliSec)
             }
 
-            val date = Date(milliSec)
-            Log.e("=========", date.toString())
         }
         datePicker.show(parentFragmentManager, "hello")
+
+    }
+
+    private fun openTimePicker(isOpenedForStart: Boolean){
 
     }
 }

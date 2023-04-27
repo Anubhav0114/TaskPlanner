@@ -52,6 +52,24 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         }
     }
 
+    fun createProjectTask(projectTask: ProjectTask , callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default){
+        taskRepository.insert(projectTask)
+        withContext(Dispatchers.Main){
+            callback()
+        }
+    }
+
+    fun getAllTaskFromProject(projectId: Long , callback: (List<ProjectTask>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+
+        val tasks = taskRepository.getAllTaskFromProject(projectId)
+        withContext(Dispatchers.Main){
+            callback(tasks)
+        }
+    }
+
+
+
+
 
 }
 

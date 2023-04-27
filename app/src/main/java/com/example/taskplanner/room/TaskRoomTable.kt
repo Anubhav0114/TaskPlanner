@@ -33,7 +33,7 @@ data class ProjectTask(
 interface ProjectTaskDao {
 
     @Query("SELECT * FROM project_task WHERE project_id = :projectId ORDER BY start_time ASC")
-    fun getAllTaskFromProject(projectId: Int): List<ProjectTask>
+    fun getAllTaskFromProject(projectId: Long): List<ProjectTask>
 
 
     @Query("SELECT * FROM project_task WHERE project_id = :projectId AND task_id = :taskId LIMIT 1")
@@ -57,7 +57,7 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     }
 
     @WorkerThread
-    suspend fun getAllTaskFromProject(projectId: Int): List<ProjectTask> {
+    suspend fun getAllTaskFromProject(projectId: Long): List<ProjectTask> {
         return projectTaskDao.getAllTaskFromProject(projectId)
     }
 
