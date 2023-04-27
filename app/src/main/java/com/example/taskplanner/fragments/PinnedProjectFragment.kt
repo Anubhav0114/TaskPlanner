@@ -1,4 +1,4 @@
-package com.example.taskplanner
+package com.example.taskplanner.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

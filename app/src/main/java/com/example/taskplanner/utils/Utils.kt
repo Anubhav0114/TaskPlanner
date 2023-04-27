@@ -18,3 +18,9 @@ val Number.spToPx get() = TypedValue.applyDimension(
 fun generateUniqueId(): Long{
     return System.currentTimeMillis()
 }
+
+enum class TaskMode{
+    Create,
+    Edit,
+    View
+}

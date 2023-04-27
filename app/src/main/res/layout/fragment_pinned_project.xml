@@ -8,7 +8,7 @@
     android:layout_marginEnd="16dp"
     android:background="@drawable/home_card_rounded"
     android:backgroundTint="?attr/colorPrimary"
-    tools:context=".PinnedProjectFragment">
+    tools:context=".fragments.PinnedProjectFragment">
 
     <TextView
         android:id="@+id/textView7"

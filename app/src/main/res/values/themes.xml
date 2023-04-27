@@ -8,8 +8,9 @@
     <style name="Theme_purple" parent="Theme.TaskPlanner">
 
         <item name="colorPrimary">@color/purple_600</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/blue_900</item>
         <!-- Secondary brand color. -->
+        <item name="colorOnSecondary">@color/white</item>
 
         <item name="colorOnSurface">@color/black_600</item>
         <item name="colorPrimarySurface">@color/white</item>

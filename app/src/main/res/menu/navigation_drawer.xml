@@ -1,43 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/notification_item"
-            android:icon="@drawable/icon_bell_off"
-            android:title="Notifications"
-            android:clickable="true"/>
+    <item
+        android:id="@+id/notification_item"
+        android:icon="@drawable/icon_bell_off"
+        android:title="Notifications"
+        android:clickable="true"/>
+    <item
+        android:id="@+id/feedback_item"
+        android:icon="@drawable/icon_feedback"
+        android:title="Feedback"
+        android:clickable="true"/>
 
-        <item
-            android:id="@+id/feedback_item"
-            android:icon="@drawable/icon_feedback"
-            android:title="Feedback"
-            android:clickable="true"/>
+    <item
+        android:id="@+id/rating_item"
+        android:icon="@drawable/icon_star"
+        android:title="Rating"
+        android:clickable="true"/>
 
-        <item
-            android:id="@+id/rating_item"
-            android:icon="@drawable/icon_star"
-            android:title="Rating"
-            android:clickable="true"/>
+    <item
+        android:id="@+id/about_item"
+        android:icon="@drawable/icon_about"
+        android:title="About"
+        android:clickable="true"/>
 
-        <item
-            android:id="@+id/about_item"
-            android:icon="@drawable/icon_about"
-            android:title="About"
-            android:clickable="true"/>
+    <item
+        android:id="@+id/shareItem"
+        android:icon="@drawable/icon_share"
+        android:title="Share"
+        android:clickable="true"/>
 
-        <item
-            android:id="@+id/shareItem"
-            android:icon="@drawable/icon_share"
-            android:title="Share"
-            android:clickable="true"/>
-
-        <item
-            android:id="@+id/moreApps_item"
-            android:icon="@drawable/icon_more_apps"
-            android:title="More apps"
-            android:clickable="true"/>
-
-    </group>
+    <item
+        android:id="@+id/moreApps_item"
+        android:icon="@drawable/icon_more_apps"
+        android:title="More apps"
+        android:clickable="true"/>
 </menu>
 
