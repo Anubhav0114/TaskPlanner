@@ -24,8 +24,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
+        android:enabled="false"
         android:hint="Description here..."
         android:textColor="?attr/colorOnPrimary"
         android:textSize="@dimen/medium_text"
@@ -80,7 +82,6 @@
                 android:id="@+id/projectName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="24dp"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -117,7 +118,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
-        android:enabled="true"
+        android:enabled="false"
         android:hint="Title here...."
         android:textColor="?attr/colorOnPrimary"
         android:textSize="@dimen/big_text"
@@ -159,36 +160,71 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/startTimeText"
+                    android:id="@+id/startDateText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="16dp"
-                    android:text="12 Jan 2023 12:30PM"
-                    android:textColor="?attr/colorOnPrimary"
+                    android:background="@drawable/very_small_rounded_bg"
+                    android:backgroundTint="@color/blue_100"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="12 Jan 2023"
+                    android:textColor="@color/blue_700"
                     android:textSize="@dimen/medium_text"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                    app:layout_constraintEnd_toStartOf="@+id/startTimeText"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titleTextHint2" />
 
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/startTimeText"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:src="@drawable/icon_clock"
-                    app:layout_constraintBottom_toBottomOf="@+id/startTimeText"
+                    android:background="@drawable/very_small_rounded_bg"
+                    android:backgroundTint="@color/blue_100"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="12:30 PM"
+                    android:textColor="@color/blue_700"
+                    android:textSize="@dimen/medium_text"
+                    app:layout_constraintBottom_toBottomOf="@+id/startDateText"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/startTimeText" />
+                    app:layout_constraintTop_toTopOf="@+id/startDateText" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/endTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/endTimeText"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/very_small_rounded_bg"
+                    android:backgroundTint="@color/green_100"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="12:30 AM"
+                    android:textColor="@color/green_600"
+                    android:textSize="@dimen/medium_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/titleTextHint4" />
 
                 <TextView
                     android:id="@+id/titleTextHint4"
@@ -203,30 +239,27 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/endTimeText"
+                    android:id="@+id/endDateText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="16dp"
+                    android:background="@drawable/very_small_rounded_bg"
+                    android:backgroundTint="@color/green_100"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
                     android:text="12 Jan 2023 12:30PM"
-                    android:textColor="?attr/colorOnPrimary"
+                    android:textColor="@color/green_600"
                     android:textSize="@dimen/medium_text"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView4"
+                    app:layout_constraintEnd_toStartOf="@+id/endTimeText"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titleTextHint4" />
 
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:src="@drawable/icon_clock"
-                    app:layout_constraintBottom_toBottomOf="@+id/endTimeText"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/endTimeText" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -268,18 +301,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
                     android:checked="true"
-                    app:trackTint="@color/red_300"
-                    app:thumbTint="@color/red_600"
+                    android:enabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/red_600"
+                    app:trackTint="@color/red_300"
                     app:useMaterialThemeColors="false" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView3"
