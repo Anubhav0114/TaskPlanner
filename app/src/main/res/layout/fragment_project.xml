@@ -103,6 +103,10 @@
         android:id="@+id/scrollview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fadeScrollbars="true"
+        android:isScrollContainer="true"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,9 +122,10 @@
             android:paddingEnd="16dp">
 
             <com.example.taskplanner.customview.CustomChip
-                android:id="@+id/customChip"
+                android:id="@+id/allChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:paddingStart="12dp"
                 android:paddingTop="12dp"
                 android:paddingEnd="4dp"
@@ -128,21 +133,23 @@
                 app:activeBackgroundColor="?attr/colorPrimary"
                 app:activeInfoBackgroundColor="#4FFFFFFF"
                 app:activeInfoTextColor="@color/white"
-                app:backgroundColor="?attr/colorSurface"
+                app:backgroundColor="@color/white"
                 app:cornerRadius="@dimen/rounded_low"
                 app:gap="16dp"
                 app:iconTint="?attr/colorPrimary"
-                app:infoBackgroundColor="?attr/colorAccent"
+                app:infoBackgroundColor="?attr/colorSurface"
                 app:infoBackgroundRadius="11dp"
                 app:infoTextColor="?attr/colorOnPrimary"
                 app:infoTextSize="@dimen/small_text"
                 app:isChecked="true"
                 app:isIcon="false"
                 app:text="All"
+                app:infoText="0"
                 app:textColor="?attr/colorOnPrimary"
                 app:textSize="@dimen/small_text" />
 
             <com.example.taskplanner.customview.CustomChip
+                android:id="@+id/progressChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -164,10 +171,12 @@
                 app:isChecked="false"
                 app:isIcon="false"
                 app:text="Progress"
+                app:infoText="0"
                 app:textColor="?attr/colorOnPrimary"
                 app:textSize="@dimen/small_text" />
 
             <com.example.taskplanner.customview.CustomChip
+                android:id="@+id/doneChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -189,10 +198,12 @@
                 app:isChecked="false"
                 app:isIcon="false"
                 app:text="Done"
+                app:infoText="0"
                 app:textColor="?attr/colorOnPrimary"
                 app:textSize="@dimen/small_text" />
 
             <com.example.taskplanner.customview.CustomChip
+                android:id="@+id/failedChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -213,7 +224,8 @@
                 app:infoTextSize="@dimen/small_text"
                 app:isChecked="false"
                 app:isIcon="false"
-                app:text="Undone"
+                app:text="Failed"
+                app:infoText="0"
                 app:textColor="?attr/colorOnPrimary"
                 app:textSize="@dimen/small_text" />
         </LinearLayout>

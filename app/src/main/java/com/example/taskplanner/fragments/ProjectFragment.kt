@@ -9,21 +9,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.adapters.ProjectTaskListAdapter
+import com.example.taskplanner.customview.CustomChip
 import com.example.taskplanner.databinding.FragmentProjectBinding
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.room.ProjectTask
+import com.example.taskplanner.utils.TaskMode
+import com.example.taskplanner.utils.TaskStatus
 import com.example.taskplanner.utils.generateUniqueId
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.transition.MaterialContainerTransform
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ProjectFragment : Fragment() {
@@ -31,6 +38,9 @@ class ProjectFragment : Fragment() {
     private lateinit var binding: FragmentProjectBinding
     private lateinit var openedProject: Project
     private lateinit var projectTaskListAdapter: ProjectTaskListAdapter
+    private lateinit var previousCheckedChip: CustomChip
+    private lateinit var allTaskList: List<ProjectTask>
+    private var projectId: Long = 0L
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -39,6 +49,16 @@ class ProjectFragment : Fragment() {
         )
     }
     private lateinit var contextApp: Context
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // used to handle back press
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            isEnabled = false
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
 
 
     override fun onCreateView(
@@ -52,36 +72,114 @@ class ProjectFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         contextApp = requireContext()
-
-        val projectId = requireArguments().getLong("project_id")
+        projectId = requireArguments().getLong("project_id")
+        previousCheckedChip = binding.allChip
         setupData()
-        loadData(projectId)
+        loadData()
+        addObserver()
         setupListener()
 
     }
 
 
-    private fun loadData(projectId: Long){
-        mainActivityViewModel.getProjectById(projectId){
+    private fun loadData() {
+        mainActivityViewModel.getProjectById(projectId) {
             openedProject = it
             binding.projectName.text = openedProject.projectName
             binding.notifyCheckbox.isChecked = openedProject.isNotify
             binding.pinCheckbox.isChecked = openedProject.isPinned
         }
 
-        mainActivityViewModel.getAllTaskFromProject(projectId){ tasks ->
-            projectTaskListAdapter.submitList(tasks)
+    }
+
+    private fun addObserver(){
+        lifecycleScope.launch(Dispatchers.Default) {
+            mainActivityViewModel.getAllTaskFromProject(projectId).collect { tasks ->
+                allTaskList = tasks
+                updateRecyclerView(tasks)
+            }
         }
     }
 
-    private fun setupData(){
+
+    private fun updateRecyclerView(tasks: List<ProjectTask>){
+        val filteredTask = ArrayList<ProjectTask>()
+        when (previousCheckedChip.id) {
+            R.id.allChip -> {
+                filteredTask.addAll(tasks)
+            }
+
+            R.id.progressChip -> {
+                for (task in tasks) {
+                    if (task.taskStatus == TaskStatus.Active) filteredTask.add(task)
+                }
+            }
+
+            R.id.doneChip -> {
+                for (task in tasks) {
+                    if (task.taskStatus == TaskStatus.Done) filteredTask.add(task)
+                }
+            }
+
+            R.id.failedChip -> {
+                for (task in tasks) {
+                    if (task.taskStatus == TaskStatus.Failed) filteredTask.add(task)
+                }
+            }
+        }
+        projectTaskListAdapter.submitList(filteredTask)
+
+        val allCount = tasks.size
+        var activeCount = 0
+        var doneCount = 0
+        var failedCount = 0
+
+        for (task in tasks) {
+            if (task.taskStatus == TaskStatus.Active) {
+                activeCount++
+                continue
+            }
+            if (task.taskStatus == TaskStatus.Done) {
+                doneCount++
+                continue
+            }
+            if (task.taskStatus == TaskStatus.Failed) {
+                failedCount++
+                continue
+            }
+        }
+
+        binding.allChip.setInfoText(allCount.toString())
+        binding.progressChip.setInfoText(activeCount.toString())
+        binding.doneChip.setInfoText(doneCount.toString())
+        binding.failedChip.setInfoText(failedCount.toString())
+
+    }
+
+
+    private fun setupData() {
 
         // setting up recyclerview
-        projectTaskListAdapter = ProjectTaskListAdapter(object : ProjectTaskListAdapter.OnItemClickListener{
-            override fun onItemClick(project: ProjectTask) {
+        projectTaskListAdapter =
+            ProjectTaskListAdapter(object : ProjectTaskListAdapter.OnItemClickListener {
+                override fun onItemClick(projectTask: ProjectTask) {
+                    val bundle = Bundle().apply {
+                        putBoolean("isCreating", false)
+                        putLong("projectId", openedProject.projectId)
+                        putLong("taskId", projectTask.taskId)
+                    }
+                    findNavController().navigate(
+                        R.id.action_projectFragment_to_taskFragment,
+                        bundle
+                    )
+                }
 
-            }
-        })
+                override fun onCheckChangeListener(projectTask: ProjectTask) {
+                    mainActivityViewModel.updateProjectTask(projectTask) {
+                        Log.e("--------------", "Checked")
+                    }
+                }
+            })
 
         val taskLinearLayoutManager = LinearLayoutManager(contextApp)
         binding.taskRecyclerview.apply {
@@ -95,7 +193,7 @@ class ProjectFragment : Fragment() {
     }
 
 
-    private fun setupListener(){
+    private fun setupListener() {
         binding.createTask.setOnClickListener {
             val bundle = Bundle().apply {
                 putBoolean("isCreating", true)
@@ -104,6 +202,53 @@ class ProjectFragment : Fragment() {
             }
             findNavController().navigate(R.id.action_projectFragment_to_taskFragment, bundle)
         }
-        binding.backBtn.setOnClickListener {}
+
+        binding.backBtn.setOnClickListener {
+            // back to previous
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        binding.pinCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            openedProject.isPinned = isChecked
+            mainActivityViewModel.updateProject(openedProject)
+        }
+
+        binding.notifyCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            openedProject.isNotify = isChecked
+            mainActivityViewModel.updateProject(openedProject)
+        }
+
+        binding.allChip.setOnClickListener {
+            if (previousCheckedChip == it as CustomChip) return@setOnClickListener
+            it.setActive(true)
+            previousCheckedChip.setActive(false)
+            previousCheckedChip = it
+            updateRecyclerView(allTaskList)
+        }
+
+        binding.progressChip.setOnClickListener {
+            if (previousCheckedChip == it as CustomChip) return@setOnClickListener
+            it.setActive(true)
+            previousCheckedChip.setActive(false)
+            previousCheckedChip = it
+            updateRecyclerView(allTaskList)
+        }
+
+        binding.doneChip.setOnClickListener {
+            if (previousCheckedChip == it as CustomChip) return@setOnClickListener
+            it.setActive(true)
+            previousCheckedChip.setActive(false)
+            previousCheckedChip = it
+            updateRecyclerView(allTaskList)
+        }
+
+        binding.failedChip.setOnClickListener {
+            if (previousCheckedChip == it as CustomChip) return@setOnClickListener
+            it.setActive(true)
+            previousCheckedChip.setActive(false)
+            previousCheckedChip = it
+            updateRecyclerView(allTaskList)
+        }
+
     }
 }

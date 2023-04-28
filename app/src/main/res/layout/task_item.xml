@@ -9,11 +9,12 @@
 
     <CheckBox
 
-        android:id="@+id/checkBox3"
+        android:id="@+id/statusCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:button="@drawable/task_done_toggle_button"
+        android:enabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,7 +32,7 @@
         android:textColor="#000000"
         android:textSize="@dimen/medium_text"
         app:layout_constraintBottom_toTopOf="@+id/date_time"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox3"
+        app:layout_constraintEnd_toStartOf="@+id/statusCheckBox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />

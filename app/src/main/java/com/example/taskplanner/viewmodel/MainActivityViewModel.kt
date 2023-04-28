@@ -9,6 +9,7 @@ import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.room.ProjectTaskRepository
 import com.example.taskplanner.utils.generateUniqueId
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -35,6 +36,10 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         }
     }
 
+    fun updateProject(project: Project) = viewModelScope.launch(Dispatchers.Default) {
+        projectRepository.update(project)
+    }
+
     fun getProjectById(projectId: Long, callback: (Project) -> Unit) = viewModelScope.launch(Dispatchers.Default) {
         val project = projectRepository.getProjectById(projectId)
         withContext(Dispatchers.Main){
@@ -59,12 +64,23 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         }
     }
 
-    fun getAllTaskFromProject(projectId: Long , callback: (List<ProjectTask>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
-
-        val tasks = taskRepository.getAllTaskFromProject(projectId)
+    fun updateProjectTask(projectTask: ProjectTask , callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default){
+        taskRepository.update(projectTask)
         withContext(Dispatchers.Main){
-            callback(tasks)
+            callback()
         }
+    }
+
+//    fun getAllTaskFromProject(projectId: Long , callback: (List<ProjectTask>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+//
+//        val tasks = taskRepository.getAllTaskFromProject(projectId)
+//        withContext(Dispatchers.Main){
+//            callback(tasks)
+//        }
+//    }
+
+    suspend fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>> {
+        return taskRepository.getAllTaskFromProject(projectId)
     }
 
 
