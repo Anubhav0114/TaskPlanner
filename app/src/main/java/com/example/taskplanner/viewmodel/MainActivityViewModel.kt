@@ -59,6 +59,13 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         }
     }
 
+    fun updateProjectTask(projectTask: ProjectTask , callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default){
+        taskRepository.update(projectTask)
+        withContext(Dispatchers.Main){
+            callback()
+        }
+    }
+
     fun getAllTaskFromProject(projectId: Long , callback: (List<ProjectTask>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
 
         val tasks = taskRepository.getAllTaskFromProject(projectId)

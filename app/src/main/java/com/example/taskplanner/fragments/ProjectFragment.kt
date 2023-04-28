@@ -78,8 +78,13 @@ class ProjectFragment : Fragment() {
 
         // setting up recyclerview
         projectTaskListAdapter = ProjectTaskListAdapter(object : ProjectTaskListAdapter.OnItemClickListener{
-            override fun onItemClick(project: ProjectTask) {
-
+            override fun onItemClick(projectTask: ProjectTask) {
+                val bundle = Bundle().apply {
+                    putBoolean("isCreating", false)
+                    putLong("projectId", openedProject.projectId)
+                    putLong("taskId", projectTask.taskId)
+                }
+                findNavController().navigate(R.id.action_projectFragment_to_taskFragment, bundle)
             }
         })
 

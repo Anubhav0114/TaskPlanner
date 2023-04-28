@@ -2,12 +2,14 @@ package com.example.taskplanner.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.example.taskplanner.ProjectApplication
@@ -28,7 +30,7 @@ import java.util.Date
 class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
-    private val projectTask = ProjectTask(0,0,0,"","", false,0L,0L,"", "")
+    private var projectTask = ProjectTask(0,0,0,"","", false,0L,0L,"", "")
     private var taskMode = TaskMode.View
     private var isInProgress = false
 
@@ -41,6 +43,16 @@ class TaskFragment : Fragment() {
         )
     }
     private lateinit var contextApp: Context
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // used to handle back press
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            isEnabled = false
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -103,11 +115,31 @@ class TaskFragment : Fragment() {
             if(isInProgress) return@setOnClickListener
 
             // TODO check if everything is filled
+
             isInProgress = true
-            mainActivityViewModel.createProjectTask(projectTask){
-                Toast.makeText(contextApp, "Created",Toast.LENGTH_SHORT).show()
-                isInProgress = false
+
+            projectTask.taskName = binding.titleText.text.toString()
+            projectTask.description = binding.description.text.toString()
+            projectTask.isRemind = binding.remindSwitch.isChecked
+
+            if(taskMode == TaskMode.Create){
+                mainActivityViewModel.createProjectTask(projectTask){
+
+                    // back to previous
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }else{
+                mainActivityViewModel.updateProjectTask(projectTask){
+                    taskMode = TaskMode.View
+                    isInProgress = false
+                    setupData()
+                }
             }
+        }
+
+        binding.editTask.setOnClickListener {
+            taskMode = TaskMode.Edit
+            setupData()
         }
 
         binding.titleText.addTextChangedListener {
@@ -123,16 +155,31 @@ class TaskFragment : Fragment() {
     private fun setupData(){
 
         toggleEditOption()
-        if(taskMode == TaskMode.Create || taskMode == TaskMode.Edit){
-            binding.projectName.text = taskMode.toString()
+        when (taskMode) {
+            TaskMode.Create -> {
+                binding.projectName.text = taskMode.toString()
 
-        }else{
-            val projectId = requireArguments().getLong("projectId")
-            val taskId = requireArguments().getLong("taskId")
-            binding.projectName.text = taskMode.toString()
+            }
+            TaskMode.Edit -> {
+                binding.projectName.text = taskMode.toString()
+                loadDataToUI()
+            }
+            else -> {
+                val projectId = requireArguments().getLong("projectId")
+                val taskId = requireArguments().getLong("taskId")
+                binding.projectName.text = taskMode.toString()
 
-            loadTaskData(projectId, taskId)
+                loadTaskData(projectId, taskId)
+            }
         }
+    }
+
+    private fun loadDataToUI(){
+        binding.titleText.setText(projectTask.taskName)
+        binding.description.setText(projectTask.description)
+        binding.startDateText.text = dateManager.unixMillToDateString(projectTask.startTime)
+        binding.endDateText.text = dateManager.unixMillToDateString(projectTask.startTime)
+        binding.remindSwitch.isChecked = projectTask.isRemind
     }
 
     private fun toggleEditOption(){
@@ -156,7 +203,10 @@ class TaskFragment : Fragment() {
     }
 
     private fun loadTaskData(projectId: Long, taskId: Long){
-
+        mainActivityViewModel.getProjectTaskById(projectId, taskId){
+            projectTask = it
+            loadDataToUI()
+        }
     }
 
     private fun openDatePicker(isOpenedForStart: Boolean){

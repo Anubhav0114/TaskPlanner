@@ -15,7 +15,7 @@ class ProjectTaskListAdapter(private val itemClickListener: OnItemClickListener)
 
     private val dateManager = DateManager()
     interface OnItemClickListener {
-        fun onItemClick(project: ProjectTask)
+        fun onItemClick(projectTask: ProjectTask)
     }
 
     inner class CustomViewHolder(itemView: ConstraintLayout, private val itemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
