@@ -8,12 +8,17 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import androidx.room.TypeConverters
 import androidx.room.Update
+import com.example.taskplanner.utils.TaskStatus
+import com.example.taskplanner.utils.TaskStatusConverter
+import kotlinx.coroutines.flow.Flow
 
 /*
 * id, ProjectName, taskName, description, startTime, endTime, isRemind, tags, taskStatus*/
 
 @Entity(tableName = "project_task")
+@TypeConverters(TaskStatusConverter::class)
 data class ProjectTask(
     @PrimaryKey(autoGenerate = true) var id: Int,
     @ColumnInfo(name = "task_id") var taskId: Long,
@@ -24,7 +29,7 @@ data class ProjectTask(
     @ColumnInfo(name = "start_time") var startTime: Long,
     @ColumnInfo(name = "end_time") var endTime: Long,
     @ColumnInfo(name = "tags") var tags: String,
-    @ColumnInfo(name = "task_status") var taskStatus: String,
+    @ColumnInfo(name = "task_status") var taskStatus: TaskStatus,
     )
 
 // Note: task status may be - active, done, not_done
@@ -33,7 +38,7 @@ data class ProjectTask(
 interface ProjectTaskDao {
 
     @Query("SELECT * FROM project_task WHERE project_id = :projectId ORDER BY start_time ASC")
-    fun getAllTaskFromProject(projectId: Long): List<ProjectTask>
+    fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>>
 
 
     @Query("SELECT * FROM project_task WHERE project_id = :projectId AND task_id = :taskId LIMIT 1")
@@ -57,7 +62,7 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     }
 
     @WorkerThread
-    suspend fun getAllTaskFromProject(projectId: Long): List<ProjectTask> {
+    suspend fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>>{
         return projectTaskDao.getAllTaskFromProject(projectId)
     }
 

@@ -7,7 +7,7 @@
     android:layout_margin="4dp">
 
     <com.example.taskplanner.customview.CustomChip
-        android:id="@+id/customChip"
+        android:id="@+id/allChip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="12dp"

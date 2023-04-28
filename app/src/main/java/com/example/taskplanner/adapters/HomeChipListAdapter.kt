@@ -15,7 +15,7 @@ class HomeChipListAdapter(): ListAdapter<ChipData, HomeChipListAdapter.CustomVie
     inner class CustomViewHolder(itemView: RelativeLayout) : RecyclerView.ViewHolder(itemView) {
         fun bind(chipData: ChipData, isLast: Boolean){
 
-            itemView.findViewById<CustomChip>(R.id.customChip).apply {
+            itemView.findViewById<CustomChip>(R.id.allChip).apply {
                 setIconView(isLast)
                 if(!isLast){
                     setText(chipData.name)

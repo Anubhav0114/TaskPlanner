@@ -2,6 +2,7 @@ package com.example.taskplanner.utils
 
 import android.content.res.Resources
 import android.util.TypedValue
+import androidx.room.TypeConverter
 
 val Number.toPx get() = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,
@@ -23,4 +24,27 @@ enum class TaskMode{
     Create,
     Edit,
     View
+}
+
+enum class TaskStatus{
+    Active,
+    Done,
+    Failed;
+
+    // create companion for converting enum to no. or vice-versa
+    companion object {
+        @JvmStatic
+        fun fromOrdinal(ordinal: Int) = values()[ordinal]
+    }
+}
+
+
+// this class is used for converting enum to num or vice-versa
+// It is used by room because room cannot store enum
+class TaskStatusConverter {
+    @TypeConverter
+    fun toInt(status: TaskStatus): Int = status.ordinal
+
+    @TypeConverter
+    fun toStatus(ordinal: Int): TaskStatus = TaskStatus.fromOrdinal(ordinal)
 }

@@ -18,6 +18,7 @@ import com.example.taskplanner.databinding.FragmentTaskBinding
 import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.utils.DateManager
 import com.example.taskplanner.utils.TaskMode
+import com.example.taskplanner.utils.TaskStatus
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
@@ -30,7 +31,7 @@ import java.util.Date
 class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
-    private var projectTask = ProjectTask(0,0,0,"","", false,0L,0L,"", "")
+    private var projectTask = ProjectTask(0,0,0,"","", false,0L,0L,"", TaskStatus.Active)
     private var taskMode = TaskMode.View
     private var isInProgress = false
 
@@ -49,8 +50,16 @@ class TaskFragment : Fragment() {
 
         // used to handle back press
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            isEnabled = false
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+
+            if(taskMode == TaskMode.Edit){
+
+                // TODO add dialog to save edited data
+                taskMode = TaskMode.View
+                setupData()
+            }else{
+                isEnabled = false
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
         }
     }
     override fun onCreateView(

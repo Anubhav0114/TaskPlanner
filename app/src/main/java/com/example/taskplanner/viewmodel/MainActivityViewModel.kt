@@ -9,6 +9,7 @@ import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.room.ProjectTaskRepository
 import com.example.taskplanner.utils.generateUniqueId
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -66,12 +67,16 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         }
     }
 
-    fun getAllTaskFromProject(projectId: Long , callback: (List<ProjectTask>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+//    fun getAllTaskFromProject(projectId: Long , callback: (List<ProjectTask>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+//
+//        val tasks = taskRepository.getAllTaskFromProject(projectId)
+//        withContext(Dispatchers.Main){
+//            callback(tasks)
+//        }
+//    }
 
-        val tasks = taskRepository.getAllTaskFromProject(projectId)
-        withContext(Dispatchers.Main){
-            callback(tasks)
-        }
+    suspend fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>> {
+        return taskRepository.getAllTaskFromProject(projectId)
     }
 
 
