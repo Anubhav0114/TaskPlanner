@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +23,7 @@ import com.example.taskplanner.customview.CustomChip
 import com.example.taskplanner.databinding.FragmentProjectBinding
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.room.ProjectTask
+import com.example.taskplanner.utils.TaskMode
 import com.example.taskplanner.utils.TaskStatus
 import com.example.taskplanner.utils.generateUniqueId
 import com.example.taskplanner.viewmodel.MainActivityViewModel
@@ -47,6 +49,16 @@ class ProjectFragment : Fragment() {
         )
     }
     private lateinit var contextApp: Context
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // used to handle back press
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            isEnabled = false
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
 
 
     override fun onCreateView(
@@ -145,7 +157,6 @@ class ProjectFragment : Fragment() {
     }
 
 
-
     private fun setupData() {
 
         // setting up recyclerview
@@ -191,7 +202,21 @@ class ProjectFragment : Fragment() {
             }
             findNavController().navigate(R.id.action_projectFragment_to_taskFragment, bundle)
         }
-        binding.backBtn.setOnClickListener {}
+
+        binding.backBtn.setOnClickListener {
+            // back to previous
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        binding.pinCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            openedProject.isPinned = isChecked
+            mainActivityViewModel.updateProject(openedProject)
+        }
+
+        binding.notifyCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            openedProject.isNotify = isChecked
+            mainActivityViewModel.updateProject(openedProject)
+        }
 
         binding.allChip.setOnClickListener {
             if (previousCheckedChip == it as CustomChip) return@setOnClickListener
