@@ -22,9 +22,9 @@ class PinnedViewPagerAdapter(private val fragment: Fragment): FragmentStateAdapt
 
     override fun createFragment(position: Int): Fragment {
         return if(position == 0){
-            PinnedProjectFragment(true)
+            PinnedProjectFragment(true, projects[position])
         }else{
-            PinnedProjectFragment(false)
+            PinnedProjectFragment(false, projects[position])
         }
     }
 }
