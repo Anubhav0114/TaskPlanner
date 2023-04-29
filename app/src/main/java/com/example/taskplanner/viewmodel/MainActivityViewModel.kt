@@ -22,6 +22,10 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         return projectRepository.getAllProjects()
     }
 
+    suspend fun getAllPinnedProject(): Flow<List<Project>>{
+        return projectRepository.getPinnedProject()
+    }
+
     fun createNewProject(projectName: String, collectionName: String, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
         val newProject = Project(0, generateUniqueId(), projectName, collectionName,
             isNotify = true,

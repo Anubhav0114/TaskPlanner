@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.taskplanner.databinding.FragmentPinnedProjectBinding
 
-class PinnedProjectFragment : Fragment() {
+class PinnedProjectFragment(isDaily: Boolean) : Fragment() {
 
     private lateinit var binding: FragmentPinnedProjectBinding
 

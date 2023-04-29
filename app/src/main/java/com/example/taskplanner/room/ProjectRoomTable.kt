@@ -33,7 +33,7 @@ interface ProjectDao {
     fun getAllProjects(): Flow<List<Project>>
 
     @Query("SELECT * FROM projects WHERE is_pinned = 1")
-    fun getAllPinnedProjects(): List<Project>
+    fun getAllPinnedProjects(): Flow<List<Project>>
 
     @Query("UPDATE projects SET project_name = :projectName, collection_name = :collectionName, is_notify = :isNotify, is_pinned = :isPinned WHERE project_id = :projectId")
     fun updateProject(projectId: Long, projectName: String, collectionName: String, isNotify: Boolean, isPinned: Boolean)
@@ -63,7 +63,7 @@ class ProjectRepository(private val projectDao: ProjectDao) {
     }
 
     @WorkerThread
-    suspend fun getPinnedProject(): List<Project> {
+    suspend fun getPinnedProject(): Flow<List<Project>> {
        return projectDao.getAllPinnedProjects()
     }
 

@@ -17,11 +17,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.taskplanner.MainActivity
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.adapters.CustomChipListAdapter
 import com.example.taskplanner.adapters.HomeProjectListAdapter
+import com.example.taskplanner.adapters.PinnedViewPagerAdapter
 import com.example.taskplanner.databinding.FragmentHomeBinding
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.utils.ChipData
@@ -43,6 +46,7 @@ class HomeFragment : Fragment() {
     private lateinit var collectionNames: List<String>
     private var selectedChipIndex = 0
     private var selectedCollectionName = "All"
+    private lateinit var pinnedProjectAdapter: PinnedViewPagerAdapter
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -119,6 +123,7 @@ class HomeFragment : Fragment() {
 
     private fun setupUI() {
 
+        // 1
         // setup data in project adapter
         projectListAdapter =
             HomeProjectListAdapter(object : HomeProjectListAdapter.OnItemClickListener {
@@ -143,7 +148,7 @@ class HomeFragment : Fragment() {
             DividerItemDecoration(contextApp, projectLayoutManager.orientation)
         )
 
-
+        // 2
         chipsAdapter = CustomChipListAdapter(binding.chipsContainer, contextApp, object : CustomChipListAdapter.OnItemClickListener{
             override fun onItemClick(chipData: ChipData, itemIndex: Int) {
                 selectedChipIndex = itemIndex
@@ -159,11 +164,23 @@ class HomeFragment : Fragment() {
             }
         })
 
+        // 3
+        //  pinned projects
+        pinnedProjectAdapter = PinnedViewPagerAdapter(this)
+        binding.viewPager2.adapter = pinnedProjectAdapter
+
     }
 
 
     private fun addObservers() {
-        lifecycleScope.launch(Dispatchers.Default) {
+        lifecycleScope.launch{
+            mainActivityViewModel.getAllPinnedProject().collect{
+                // updating view pager
+                pinnedProjectAdapter.addProjects(it)
+            }
+        }
+
+        lifecycleScope.launch {
             mainActivityViewModel.getAllProjects().collect {
                 allProjects = it
                 updateRecyclerView()
