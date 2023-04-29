@@ -9,6 +9,7 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 /*
 * id, ProjectName, taskName, description, startTime, endTime, isRemind, tags, taskStatus*/
@@ -29,7 +30,7 @@ interface ProjectDao {
     fun getProjectById(projectId: Long): Project
 
     @Query("SELECT * FROM projects")
-    fun getAllProjects(): List<Project>
+    fun getAllProjects(): Flow<List<Project>>
 
     @Query("SELECT * FROM projects WHERE is_pinned = 1")
     fun getAllPinnedProjects(): List<Project>
@@ -52,7 +53,7 @@ class ProjectRepository(private val projectDao: ProjectDao) {
     }
 
     @WorkerThread
-    suspend fun getAllProjects(): List<Project> {
+    suspend fun getAllProjects(): Flow<List<Project>> {
         return projectDao.getAllProjects()
     }
 

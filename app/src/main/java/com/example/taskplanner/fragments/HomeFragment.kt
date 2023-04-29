@@ -35,13 +35,18 @@ import com.example.taskplanner.adapters.HomeProjectListAdapter
 import com.example.taskplanner.databinding.FragmentHomeBinding
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.utils.ChipData
+import com.example.taskplanner.utils.SharedPreferenceManager
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var allProjects: List<Project>
+    private lateinit var spManager: SharedPreferenceManager
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -65,17 +70,11 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         contextApp = requireContext()
+        spManager = SharedPreferenceManager(lifecycleScope,contextApp)
 
-        setupData()
-
-        binding.navButton.setOnClickListener{
-            (activity as MainActivity).openNavDrawer()
-        }
-
-        binding.newProjectBtn.setOnClickListener {
-            // Alert Box
-            dialog()
-        }
+        setupRecyclerView()
+        addObservers()
+        setupListener()
     }
 
     private fun dialog(){
@@ -110,30 +109,23 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun setupData(){
-        setupRecentRecyclerView()
+    private fun setupListener(){
+        binding.navButton.setOnClickListener{
+            (activity as MainActivity).openNavDrawer()
+        }
+
+        binding.newProjectBtn.setOnClickListener {
+            // Alert Box
+            dialog()
+//            spManager.addCollectionItem("Hello")
+        }
     }
 
 
-    private lateinit var chipListAdapter: HomeChipListAdapter
     private lateinit var projectListAdapter: HomeProjectListAdapter
-    private fun setupRecentRecyclerView(){
-        // 1
-        // setup data in chips
-        chipListAdapter = HomeChipListAdapter()
-        binding.homeChipRecyclerview.adapter = chipListAdapter
-        val chipLayoutManager = LinearLayoutManager(contextApp, LinearLayoutManager.HORIZONTAL, false)
-        binding.homeChipRecyclerview.layoutManager = chipLayoutManager
-
-        val chipList = arrayListOf<ChipData>()
-        chipList.add(ChipData("All", 5, true))
-        chipList.add(ChipData("Android", 10, false))
-        chipList.add(ChipData("Game", 17, false))
-        chipList.add(ChipData("", 0, false))
-        chipListAdapter.submitList(chipList)
+    private fun setupRecyclerView(){
 
 
-        // 2
         // setup data in project adapter
         projectListAdapter = HomeProjectListAdapter(object: HomeProjectListAdapter.OnItemClickListener{
             override fun onItemClick(project: Project) {
@@ -141,7 +133,6 @@ class HomeFragment : Fragment() {
                 val bundle = Bundle().apply {
                     putLong("project_id", project.projectId)
                 }
-
 
                 findNavController().navigate(R.id.action_homeFragment_to_projectFragment, bundle, null)
             }
@@ -154,11 +145,23 @@ class HomeFragment : Fragment() {
             DividerItemDecoration(contextApp, projectLayoutManager.orientation)
         )
 
-        mainActivityViewModel.getAllProjects {
-            projectListAdapter.submitList(it)
-        }
-
     }
+
+
+    private fun addObservers(){
+        lifecycleScope.launch(Dispatchers.Default){
+            mainActivityViewModel.getAllProjects().collect{
+                allProjects = it
+                projectListAdapter.submitList(it)
+            }
+        }
+        lifecycleScope.launch {
+            spManager.getCollection().collect{
+               // TODO get all collection
+            }
+        }
+    }
+
 
 }
 
