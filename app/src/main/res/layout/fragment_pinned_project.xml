@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pinned_project"
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:layout_marginStart="16dp"

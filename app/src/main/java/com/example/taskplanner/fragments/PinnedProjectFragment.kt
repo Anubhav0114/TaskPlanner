@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.taskplanner.ProjectApplication
+import com.example.taskplanner.R
 import com.example.taskplanner.databinding.FragmentPinnedProjectBinding
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.utils.TaskStatus
@@ -43,10 +45,26 @@ class PinnedProjectFragment(private val isDaily: Boolean, private val project: P
 
         Log.e("-----------------", "viewpager child added")
         setupUI()
+        setupListeners()
         addObservers()
     }
 
 
+    private fun setupListeners(){
+        binding.pinnedProject.setOnClickListener {
+
+            if(project.projectName == "Today Task") return@setOnClickListener
+            val bundle = Bundle().apply {
+                putLong("project_id", project.projectId)
+            }
+
+            findNavController().navigate(
+                R.id.action_homeFragment_to_projectFragment,
+                bundle,
+                null
+            )
+        }
+    }
     private fun setupUI(){
         binding.projectName.text = project.projectName
     }

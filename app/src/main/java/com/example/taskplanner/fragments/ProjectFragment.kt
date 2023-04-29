@@ -175,8 +175,9 @@ class ProjectFragment : Fragment() {
                 }
 
                 override fun onCheckChangeListener(projectTask: ProjectTask) {
+
                     mainActivityViewModel.updateProjectTask(projectTask) {
-                        Log.e("--------------", "Checked")
+                        mainActivityViewModel.updateProjectProgress(projectId)
                     }
                 }
             })

@@ -8,7 +8,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskplanner.R
+import com.example.taskplanner.customview.CircularProgress
 import com.example.taskplanner.room.Project
+import kotlin.math.roundToInt
 
 
 class HomeProjectListAdapter(private val itemClickListener: OnItemClickListener): ListAdapter<Project, HomeProjectListAdapter.CustomViewHolder>(ItemDiffCallback()){
@@ -21,6 +23,10 @@ class HomeProjectListAdapter(private val itemClickListener: OnItemClickListener)
         fun bind(project: Project){
             itemView.findViewById<TextView>(R.id.project_title).text = project.projectName
             itemView.findViewById<TextView>(R.id.collection_name).text = project.collectionName
+
+            itemView.findViewById<TextView>(R.id.progress_value).text = "${project.donePercent}%"
+            itemView.findViewById<CircularProgress>(R.id.circularProgress).setMaxProgressValue(1000)
+            itemView.findViewById<CircularProgress>(R.id.circularProgress).setProgressValue((project.donePercent / 100f * 1000).roundToInt())
 
             itemView.setOnClickListener {
                 itemClickListener.onItemClick(project)
