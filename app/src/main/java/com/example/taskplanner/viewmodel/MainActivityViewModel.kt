@@ -22,8 +22,8 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         return projectRepository.getAllProjects()
     }
 
-    fun createNewProject(projectName: String, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
-        val newProject = Project(0, generateUniqueId(), projectName, "All",
+    fun createNewProject(projectName: String, collectionName: String, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+        val newProject = Project(0, generateUniqueId(), projectName, collectionName,
             isNotify = true,
             isPinned = false
         )

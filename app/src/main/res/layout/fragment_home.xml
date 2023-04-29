@@ -202,7 +202,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView9">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/chipsContainer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -211,37 +211,12 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-                <com.example.taskplanner.customview.CustomChip
-                    android:id="@+id/allChip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:paddingStart="12dp"
-                    android:paddingTop="12dp"
-                    android:paddingEnd="4dp"
-                    android:paddingBottom="12dp"
-                    app:activeBackgroundColor="?attr/colorPrimary"
-                    app:activeInfoBackgroundColor="#4FFFFFFF"
-                    app:activeInfoTextColor="@color/white"
-                    app:backgroundColor="?attr/colorSurface"
-                    app:cornerRadius="@dimen/rounded_low"
-                    app:gap="16dp"
-                    app:iconTint="?attr/colorPrimary"
-                    app:infoBackgroundColor="?attr/colorAccent"
-                    app:infoBackgroundRadius="11dp"
-                    app:infoTextColor="?attr/colorOnPrimary"
-                    app:infoTextSize="@dimen/small_text"
-                    app:isChecked="true"
-                    app:isIcon="false"
-                    app:text="All"
-                    app:textColor="?attr/colorOnPrimary"
-                    app:textSize="@dimen/small_text" />
 
                 <com.example.taskplanner.customview.CustomChip
-                    android:id="@+id/progressChip"
+                    android:id="@+id/addChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
+                    android:layout_margin="4dp"
                     android:paddingStart="12dp"
                     android:paddingTop="12dp"
                     android:paddingEnd="4dp"
@@ -258,7 +233,7 @@
                     app:infoTextColor="?attr/colorOnPrimary"
                     app:infoTextSize="@dimen/small_text"
                     app:isChecked="false"
-                    app:isIcon="false"
+                    app:isIcon="true"
                     app:text="Android"
                     app:textColor="?attr/colorOnPrimary"
                     app:textSize="@dimen/small_text" />
