@@ -187,27 +187,69 @@
             app:layout_constraintTop_toTopOf="@+id/textView9"
             app:layout_constraintVertical_bias="1.0" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/homeChipRecyclerview"
+        <HorizontalScrollView
+            android:id="@+id/scrollview"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fadeScrollbars="true"
+            android:isScrollContainer="true"
+            android:scrollbarStyle="outsideOverlay"
+
+            android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9"
-            tools:listitem="@layout/chip_item" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+            <LinearLayout
+                android:id="@+id/chipsContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+
+                <com.example.taskplanner.customview.CustomChip
+                    android:id="@+id/addChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="4dp"
+                    android:paddingBottom="12dp"
+                    app:activeBackgroundColor="?attr/colorPrimary"
+                    app:activeInfoBackgroundColor="#4FFFFFFF"
+                    app:activeInfoTextColor="@color/white"
+                    app:backgroundColor="?attr/colorSurface"
+                    app:cornerRadius="@dimen/rounded_low"
+                    app:gap="16dp"
+                    app:iconTint="?attr/colorPrimary"
+                    app:infoBackgroundColor="?attr/colorAccent"
+                    app:infoBackgroundRadius="11dp"
+                    app:infoTextColor="?attr/colorOnPrimary"
+                    app:infoTextSize="@dimen/small_text"
+                    app:isChecked="false"
+                    app:isIcon="true"
+                    app:text="Android"
+                    app:textColor="?attr/colorOnPrimary"
+                    app:textSize="@dimen/small_text" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/allProjectRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/homeChipRecyclerview"
+            app:layout_constraintTop_toBottomOf="@+id/scrollview"
             tools:itemCount="3"
             tools:listitem="@layout/home_project_item" />
 

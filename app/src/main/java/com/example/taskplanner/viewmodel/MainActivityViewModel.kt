@@ -18,15 +18,16 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
 
     // ------------------------- Room Project Handler Code ------------------------------------
-    fun getAllProjects(callback: (List<Project>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
-        val projects = projectRepository.getAllProjects()
-        withContext(Dispatchers.Main){
-            callback(projects)
-        }
+    suspend fun getAllProjects(): Flow<List<Project>>{
+        return projectRepository.getAllProjects()
     }
 
-    fun createNewProject(projectName: String, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
-        val newProject = Project(0, generateUniqueId(), projectName, "All",
+    suspend fun getAllPinnedProject(): Flow<List<Project>>{
+        return projectRepository.getPinnedProject()
+    }
+
+    fun createNewProject(projectName: String, collectionName: String, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+        val newProject = Project(0, generateUniqueId(), projectName, collectionName,
             isNotify = true,
             isPinned = false
         )
@@ -71,20 +72,9 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         }
     }
 
-//    fun getAllTaskFromProject(projectId: Long , callback: (List<ProjectTask>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
-//
-//        val tasks = taskRepository.getAllTaskFromProject(projectId)
-//        withContext(Dispatchers.Main){
-//            callback(tasks)
-//        }
-//    }
-
     suspend fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>> {
         return taskRepository.getAllTaskFromProject(projectId)
     }
-
-
-
 
 
 }
