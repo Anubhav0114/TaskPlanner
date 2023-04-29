@@ -17,8 +17,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.example.taskplanner.MainActivity
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
@@ -28,6 +26,7 @@ import com.example.taskplanner.adapters.PinnedViewPagerAdapter
 import com.example.taskplanner.databinding.FragmentHomeBinding
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.utils.ChipData
+import com.example.taskplanner.utils.countCollection
 import com.example.taskplanner.utils.SharedPreferenceManager
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
@@ -35,15 +34,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
+
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var allProjects: List<Project>
+    private var allProjects: List<Project> = ArrayList()
     private lateinit var spManager: SharedPreferenceManager
     private lateinit var projectListAdapter: HomeProjectListAdapter
     private lateinit var contextApp: Context
     private lateinit var chipsAdapter: CustomChipListAdapter
-    private lateinit var collectionNames: List<String>
+    private var collectionNames: List<String> = ArrayList()
     private var selectedChipIndex = 0
     private var selectedCollectionName = "All"
     private lateinit var pinnedProjectAdapter: PinnedViewPagerAdapter
@@ -173,12 +173,6 @@ class HomeFragment : Fragment() {
 
 
     private fun addObservers() {
-        lifecycleScope.launch{
-            mainActivityViewModel.getAllPinnedProject().collect{
-                // updating view pager
-                pinnedProjectAdapter.addProjects(it)
-            }
-        }
 
         lifecycleScope.launch {
             mainActivityViewModel.getAllProjects().collect {
@@ -186,6 +180,14 @@ class HomeFragment : Fragment() {
                 updateRecyclerView()
             }
         }
+
+        lifecycleScope.launch{
+            mainActivityViewModel.getAllPinnedProject().collect{
+                // updating view pager
+                pinnedProjectAdapter.addProjects(it)
+            }
+        }
+
         lifecycleScope.launch {
             spManager.getCollection().collect {
                 collectionNames = it
@@ -199,7 +201,12 @@ class HomeFragment : Fragment() {
         val list = ArrayList<ChipData>()
         for(index in collectionNames.indices){
             val isActive = index == selectedChipIndex
-            list.add(ChipData(index, collectionNames[index], 10, isActive))
+            val count = if(collectionNames[index] == "All"){
+                allProjects.size
+            }else{
+                allProjects.countCollection(collectionNames[index])
+            }
+            list.add(ChipData(index, collectionNames[index], count, isActive))
         }
         chipsAdapter.submitList(list)
 
@@ -218,6 +225,8 @@ class HomeFragment : Fragment() {
         }else{
             projectListAdapter.submitList(allProjects)
         }
+
+        updateChips()
     }
 }
 
