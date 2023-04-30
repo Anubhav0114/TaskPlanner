@@ -1,5 +1,6 @@
 package com.example.taskplanner.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -27,7 +28,7 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     }
 
     fun createNewProject(projectName: String, collectionName: String, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
-        val newProject = Project(0, generateUniqueId(), projectName, collectionName,
+        val newProject = Project(0, generateUniqueId(), projectName, collectionName,0,
             isNotify = true,
             isPinned = false
         )
@@ -46,6 +47,11 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         withContext(Dispatchers.Main){
             callback(project)
         }
+    }
+
+    fun updateProjectProgress(projectId: Long) = viewModelScope.launch(Dispatchers.Default) {
+        val percent = taskRepository.getTaskDonePercentage(projectId)
+        projectRepository.updateProjectProgress(projectId, percent)
     }
 
 

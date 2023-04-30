@@ -3,6 +3,7 @@ package com.example.taskplanner.utils
 import android.content.res.Resources
 import android.util.TypedValue
 import androidx.room.TypeConverter
+import com.example.taskplanner.room.Project
 
 val Number.toPx get() = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,
@@ -47,4 +48,13 @@ class TaskStatusConverter {
 
     @TypeConverter
     fun toStatus(ordinal: Int): TaskStatus = TaskStatus.fromOrdinal(ordinal)
+}
+
+
+fun List<Project>.countCollection(collectionName: String): Int {
+    var tempCount = 0
+    for (project in this){
+        if(project.collectionName == collectionName) tempCount++
+    }
+    return tempCount
 }
