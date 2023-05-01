@@ -8,14 +8,22 @@ import com.example.taskplanner.room.Project
 import com.example.taskplanner.room.ProjectRepository
 import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.room.ProjectTaskRepository
+import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.generateUniqueId
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
+
 
 class MainActivityViewModel(private val projectRepository: ProjectRepository, private val taskRepository: ProjectTaskRepository): ViewModel() {
 
+    private val dateTimeManager = DateTimeManager()
+    init {
+        checkTaskStatus()
+    }
 
 
     // ------------------------- Room Project Handler Code ------------------------------------
@@ -81,6 +89,18 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     suspend fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>> {
         return taskRepository.getAllTaskFromProject(projectId)
     }
+
+
+    // This function will periodically check and update failed task
+    private fun checkTaskStatus() = viewModelScope.launch(Dispatchers.Default) {
+        taskRepository.checkAndUpdateTaskStatus(dateTimeManager.currentTimeMillisecond())
+        delay(3000)
+    }
+
+    suspend fun getAllTodayTasks(todayTime: Long): Flow<List<ProjectTask>>{
+        return taskRepository.getAllTodayTask(todayTime)
+    }
+
 
 
 }

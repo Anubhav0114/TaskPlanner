@@ -26,6 +26,10 @@ class ProjectTaskListAdapter(private val itemClickListener: OnItemClickListener)
             itemView.findViewById<TextView>(R.id.title).text = projectTask.taskName
             itemView.findViewById<TextView>(R.id.date_time).text = dateManager.unixMillToDateString(projectTask.startTime)
 
+            itemView.setOnClickListener {
+                itemClickListener.onItemClick(projectTask)
+            }
+
             val checkBox = itemView.findViewById<CheckBox>(R.id.statusCheckBox)
             when (projectTask.taskStatus) {
                 TaskStatus.Active -> {
@@ -39,11 +43,8 @@ class ProjectTaskListAdapter(private val itemClickListener: OnItemClickListener)
                 else -> {
                     checkBox.isChecked = false
                     checkBox.isEnabled = false
+                    return
                 }
-            }
-
-            itemView.setOnClickListener {
-                itemClickListener.onItemClick(projectTask)
             }
 
             checkBox.setOnClickListener {

@@ -32,6 +32,8 @@ class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
     private var projectTask = ProjectTask(0,0,0,"","", false,0L,0L,"", TaskStatus.Active)
+    private var startDateTime = 0L
+    private var endDateTime = 0L
     private var taskMode = TaskMode.View
     private var isInProgress = false
 
@@ -130,6 +132,13 @@ class TaskFragment : Fragment() {
             projectTask.taskName = binding.titleText.text.toString()
             projectTask.description = binding.description.text.toString()
             projectTask.isRemind = binding.remindSwitch.isChecked
+            projectTask.startTime = startDateTime
+            projectTask.endTime = endDateTime
+
+            if(projectTask.taskStatus == TaskStatus.Failed){
+                projectTask.taskStatus = TaskStatus.Active
+            }
+
 
             if(taskMode == TaskMode.Create){
                 mainActivityViewModel.createProjectTask(projectTask){
@@ -184,10 +193,12 @@ class TaskFragment : Fragment() {
     }
 
     private fun loadDataToUI(){
+        startDateTime = projectTask.startTime
+        endDateTime = projectTask.endTime
         binding.titleText.setText(projectTask.taskName)
         binding.description.setText(projectTask.description)
         binding.startDateText.text = dateManager.unixMillToDateString(projectTask.startTime)
-        binding.endDateText.text = dateManager.unixMillToDateString(projectTask.startTime)
+        binding.endDateText.text = dateManager.unixMillToDateString(projectTask.endTime)
         binding.remindSwitch.isChecked = projectTask.isRemind
     }
 
@@ -233,10 +244,10 @@ class TaskFragment : Fragment() {
 
         datePicker.addOnPositiveButtonClickListener {milliSec ->
             if(isOpenedForStart){
-                projectTask.startTime = milliSec
+                startDateTime = milliSec
                 binding.startDateText.text = dateManager.unixMillToDateString(milliSec)
             }else{
-                projectTask.endTime = milliSec
+                endDateTime = milliSec
                 binding.endDateText.text = dateManager.unixMillToDateString(milliSec)
             }
 
