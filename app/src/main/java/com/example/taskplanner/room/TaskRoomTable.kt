@@ -48,6 +48,9 @@ interface ProjectTaskDao {
     @Query("SELECT ROUND(COUNT(CASE WHEN task_status = 1 THEN 1 END) * 100.0 / COUNT(*)) FROM project_task WHERE project_id = :projectId")
     fun getDonePercentage(projectId: Long): Int
 
+    @Query("UPDATE project_task SET task_status = 2 WHERE task_status = 0 AND end_time < :millisecond")
+    fun checkAndUpdateFailedTask(millisecond: Long)
+
     @Update
     fun updateTask(task: ProjectTask)
 
@@ -90,6 +93,11 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     @WorkerThread
     suspend fun getTaskById(projectId: Long, taskId: Long): ProjectTask {
         return projectTaskDao.getTaskById(projectId, taskId)
+    }
+
+    @WorkerThread
+    suspend fun checkAndUpdateTaskStatus(currentMillisecond: Long) {
+        projectTaskDao.checkAndUpdateFailedTask(currentMillisecond)
     }
 
 }
