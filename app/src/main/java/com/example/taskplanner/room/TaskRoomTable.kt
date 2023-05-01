@@ -41,7 +41,6 @@ interface ProjectTaskDao {
     @Query("SELECT * FROM project_task WHERE project_id = :projectId ORDER BY start_time ASC")
     fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>>
 
-
     @Query("SELECT * FROM project_task WHERE project_id = :projectId AND task_id = :taskId LIMIT 1")
     fun getTaskById(projectId: Long, taskId: Long): ProjectTask
 
@@ -50,6 +49,9 @@ interface ProjectTaskDao {
 
     @Query("UPDATE project_task SET task_status = 2 WHERE task_status = 0 AND end_time < :millisecond")
     fun checkAndUpdateFailedTask(millisecond: Long)
+
+    @Query("SELECT * FROM project_task WHERE start_time <= :todayTime AND end_time >= :todayTime")
+    fun getAllTodayTask(todayTime: Long): Flow<List<ProjectTask>>
 
     @Update
     fun updateTask(task: ProjectTask)
@@ -98,6 +100,11 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     @WorkerThread
     suspend fun checkAndUpdateTaskStatus(currentMillisecond: Long) {
         projectTaskDao.checkAndUpdateFailedTask(currentMillisecond)
+    }
+
+    @WorkerThread
+    suspend fun getAllTodayTask(todayTime: Long): Flow<List<ProjectTask>>{
+        return projectTaskDao.getAllTodayTask(todayTime)
     }
 
 }

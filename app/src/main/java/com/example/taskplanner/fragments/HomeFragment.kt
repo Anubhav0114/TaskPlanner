@@ -17,15 +17,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.taskplanner.MainActivity
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.adapters.CustomChipListAdapter
 import com.example.taskplanner.adapters.HomeProjectListAdapter
+import com.example.taskplanner.adapters.HomeTodayTaskListAdapter
 import com.example.taskplanner.adapters.PinnedViewPagerAdapter
 import com.example.taskplanner.databinding.FragmentHomeBinding
 import com.example.taskplanner.room.Project
+import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.utils.ChipData
+import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.countCollection
 import com.example.taskplanner.utils.SharedPreferenceManager
 import com.example.taskplanner.viewmodel.MainActivityViewModel
@@ -41,12 +45,15 @@ class HomeFragment : Fragment() {
     private var allProjects: List<Project> = ArrayList()
     private lateinit var spManager: SharedPreferenceManager
     private lateinit var projectListAdapter: HomeProjectListAdapter
+    private lateinit var taskListAdapter: HomeTodayTaskListAdapter
     private lateinit var contextApp: Context
     private lateinit var chipsAdapter: CustomChipListAdapter
     private var collectionNames: List<String> = ArrayList()
     private var selectedChipIndex = 0
     private var selectedCollectionName = "All"
     private lateinit var pinnedProjectAdapter: PinnedViewPagerAdapter
+
+    private val dateTimeManager = DateTimeManager()
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -124,6 +131,25 @@ class HomeFragment : Fragment() {
     private fun setupUI() {
 
         // 1
+        //  pinned projects
+        pinnedProjectAdapter = PinnedViewPagerAdapter(this)
+        binding.viewPager2.adapter = pinnedProjectAdapter
+
+
+        // 2
+        // setup data in today task adapter
+        taskListAdapter = HomeTodayTaskListAdapter(object : HomeTodayTaskListAdapter.OnItemClickListener{
+            override fun onItemClick(task: ProjectTask) {
+
+            }
+        })
+
+        val taskLayoutManager = LinearLayoutManager(contextApp, LinearLayoutManager.HORIZONTAL, false)
+        binding.todayTaskRecyclerview.adapter = taskListAdapter
+        binding.todayTaskRecyclerview.layoutManager = taskLayoutManager
+
+
+        // 3
         // setup data in project adapter
         projectListAdapter =
             HomeProjectListAdapter(object : HomeProjectListAdapter.OnItemClickListener {
@@ -148,7 +174,7 @@ class HomeFragment : Fragment() {
             DividerItemDecoration(contextApp, projectLayoutManager.orientation)
         )
 
-        // 2
+        // 4
         chipsAdapter = CustomChipListAdapter(binding.chipsContainer, contextApp, object : CustomChipListAdapter.OnItemClickListener{
             override fun onItemClick(chipData: ChipData, itemIndex: Int) {
                 selectedChipIndex = itemIndex
@@ -163,11 +189,6 @@ class HomeFragment : Fragment() {
                 spManager.addCollectionItem("Nitesh")
             }
         })
-
-        // 3
-        //  pinned projects
-        pinnedProjectAdapter = PinnedViewPagerAdapter(this)
-        binding.viewPager2.adapter = pinnedProjectAdapter
 
     }
 
@@ -192,6 +213,12 @@ class HomeFragment : Fragment() {
             spManager.getCollection().collect {
                 collectionNames = it
                 updateChips()
+            }
+        }
+
+        lifecycleScope.launch{
+            mainActivityViewModel.getAllTodayTasks(dateTimeManager.getTomorrowDate()).collect{
+                taskListAdapter.submitList(it)
             }
         }
     }

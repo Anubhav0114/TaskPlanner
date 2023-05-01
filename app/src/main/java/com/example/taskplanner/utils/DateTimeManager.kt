@@ -1,6 +1,7 @@
 package com.example.taskplanner.utils
 
 import android.os.Build
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
@@ -17,6 +18,25 @@ class DateTimeManager {
             val calendar = Calendar.getInstance()
             calendar.timeInMillis
         }
+    }
+
+    fun getTomorrowDate(): Long{
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val tomorrow = LocalDateTime.now().plusDays(1)
+            tomorrow.toInstant(ZoneOffset.UTC).toEpochMilli()
+        }else{
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+            calendar.timeInMillis
+        }
+    }
+
+
+
+    fun unixMillToDateString(milliSec: Long): String {
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val dateTime = Date(milliSec)
+        return dateFormat.format(dateTime)
     }
 
 

@@ -97,6 +97,10 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         delay(3000)
     }
 
+    suspend fun getAllTodayTasks(todayTime: Long): Flow<List<ProjectTask>>{
+        return taskRepository.getAllTodayTask(todayTime)
+    }
+
 
 
 }

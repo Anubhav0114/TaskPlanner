@@ -17,7 +17,7 @@
 
 
     <TextView
-        android:id="@+id/project_title"
+        android:id="@+id/task_title"
         android:layout_width="0dp"
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
@@ -36,7 +36,7 @@
 
     <TextView
 
-        android:id="@+id/textView8"
+        android:id="@+id/task_description"
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
@@ -49,7 +49,7 @@
         android:textSize="@dimen/small_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/project_title"
+        app:layout_constraintTop_toBottomOf="@id/task_title"
         tools:layout_conversion_absoluteHeight="16dp"
         tools:layout_conversion_absoluteWidth="140dp" />
 
@@ -64,7 +64,7 @@
         android:textColor="@color/grey"
         android:textSize="@dimen/small_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/task_description"
         tools:layout_conversion_absoluteHeight="16dp"
         tools:layout_conversion_absoluteWidth="140dp" />
 
@@ -74,15 +74,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:src="@drawable/ellipse_1"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintBottom_toBottomOf="@+id/task_time"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/task_time"
         tools:layout_conversion_absoluteHeight="10dp"
         tools:layout_conversion_absoluteWidth="10dp" />
 
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/task_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
