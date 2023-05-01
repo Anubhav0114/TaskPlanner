@@ -170,9 +170,9 @@ class HomeFragment : Fragment() {
         binding.allProjectRecyclerView.adapter = projectListAdapter
         binding.allProjectRecyclerView.layoutManager = projectLayoutManager
 
-        binding.allProjectRecyclerView.addItemDecoration(
-            DividerItemDecoration(contextApp, projectLayoutManager.orientation)
-        )
+//        binding.allProjectRecyclerView.addItemDecoration(
+//            DividerItemDecoration(contextApp, projectLayoutManager.orientation)
+//        )
 
         // 4
         chipsAdapter = CustomChipListAdapter(binding.chipsContainer, contextApp, object : CustomChipListAdapter.OnItemClickListener{
