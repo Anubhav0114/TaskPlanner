@@ -2,6 +2,7 @@
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/motionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
@@ -244,6 +245,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/allProjectRecyclerView"
+            android:transitionGroup="true"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="#F3F3F3"

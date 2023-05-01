@@ -11,9 +11,11 @@ import android.widget.EditText
 import android.widget.Toast
 
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +36,7 @@ import com.example.taskplanner.utils.countCollection
 import com.example.taskplanner.utils.SharedPreferenceManager
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.google.android.material.transition.MaterialElevationScale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -69,12 +72,24 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+            binding.motionLayout.post{
+            binding.motionLayout.progress = mainActivityViewModel.motionProgress
+        }
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        mainActivityViewModel.motionProgress = binding.motionLayout.progress
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // handle animations
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
 
         contextApp = requireContext()
         spManager = SharedPreferenceManager(lifecycleScope, contextApp)
@@ -153,8 +168,16 @@ class HomeFragment : Fragment() {
         // setup data in project adapter
         projectListAdapter =
             HomeProjectListAdapter(object : HomeProjectListAdapter.OnItemClickListener {
-                override fun onItemClick(project: Project) {
+                override fun onItemClick(project: Project, view: View) {
 
+                    exitTransition = MaterialElevationScale(false).apply {
+                        duration = 400
+                    }
+                    reenterTransition = MaterialElevationScale(true).apply {
+                        duration = 400
+                    }
+
+                    val extras = FragmentNavigatorExtras(view to "project_fragment")
                     val bundle = Bundle().apply {
                         putLong("project_id", project.projectId)
                     }
@@ -162,7 +185,8 @@ class HomeFragment : Fragment() {
                     findNavController().navigate(
                         R.id.action_homeFragment_to_projectFragment,
                         bundle,
-                        null
+                        null,
+                        extras
                     )
                 }
             })

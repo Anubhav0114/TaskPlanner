@@ -1,6 +1,7 @@
 package com.example.taskplanner.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
@@ -16,7 +17,7 @@ import kotlin.math.roundToInt
 class HomeProjectListAdapter(private val itemClickListener: OnItemClickListener): ListAdapter<Project, HomeProjectListAdapter.CustomViewHolder>(ItemDiffCallback()){
 
     interface OnItemClickListener {
-        fun onItemClick(project: Project)
+        fun onItemClick(project: Project, view: View)
     }
 
     inner class CustomViewHolder(itemView: ConstraintLayout, private val itemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
@@ -27,9 +28,9 @@ class HomeProjectListAdapter(private val itemClickListener: OnItemClickListener)
             itemView.findViewById<TextView>(R.id.progress_value).text = "${project.donePercent}%"
             itemView.findViewById<CircularProgress>(R.id.circularProgress).setMaxProgressValue(1000)
             itemView.findViewById<CircularProgress>(R.id.circularProgress).setProgressValue((project.donePercent / 100f * 1000).roundToInt())
-
+            itemView.transitionName = project.projectId.toString()
             itemView.setOnClickListener {
-                itemClickListener.onItemClick(project)
+                itemClickListener.onItemClick(project, it)
             }
         }
     }

@@ -20,6 +20,15 @@ import kotlinx.coroutines.yield
 
 class MainActivityViewModel(private val projectRepository: ProjectRepository, private val taskRepository: ProjectTaskRepository): ViewModel() {
 
+    // ----------------------- Animation state -------------------
+    // home fragment
+    var motionProgress = 0f
+
+
+
+
+
+
     private val dateTimeManager = DateTimeManager()
     init {
         checkTaskStatus()
