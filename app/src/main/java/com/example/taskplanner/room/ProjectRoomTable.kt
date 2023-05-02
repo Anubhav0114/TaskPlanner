@@ -42,6 +42,9 @@ interface ProjectDao {
     @Query("UPDATE projects SET done_percent = :progress  WHERE project_id = :projectId")
     fun updateProjectProgress(projectId: Long, progress: Int)
 
+    @Query("SELECT * FROM projects WHERE project_name LIKE '%'||:searchText||'%'")
+    fun searchProject(searchText: String): List<Project>
+
     @Insert
     fun addProject(project: Project)
 
@@ -85,6 +88,11 @@ class ProjectRepository(private val projectDao: ProjectDao) {
     @WorkerThread
     suspend fun updateProjectProgress(projectId: Long, progress: Int){
         projectDao.updateProjectProgress(projectId, progress)
+    }
+
+    @WorkerThread
+    suspend fun searchProject(searchText: String):List<Project>{
+        return projectDao.searchProject(searchText)
     }
 
 

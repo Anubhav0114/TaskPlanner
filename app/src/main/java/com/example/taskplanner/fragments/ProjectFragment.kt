@@ -32,6 +32,7 @@ import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ProjectFragment : Fragment() {
@@ -102,45 +103,47 @@ class ProjectFragment : Fragment() {
         lifecycleScope.launch(Dispatchers.Default) {
             mainActivityViewModel.getAllTaskFromProject(projectId).collect { tasks ->
                 allTaskList = tasks
-                updateRecyclerView(tasks)
+                withContext(Dispatchers.Main){
+                    updateRecyclerView()
+                }
             }
         }
     }
 
 
-    private fun updateRecyclerView(tasks: List<ProjectTask>){
+    private fun updateRecyclerView(){
         val filteredTask = ArrayList<ProjectTask>()
         when (previousCheckedChip.id) {
             R.id.allChip -> {
-                filteredTask.addAll(tasks)
+                filteredTask.addAll(allTaskList)
             }
 
             R.id.progressChip -> {
-                for (task in tasks) {
+                for (task in allTaskList) {
                     if (task.taskStatus == TaskStatus.Active) filteredTask.add(task)
                 }
             }
 
             R.id.doneChip -> {
-                for (task in tasks) {
+                for (task in allTaskList) {
                     if (task.taskStatus == TaskStatus.Done) filteredTask.add(task)
                 }
             }
 
             R.id.failedChip -> {
-                for (task in tasks) {
+                for (task in allTaskList) {
                     if (task.taskStatus == TaskStatus.Failed) filteredTask.add(task)
                 }
             }
         }
         projectTaskListAdapter.submitList(filteredTask)
 
-        val allCount = tasks.size
+        val allCount = allTaskList.size
         var activeCount = 0
         var doneCount = 0
         var failedCount = 0
 
-        for (task in tasks) {
+        for (task in allTaskList) {
             if (task.taskStatus == TaskStatus.Active) {
                 activeCount++
                 continue
@@ -230,7 +233,7 @@ class ProjectFragment : Fragment() {
             it.setActive(true)
             previousCheckedChip.setActive(false)
             previousCheckedChip = it
-            updateRecyclerView(allTaskList)
+            updateRecyclerView()
         }
 
         binding.progressChip.setOnClickListener {
@@ -238,7 +241,7 @@ class ProjectFragment : Fragment() {
             it.setActive(true)
             previousCheckedChip.setActive(false)
             previousCheckedChip = it
-            updateRecyclerView(allTaskList)
+            updateRecyclerView()
         }
 
         binding.doneChip.setOnClickListener {
@@ -246,7 +249,7 @@ class ProjectFragment : Fragment() {
             it.setActive(true)
             previousCheckedChip.setActive(false)
             previousCheckedChip = it
-            updateRecyclerView(allTaskList)
+            updateRecyclerView()
         }
 
         binding.failedChip.setOnClickListener {
@@ -254,7 +257,7 @@ class ProjectFragment : Fragment() {
             it.setActive(true)
             previousCheckedChip.setActive(false)
             previousCheckedChip = it
-            updateRecyclerView(allTaskList)
+            updateRecyclerView()
         }
 
     }

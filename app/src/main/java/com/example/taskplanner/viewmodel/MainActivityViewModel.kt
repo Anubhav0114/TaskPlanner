@@ -71,6 +71,13 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         projectRepository.updateProjectProgress(projectId, percent)
     }
 
+    fun searchProject(searchText: String, callback: (List<Project>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+        val searchResult = projectRepository.searchProject(searchText)
+        withContext(Dispatchers.Main){
+            callback(searchResult)
+        }
+    }
+
 
 
     // ------------------------- Room Task Handler Code ------------------------------------

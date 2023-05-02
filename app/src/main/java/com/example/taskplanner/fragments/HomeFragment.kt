@@ -141,6 +141,10 @@ class HomeFragment : Fragment() {
             // Alert Box
             dialog()
         }
+
+        binding.searchButton.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+        }
     }
 
     private fun setupUI() {
