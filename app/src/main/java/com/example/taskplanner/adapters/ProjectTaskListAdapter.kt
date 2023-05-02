@@ -1,6 +1,7 @@
 package com.example.taskplanner.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
@@ -17,7 +18,7 @@ class ProjectTaskListAdapter(private val itemClickListener: OnItemClickListener)
 
     private val dateManager = DateTimeManager()
     interface OnItemClickListener {
-        fun onItemClick(projectTask: ProjectTask)
+        fun onItemClick(projectTask: ProjectTask, view: View)
         fun onCheckChangeListener(projectTask: ProjectTask)
     }
 
@@ -26,8 +27,9 @@ class ProjectTaskListAdapter(private val itemClickListener: OnItemClickListener)
             itemView.findViewById<TextView>(R.id.title).text = projectTask.taskName
             itemView.findViewById<TextView>(R.id.date_time).text = dateManager.unixMillToDateString(projectTask.startTime)
 
+            itemView.transitionName = projectTask.taskId.toString()
             itemView.setOnClickListener {
-                itemClickListener.onItemClick(projectTask)
+                itemClickListener.onItemClick(projectTask, it)
             }
 
             val checkBox = itemView.findViewById<CheckBox>(R.id.statusCheckBox)

@@ -12,8 +12,10 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +32,7 @@ import com.example.taskplanner.utils.generateUniqueId
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialElevationScale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -78,6 +81,11 @@ class ProjectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // handle animations
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
         contextApp = requireContext()
         projectId = requireArguments().getLong("project_id")
         previousCheckedChip = binding.progressChip
@@ -171,7 +179,17 @@ class ProjectFragment : Fragment() {
         // setting up recyclerview
         projectTaskListAdapter =
             ProjectTaskListAdapter(object : ProjectTaskListAdapter.OnItemClickListener {
-                override fun onItemClick(projectTask: ProjectTask) {
+                override fun onItemClick(projectTask: ProjectTask, view: View) {
+
+                    exitTransition = MaterialElevationScale(false).apply {
+                        duration = 400
+                    }
+                    reenterTransition = MaterialElevationScale(true).apply {
+                        duration = 400
+                    }
+
+                    val extras = FragmentNavigatorExtras(view to "task_fragment")
+
                     val bundle = Bundle().apply {
                         putBoolean("isCreating", false)
                         putLong("projectId", openedProject.projectId)
@@ -179,7 +197,9 @@ class ProjectFragment : Fragment() {
                     }
                     findNavController().navigate(
                         R.id.action_projectFragment_to_taskFragment,
-                        bundle
+                        bundle,
+                        null,
+                        extras
                     )
                 }
 
