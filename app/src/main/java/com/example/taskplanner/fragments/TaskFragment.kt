@@ -2,21 +2,17 @@ package com.example.taskplanner.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.example.taskplanner.ProjectApplication
-import com.example.taskplanner.R
 import com.example.taskplanner.databinding.FragmentTaskBinding
 import com.example.taskplanner.room.ProjectTask
-import com.example.taskplanner.utils.DateManager
+import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.TaskMode
 import com.example.taskplanner.utils.TaskStatus
 import com.example.taskplanner.viewmodel.MainActivityViewModel
@@ -24,8 +20,6 @@ import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.theme.overlay.MaterialThemeOverlay
-import java.util.Date
 
 
 class TaskFragment : Fragment() {
@@ -37,7 +31,7 @@ class TaskFragment : Fragment() {
     private var taskMode = TaskMode.View
     private var isInProgress = false
 
-    private val dateManager = DateManager()
+    private val dateManager = DateTimeManager()
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -239,7 +233,7 @@ class TaskFragment : Fragment() {
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .setCalendarConstraints(constraintsBuilder.build())
+//                .setCalendarConstraints(constraintsBuilder.build())
                 .build()
 
         datePicker.addOnPositiveButtonClickListener {milliSec ->

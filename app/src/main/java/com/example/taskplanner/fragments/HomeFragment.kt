@@ -72,9 +72,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-            binding.motionLayout.post{
-            binding.motionLayout.progress = mainActivityViewModel.motionProgress
-        }
         return binding.root
     }
 
@@ -86,6 +83,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.motionLayout.post{
+            binding.motionLayout.progress = mainActivityViewModel.motionProgress
+        }
         // handle animations
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }

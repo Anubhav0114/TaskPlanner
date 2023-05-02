@@ -79,7 +79,7 @@ class ProjectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         contextApp = requireContext()
         projectId = requireArguments().getLong("project_id")
-        previousCheckedChip = binding.allChip
+        previousCheckedChip = binding.progressChip
         setupData()
         loadData()
         addObserver()

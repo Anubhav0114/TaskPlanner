@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskplanner.R
 import com.example.taskplanner.room.ProjectTask
-import com.example.taskplanner.utils.DateManager
+import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.TaskStatus
 
 class ProjectTaskListAdapter(private val itemClickListener: OnItemClickListener): ListAdapter<ProjectTask, ProjectTaskListAdapter.CustomViewHolder>(ItemDiffCallback()){
 
-    private val dateManager = DateManager()
+    private val dateManager = DateTimeManager()
     interface OnItemClickListener {
         fun onItemClick(projectTask: ProjectTask)
         fun onCheckChangeListener(projectTask: ProjectTask)
