@@ -158,8 +158,27 @@ class HomeFragment : Fragment() {
         // 2
         // setup data in today task adapter
         taskListAdapter = HomeTodayTaskListAdapter(object : HomeTodayTaskListAdapter.OnItemClickListener{
-            override fun onItemClick(task: ProjectTask) {
+            override fun onItemClick(task: ProjectTask, view: View) {
+                exitTransition = MaterialElevationScale(false).apply {
+                    duration = 400
+                }
+                reenterTransition = MaterialElevationScale(true).apply {
+                    duration = 400
+                }
 
+                val extras = FragmentNavigatorExtras(view to "task_fragment")
+
+                val bundle = Bundle().apply {
+                    putBoolean("isCreating", false)
+                    putLong("projectId", task.projectId)
+                    putLong("taskId", task.taskId)
+                }
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_taskFragment,
+                    bundle,
+                    null,
+                    extras
+                )
             }
         })
 
