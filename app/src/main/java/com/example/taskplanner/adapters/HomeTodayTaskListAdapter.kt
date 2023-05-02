@@ -1,6 +1,7 @@
 package com.example.taskplanner.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +17,7 @@ class HomeTodayTaskListAdapter(private val itemClickListener: OnItemClickListene
     val dateTimeManager = DateTimeManager()
 
     interface OnItemClickListener {
-        fun onItemClick(task: ProjectTask)
+        fun onItemClick(task: ProjectTask, view: View)
     }
 
     inner class CustomViewHolder(itemView: ConstraintLayout, private val itemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
@@ -25,8 +26,9 @@ class HomeTodayTaskListAdapter(private val itemClickListener: OnItemClickListene
             itemView.findViewById<TextView>(R.id.task_description).text = task.description
             itemView.findViewById<TextView>(R.id.task_time).text = "Till ${dateTimeManager.unixMillToDateString(task.endTime)}"
 
+            itemView.transitionName = task.taskId.toString()
             itemView.setOnClickListener {
-                itemClickListener.onItemClick(task)
+                itemClickListener.onItemClick(task, it)
             }
         }
     }

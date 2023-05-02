@@ -72,9 +72,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-            binding.motionLayout.post{
-            binding.motionLayout.progress = mainActivityViewModel.motionProgress
-        }
         return binding.root
     }
 
@@ -86,6 +83,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.motionLayout.post{
+            binding.motionLayout.progress = mainActivityViewModel.motionProgress
+        }
         // handle animations
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
@@ -141,6 +141,10 @@ class HomeFragment : Fragment() {
             // Alert Box
             dialog()
         }
+
+        binding.searchButton.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+        }
     }
 
     private fun setupUI() {
@@ -154,8 +158,27 @@ class HomeFragment : Fragment() {
         // 2
         // setup data in today task adapter
         taskListAdapter = HomeTodayTaskListAdapter(object : HomeTodayTaskListAdapter.OnItemClickListener{
-            override fun onItemClick(task: ProjectTask) {
+            override fun onItemClick(task: ProjectTask, view: View) {
+                exitTransition = MaterialElevationScale(false).apply {
+                    duration = 400
+                }
+                reenterTransition = MaterialElevationScale(true).apply {
+                    duration = 400
+                }
 
+                val extras = FragmentNavigatorExtras(view to "task_fragment")
+
+                val bundle = Bundle().apply {
+                    putBoolean("isCreating", false)
+                    putLong("projectId", task.projectId)
+                    putLong("taskId", task.taskId)
+                }
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_taskFragment,
+                    bundle,
+                    null,
+                    extras
+                )
             }
         })
 

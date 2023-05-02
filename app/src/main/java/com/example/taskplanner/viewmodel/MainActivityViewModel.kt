@@ -71,6 +71,13 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         projectRepository.updateProjectProgress(projectId, percent)
     }
 
+    fun searchProject(searchText: String, callback: (List<Project>) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+        val searchResult = projectRepository.searchProject(searchText)
+        withContext(Dispatchers.Main){
+            callback(searchResult)
+        }
+    }
+
 
 
     // ------------------------- Room Task Handler Code ------------------------------------
@@ -102,8 +109,10 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
     // This function will periodically check and update failed task
     private fun checkTaskStatus() = viewModelScope.launch(Dispatchers.Default) {
-        taskRepository.checkAndUpdateTaskStatus(dateTimeManager.currentTimeMillisecond())
-        delay(3000)
+        while(true){
+            taskRepository.checkAndUpdateTaskStatus(dateTimeManager.currentTimeMillisecond())
+            delay(4000)
+        }
     }
 
     suspend fun getAllTodayTasks(todayTime: Long): Flow<List<ProjectTask>>{

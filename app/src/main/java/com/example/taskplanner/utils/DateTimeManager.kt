@@ -2,6 +2,7 @@ package com.example.taskplanner.utils
 
 import android.os.Build
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
@@ -22,11 +23,16 @@ class DateTimeManager {
 
     fun getTomorrowDate(): Long{
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val tomorrow = LocalDateTime.now().plusDays(1)
-            tomorrow.toInstant(ZoneOffset.UTC).toEpochMilli()
+            val tomorrow = LocalDate.now().plusDays(1)
+            val startOfDay = tomorrow.atStartOfDay().toInstant(ZoneOffset.UTC)
+            startOfDay.toEpochMilli()
         }else{
             val calendar = Calendar.getInstance()
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
+            calendar.add(Calendar.DAY_OF_YEAR, 1) // Add 1 day to get tomorrow's date
+            calendar.set(Calendar.HOUR_OF_DAY, 0) // Set the time to 00:00:00
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
             calendar.timeInMillis
         }
     }

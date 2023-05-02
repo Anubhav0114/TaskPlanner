@@ -46,13 +46,13 @@
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="@dimen/very_big_text"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/materialButton2"
+                app:layout_constraintEnd_toStartOf="@+id/searchButton"
                 app:layout_constraintStart_toEndOf="@+id/nav_button"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
 
-                android:id="@+id/materialButton2"
+                android:id="@+id/searchButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
@@ -139,7 +139,7 @@
         android:orientation="horizontal"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:scrollbars="horizontal"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
