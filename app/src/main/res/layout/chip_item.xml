@@ -20,6 +20,7 @@
     app:infoTextColor="?attr/colorOnPrimary"
     app:activeInfoTextColor="@color/white"
     app:gap="16dp"
+    app:infoText="0"
     app:infoTextSize="@dimen/small_text"
     app:backgroundColor="?attr/colorSurface"
     app:infoBackgroundColor="?attr/colorAccent"

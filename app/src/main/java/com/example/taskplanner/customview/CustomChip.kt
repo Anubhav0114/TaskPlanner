@@ -158,7 +158,12 @@ class CustomChip(context: Context, attrs: AttributeSet) : View(context, attrs) {
             contentHeight
         }
 
-        setMeasuredDimension(desiredWidth, desiredHeight)
+        if(isAdd){
+            setMeasuredDimension(desiredHeight, desiredHeight)
+        }else{
+            setMeasuredDimension(desiredWidth, desiredHeight)
+        }
+
     }
 
     override fun onDraw(canvas: Canvas) {
