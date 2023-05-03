@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginStart="16dp"
-    android:layout_marginTop="6dp"
     android:layout_marginEnd="16dp"
+    android:layout_marginBottom="6dp"
     android:background="@drawable/home_card_rounded">
 
     <com.google.android.material.button.MaterialButton
