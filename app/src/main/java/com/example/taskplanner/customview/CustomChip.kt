@@ -18,7 +18,7 @@ import kotlin.math.roundToInt
 
 class CustomChip(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    private var backgroundColor = Color.LTGRAY
+    private var backgroundColo = Color.LTGRAY
     private var backgroundActiveColor = Color.BLUE
     private var textColor = Color.BLACK
     private var activeTextColor = Color.WHITE
@@ -48,7 +48,7 @@ class CustomChip(context: Context, attrs: AttributeSet) : View(context, attrs) {
     // paints
     private val backgroundPaint = Paint().apply {
         style = Paint.Style.FILL
-        color = backgroundColor
+        color = backgroundColo
         isAntiAlias = true
     }
 
@@ -81,7 +81,7 @@ class CustomChip(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.CustomChip, 0,0)
 
         // extracting values
-        backgroundColor = typedArray.getColor(R.styleable.CustomChip_backgroundColor, backgroundColor)
+        backgroundColo = typedArray.getColor(R.styleable.CustomChip_backgroundColor, backgroundColo)
         backgroundActiveColor = typedArray.getColor(R.styleable.CustomChip_activeBackgroundColor, backgroundActiveColor)
         textColor = typedArray.getColor(R.styleable.CustomChip_textColor, textColor)
         activeTextColor = typedArray.getColor(R.styleable.CustomChip_activeTextColor, activeTextColor)
@@ -216,7 +216,7 @@ class CustomChip(context: Context, attrs: AttributeSet) : View(context, attrs) {
             infoTextPaint.color = activeInfoTextColor
             infoBackgroundPaint.color = activeInfoBackgroundColor
         }else{
-            backgroundPaint.color = backgroundColor
+            backgroundPaint.color = backgroundColo
             textPaint.color = textColor
             infoTextPaint.color = infoTextColor
             infoBackgroundPaint.color = infoBackgroundColor

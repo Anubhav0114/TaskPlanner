@@ -22,4 +22,7 @@
         <item name="android:statusBarColor">@color/purple_100</item>
     </style>
 
+
+
+
 </resources>
