@@ -13,4 +13,5 @@
     <string name="project_name">Project Name</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="loginText">Already \nhave an \nAccount?</string>
 </resources>

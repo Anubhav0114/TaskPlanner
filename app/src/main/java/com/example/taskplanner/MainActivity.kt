@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        val intent = Intent(this ,SignIn::class.java )
+        startActivity(intent)
         binding.navView.setNavigationItemSelectedListener { menuItem ->
 
             when(menuItem.itemId){
