@@ -27,6 +27,8 @@ enum class TaskMode{
     View
 }
 
+data class CollectionData(val name: String, val count: Int)
+
 enum class TaskStatus{
     Active,
     Done,

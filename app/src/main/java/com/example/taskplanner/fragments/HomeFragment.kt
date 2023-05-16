@@ -233,7 +233,8 @@ class HomeFragment : Fragment() {
 
             override fun onIconClick() {
                 // TODO add new collection
-                spManager.addCollectionItem("Nitesh")
+                findNavController().navigate(R.id.action_homeFragment_to_collectionFragment)
+                //spManager.addCollectionItem("Nitesh")
             }
         })
 

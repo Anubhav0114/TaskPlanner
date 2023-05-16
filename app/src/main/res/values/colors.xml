@@ -5,6 +5,7 @@
     <color name="black_600">#9A000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="smoke">#F1F1F1</color>
 
 <!--      Green Family -->
     <color name="green_600">#1FC5A5</color>

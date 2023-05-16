@@ -25,6 +25,9 @@
             app:destination="@id/projectFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_collectionFragment"
+            app:destination="@id/collectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -69,4 +72,9 @@
             android:name="project_id"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/collectionFragment"
+        android:name="com.example.taskplanner.fragments.CollectionFragment"
+        android:label="fragment_collection"
+        tools:layout="@layout/fragment_collection" />
 </navigation>
