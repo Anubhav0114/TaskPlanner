@@ -1,9 +1,12 @@
 package com.example.taskplanner.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -16,7 +19,8 @@ import com.google.android.material.button.MaterialButton
 class CollectionListAdapter (private val itemClickListener: OnItemClickListener): ListAdapter<CollectionData, CollectionListAdapter.CustomViewHolder>(ItemDiffCallback()){
 
     interface OnItemClickListener {
-        fun onMenuClick(data: CollectionData, view: View)
+        fun onRenameClick(data: CollectionData)
+        fun onDeleteClick(data: CollectionData)
     }
 
     inner class CustomViewHolder(itemView: ConstraintLayout, private val itemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
@@ -24,9 +28,14 @@ class CollectionListAdapter (private val itemClickListener: OnItemClickListener)
             itemView.findViewById<TextView>(R.id.collectionName).text = data.name
             itemView.findViewById<TextView>(R.id.collectionItem).text = data.count.toString()
 
-            itemView.findViewById<MaterialButton>(R.id.menuButton).setOnClickListener {
-
+            if(data.name == "All"){
+                itemView.findViewById<MaterialButton>(R.id.menuButton).visibility = View.INVISIBLE
+            }else{
+                itemView.findViewById<MaterialButton>(R.id.menuButton).setOnClickListener {
+                    showMenu(it, data, itemClickListener)
+                }
             }
+
         }
     }
 
@@ -39,6 +48,31 @@ class CollectionListAdapter (private val itemClickListener: OnItemClickListener)
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+
+    private fun showMenu(v: View, data: CollectionData, itemClickListener: OnItemClickListener) {
+        val popup = PopupMenu(v.context, v)
+        popup.menuInflater.inflate(R.menu.collection_menu, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            return@setOnMenuItemClickListener when (menuItem.itemId) {
+                R.id.rename -> {
+                    itemClickListener.onRenameClick(data)
+                    true
+                }
+                R.id.delete -> {
+                    itemClickListener.onDeleteClick(data)
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.setOnDismissListener {
+            // Respond to popup being dismissed.
+        }
+        // Show the popup menu.
+        popup.show()
     }
 
     class ItemDiffCallback : DiffUtil.ItemCallback<CollectionData>() {

@@ -7,21 +7,35 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.taskplanner.databinding.ActivityMainBinding
+import com.example.taskplanner.viewmodel.MainActivityViewModel
+import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
 
+    private val mainActivityViewModel: MainActivityViewModel by viewModels {
+        MainActivityViewModelFactory(
+            (application as ProjectApplication).projectRepository,
+            (application as ProjectApplication).taskRepository
+        )
+    }
+
     private val appLink = "https://play.google.com/store/apps/details?id=com.flaxstudio.drawon"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        mainActivityViewModel.setupViewModel(applicationContext)
 
 
 //        val intent = Intent(this ,SignIn::class.java )
