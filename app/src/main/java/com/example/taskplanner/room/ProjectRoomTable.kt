@@ -45,6 +45,9 @@ interface ProjectDao {
     @Query("SELECT * FROM projects WHERE project_name LIKE '%'||:searchText||'%'")
     fun searchProject(searchText: String): List<Project>
 
+    @Query("DELETE FROM projects WHERE collection_id=:collectionId")
+    fun deleteCollectionAllProject(collectionId: Long)
+
     @Insert
     fun addProject(project: Project)
 
@@ -88,6 +91,11 @@ class ProjectRepository(private val projectDao: ProjectDao) {
     @WorkerThread
     suspend fun updateProjectProgress(projectId: Long, progress: Int){
         projectDao.updateProjectProgress(projectId, progress)
+    }
+
+    @WorkerThread
+    suspend fun deleteCollectionAllProject(collectionId: Long){
+        projectDao.deleteCollectionAllProject(collectionId)
     }
 
     @WorkerThread

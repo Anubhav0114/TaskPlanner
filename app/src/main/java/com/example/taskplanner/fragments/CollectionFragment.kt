@@ -127,7 +127,7 @@ class CollectionFragment : Fragment() {
 
             }
             .setPositiveButton(resources.getString(R.string.delete)) { dialog, which ->
-                mainActivityViewModel.spManager.removeCollectionItem(collectionData.id)
+                mainActivityViewModel.deleteCollectionAllProject(collectionData.id)
             }
             .show()
     }
@@ -143,8 +143,14 @@ class CollectionFragment : Fragment() {
             .setTitle("Rename Collection")
             .setView(dialogView)
             .setPositiveButton("Rename") { dialog, which ->
-                val userInput = editTextInput.text.toString()
-                // Handle the user input here
+                val userInput = editTextInput.text.toString().trim()
+                if(userInput.isBlank()){
+                    Toast.makeText(contextApp, "Collection name must not be empty!", Toast.LENGTH_SHORT).show()
+                }else if(mainActivityViewModel.spManager.isCollectionExist(userInput)){
+                    Toast.makeText(contextApp, "Collection name already exist!", Toast.LENGTH_SHORT).show()
+                }else{
+                    mainActivityViewModel.spManager.renameCollectionName(collectionData.id, userInput)
+                }
             }
             .setNegativeButton("Cancel") { dialog, which ->
                 dialog.dismiss()

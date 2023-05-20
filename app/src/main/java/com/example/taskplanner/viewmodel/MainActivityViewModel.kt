@@ -88,6 +88,13 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         }
     }
 
+    fun deleteCollectionAllProject(collectionId: Long) = viewModelScope.launch(Dispatchers.Default) {
+        projectRepository.deleteCollectionAllProject(collectionId)
+        withContext(Dispatchers.Main){
+            spManager.removeCollectionItem(collectionId)
+        }
+    }
+
 
 
     // ------------------------- Room Task Handler Code ------------------------------------

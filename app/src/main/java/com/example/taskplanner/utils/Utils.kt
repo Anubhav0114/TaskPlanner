@@ -28,7 +28,7 @@ enum class TaskMode{
 }
 
 data class CollectionData(val id: Long, val name: String, val count: Int)
-data class CollectionRawData(val id: Long, val name: String){
+data class CollectionRawData(val id: Long, var name: String){
     override fun toString(): String{
         return "${id},${name}"
     }

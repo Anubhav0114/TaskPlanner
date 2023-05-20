@@ -69,6 +69,30 @@ class SharedPreferenceManager(private val externalScope: CoroutineScope, context
         return isExist
     }
 
+    fun renameCollectionName(id: Long, newName: String){
+        var index = -1
+        for (i in collectionNames.indices){
+            if(collectionNames[i].id == id){
+                index = i
+                break
+            }
+        }
+
+        if(index != -1){
+            collectionNames[index].name = newName
+            saveCollection()
+        }
+    }
+
+
+    fun getCollectionId(name: String): Long{
+        for (item in collectionNames){
+            if(item.name == name) return item.id
+        }
+
+        return 0
+    }
+
     private fun saveCollection() {
         var str = ""
         for (temp in collectionNames) {

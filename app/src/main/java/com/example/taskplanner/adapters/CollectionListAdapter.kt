@@ -28,9 +28,14 @@ class CollectionListAdapter (private val itemClickListener: OnItemClickListener)
             itemView.findViewById<TextView>(R.id.collectionName).text = data.name
             itemView.findViewById<TextView>(R.id.collectionItem).text = data.count.toString()
 
-            itemView.findViewById<MaterialButton>(R.id.menuButton).setOnClickListener {
-                showMenu(it, data, itemClickListener)
+            if(data.name == "All"){
+                itemView.findViewById<MaterialButton>(R.id.menuButton).visibility = View.INVISIBLE
+            }else{
+                itemView.findViewById<MaterialButton>(R.id.menuButton).setOnClickListener {
+                    showMenu(it, data, itemClickListener)
+                }
             }
+
         }
     }
 
