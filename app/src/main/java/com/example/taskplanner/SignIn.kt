@@ -6,6 +6,7 @@ import android.provider.Settings.Global
 import android.text.Html
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -57,11 +58,30 @@ class SignIn : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = Firebase.auth
 
+
+
         binding.buttonGoogle.setOnClickListener{
             val  signInIntent = googleSignInClient.signInIntent
             googleSignInLauncher.launch(signInIntent)
 
             }
+
+        binding.registerTextview.setOnClickListener {
+            val intent = Intent(this , SignUpActivity::class.java)
+            startActivity(intent)
+
+        }
+
+        binding.buttonLogin.setOnClickListener {
+            var email  = binding.etEmail.text.toString()
+            var password = binding.etPassword.text.toString()
+            if (email.isNullOrBlank() || password.isNullOrBlank()){
+                Toast.makeText(this, "Bad Credentials" , Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else{
+                authenticateWithEmail(email, password)
+            }
+        }
 
 
 
@@ -95,6 +115,30 @@ class SignIn : AppCompatActivity() {
 
 
     }
+
+    private fun authenticateWithEmail(email: String, password: String) {
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+                    updateUi(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    updateUi(null)
+                }
+            }
+
+    }
+
     override fun onStart() {
         super.onStart()
         val currUser = auth.currentUser
@@ -107,6 +151,8 @@ class SignIn : AppCompatActivity() {
 
         binding.buttonGoogle.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
+        binding.progressTv.visibility = View.VISIBLE
+        binding.container.isClickable = false
 
         GlobalScope.launch(Dispatchers.IO){
             val auth = auth.signInWithCredential(credential).await()
@@ -129,6 +175,8 @@ class SignIn : AppCompatActivity() {
         }else{
             binding.buttonGoogle.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
+            binding.progressTv.visibility = View.GONE
+            binding.container.isClickable = true
         }
 
     }
