@@ -1,5 +1,6 @@
 package com.example.taskplanner.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +10,7 @@ import com.example.taskplanner.room.ProjectRepository
 import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.room.ProjectTaskRepository
 import com.example.taskplanner.utils.DateTimeManager
+import com.example.taskplanner.utils.SharedPreferenceManager
 import com.example.taskplanner.utils.generateUniqueId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -35,6 +37,14 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     }
 
 
+    // sp manager
+    lateinit var spManager: SharedPreferenceManager
+    fun setupViewModel(contextApp: Context){
+        spManager = SharedPreferenceManager(viewModelScope, contextApp)
+    }
+
+
+
     // ------------------------- Room Project Handler Code ------------------------------------
     suspend fun getAllProjects(): Flow<List<Project>>{
         return projectRepository.getAllProjects()
@@ -44,8 +54,8 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         return projectRepository.getPinnedProject()
     }
 
-    fun createNewProject(projectName: String, collectionName: String, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
-        val newProject = Project(0, generateUniqueId(), projectName, collectionName,0,
+    fun createNewProject(projectName: String, collectionId: Long, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+        val newProject = Project(0, generateUniqueId(), projectName, collectionId,0,
             isNotify = true,
             isPinned = false
         )
@@ -118,6 +128,7 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     suspend fun getAllTodayTasks(todayTime: Long): Flow<List<ProjectTask>>{
         return taskRepository.getAllTodayTask(todayTime)
     }
+
 
 
 

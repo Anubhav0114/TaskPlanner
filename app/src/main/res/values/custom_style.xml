@@ -11,4 +11,8 @@
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">6dp</item>
     </style>
+
+    <style name="collection_menu" parent="Widget.MaterialComponents.PopupMenu">
+        <item name="android:layout_marginRight">16dp</item> <!-- Set your desired margin value -->
+    </style>
 </resources>

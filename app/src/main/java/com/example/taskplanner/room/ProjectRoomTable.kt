@@ -18,7 +18,7 @@ data class Project(
     @PrimaryKey(autoGenerate = true) var id: Int,
     @ColumnInfo(name = "project_id") var projectId: Long,
     @ColumnInfo(name = "project_name") var projectName: String,
-    @ColumnInfo(name = "collection_name") var collectionName: String,
+    @ColumnInfo(name = "collection_id") var collectionId: Long,
     @ColumnInfo(name = "done_percent") var donePercent: Int,
     @ColumnInfo(name = "is_notify") var isNotify: Boolean,
     @ColumnInfo(name = "is_pinned") var isPinned: Boolean,
@@ -36,8 +36,8 @@ interface ProjectDao {
     @Query("SELECT * FROM projects WHERE is_pinned = 1")
     fun getAllPinnedProjects(): Flow<List<Project>>
 
-    @Query("UPDATE projects SET project_name = :projectName, collection_name = :collectionName, is_notify = :isNotify, is_pinned = :isPinned WHERE project_id = :projectId")
-    fun updateProject(projectId: Long, projectName: String, collectionName: String, isNotify: Boolean, isPinned: Boolean)
+    @Query("UPDATE projects SET project_name = :projectName, is_notify = :isNotify, is_pinned = :isPinned WHERE project_id = :projectId")
+    fun updateProject(projectId: Long, projectName: String, isNotify: Boolean, isPinned: Boolean)
 
     @Query("UPDATE projects SET done_percent = :progress  WHERE project_id = :projectId")
     fun updateProjectProgress(projectId: Long, progress: Int)
@@ -66,7 +66,7 @@ class ProjectRepository(private val projectDao: ProjectDao) {
 
     @WorkerThread
     suspend fun update(project: Project) {
-       projectDao.updateProject(project.projectId, project.projectName, project.collectionName, project.isNotify, project.isPinned)
+       projectDao.updateProject(project.projectId, project.projectName, project.isNotify, project.isPinned)
     }
 
     @WorkerThread

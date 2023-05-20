@@ -15,38 +15,67 @@ import kotlin.coroutines.coroutineContext
 
 class SharedPreferenceManager(private val externalScope: CoroutineScope, contextApp: Context) : OnSharedPreferenceChangeListener {
 
-    private val collectionNames: ArrayList<String> = ArrayList()
+    private val collectionNames: ArrayList<CollectionRawData> = ArrayList()
     private val sharedPref: SharedPreferences
-    private val collectionFlow: MutableSharedFlow<List<String>> = MutableSharedFlow(replay = 1)
+    private val collectionFlow: MutableSharedFlow<List<CollectionRawData>> = MutableSharedFlow(replay = 1)
 
 
     init {
         sharedPref = contextApp.getSharedPreferences("app_pref", Context.MODE_PRIVATE)
-        collectionNames.addAll(sharedPref.getString("collection", "All")!!.split("|"))
+        collectionNames.addAll(parseCollection())
         sharedPref.registerOnSharedPreferenceChangeListener(this)
         emitCollection()
     }
 
-    fun getCollection(): Flow<List<String>> =collectionFlow.asSharedFlow()
+    private fun parseCollection(): List<CollectionRawData> {
+        val collection: ArrayList<CollectionRawData> = ArrayList()
+        val temp = sharedPref.getString("collection", "1234567,All")!!.split("|")
+        for (data in temp){
+            val d = data.split(",")
+            collection.add(CollectionRawData(d[0].toLong(), d[1]))
+        }
+
+        return collection.toList()
+    }
+
+    fun getCollection(): Flow<List<CollectionRawData>> = collectionFlow.asSharedFlow()
 
 
     fun addCollectionItem(name: String) {
-        collectionNames.add(name)
+        val id = generateUniqueId()
+        collectionNames.add(CollectionRawData(id, name))
         saveCollection()
     }
 
-    fun removeCollectionItem(name: String) {
-        collectionNames.remove(name)
+    fun removeCollectionItem(id: Long) {
+        for (item in collectionNames){
+            if(item.id == id){
+                collectionNames.remove(item)
+                break
+            }
+        }
         saveCollection()
+    }
+
+    fun isCollectionExist(name: String): Boolean {
+        var isExist = false
+        for (item in collectionNames){
+            if(item.name == name){
+                isExist = true
+                break
+            }
+        }
+
+        return isExist
     }
 
     private fun saveCollection() {
         var str = ""
         for (temp in collectionNames) {
-            str += if(temp == "All"){
-                temp
+            str += if(temp.name == "All"){
+                temp.toString()
             }else{
-                "|$temp"
+                "|${temp}"
             }
         }
 
@@ -61,7 +90,7 @@ class SharedPreferenceManager(private val externalScope: CoroutineScope, context
 
     private fun emitCollection(){
         externalScope.launch {
-            collectionFlow.emit(sharedPref.getString("collection", "All")!!.split("|"))
+            collectionFlow.emit(parseCollection())
         }
     }
 

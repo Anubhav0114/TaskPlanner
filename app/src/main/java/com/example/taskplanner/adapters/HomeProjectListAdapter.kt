@@ -23,7 +23,7 @@ class HomeProjectListAdapter(private val itemClickListener: OnItemClickListener)
     inner class CustomViewHolder(itemView: ConstraintLayout, private val itemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
         fun bind(project: Project){
             itemView.findViewById<TextView>(R.id.task_title).text = project.projectName
-            itemView.findViewById<TextView>(R.id.collection_name).text = project.collectionName
+//            itemView.findViewById<TextView>(R.id.collection_name).text = project.collectionName
 
             itemView.findViewById<TextView>(R.id.progress_value).text = "${project.donePercent}%"
             itemView.findViewById<CircularProgress>(R.id.circularProgress).setMaxProgressValue(1000)

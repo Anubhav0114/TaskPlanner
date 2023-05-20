@@ -31,9 +31,11 @@ import com.example.taskplanner.databinding.FragmentHomeBinding
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.utils.ChipData
+import com.example.taskplanner.utils.CollectionRawData
 import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.countCollection
 import com.example.taskplanner.utils.SharedPreferenceManager
+import com.example.taskplanner.utils.getCollectionId
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.transition.MaterialElevationScale
@@ -51,9 +53,9 @@ class HomeFragment : Fragment() {
     private lateinit var taskListAdapter: HomeTodayTaskListAdapter
     private lateinit var contextApp: Context
     private lateinit var chipsAdapter: CustomChipListAdapter
-    private var collectionNames: List<String> = ArrayList()
+    private var collectionNames = emptyList<CollectionRawData>()
     private var selectedChipIndex = 0
-    private var selectedCollectionName = "All"
+    private var selectedCollectionId = 1234567L
     private lateinit var pinnedProjectAdapter: PinnedViewPagerAdapter
 
     private val dateTimeManager = DateTimeManager()
@@ -115,7 +117,7 @@ class HomeFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            mainActivityViewModel.createNewProject(name, selectedCollectionName) {
+            mainActivityViewModel.createNewProject(name, selectedCollectionId) {
                 dialog.dismiss()
                 Toast.makeText(contextApp, "Project created", Toast.LENGTH_SHORT).show()
             }
@@ -225,7 +227,7 @@ class HomeFragment : Fragment() {
         chipsAdapter = CustomChipListAdapter(binding.chipsContainer, contextApp, object : CustomChipListAdapter.OnItemClickListener{
             override fun onItemClick(chipData: ChipData, itemIndex: Int) {
                 selectedChipIndex = itemIndex
-                selectedCollectionName = chipData.name
+                selectedCollectionId = collectionNames.getCollectionId(chipData.name)
                 updateChips()
                 updateRecyclerView()
 
@@ -275,13 +277,14 @@ class HomeFragment : Fragment() {
     private fun updateChips(){
         val list = ArrayList<ChipData>()
         for(index in collectionNames.indices){
+
             val isActive = index == selectedChipIndex
-            val count = if(collectionNames[index] == "All"){
+            val count = if(collectionNames[index].name == "All"){
                 allProjects.size
             }else{
-                allProjects.countCollection(collectionNames[index])
+                allProjects.countCollection(collectionNames[index].id)
             }
-            list.add(ChipData(index, collectionNames[index], count, isActive))
+            list.add(ChipData(index, collectionNames[index].name, count, isActive))
         }
         chipsAdapter.submitList(list)
 
@@ -290,9 +293,10 @@ class HomeFragment : Fragment() {
     private fun updateRecyclerView(){
 
         val filteredProject = ArrayList<Project>()
-        if(selectedCollectionName != "All"){
+        if(selectedCollectionId != 1234567L){
+
             for (project in allProjects){
-                if(project.collectionName == selectedCollectionName){
+                if(project.collectionId == selectedCollectionId){
                     filteredProject.add(project)
                 }
             }
@@ -303,5 +307,7 @@ class HomeFragment : Fragment() {
 
         updateChips()
     }
+
+
 }
 

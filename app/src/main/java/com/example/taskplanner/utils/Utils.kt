@@ -27,7 +27,12 @@ enum class TaskMode{
     View
 }
 
-data class CollectionData(val name: String, val count: Int)
+data class CollectionData(val id: Long, val name: String, val count: Int)
+data class CollectionRawData(val id: Long, val name: String){
+    override fun toString(): String{
+        return "${id},${name}"
+    }
+}
 
 enum class TaskStatus{
     Active,
@@ -42,6 +47,7 @@ enum class TaskStatus{
 }
 
 
+
 // this class is used for converting enum to num or vice-versa
 // It is used by room because room cannot store enum
 class TaskStatusConverter {
@@ -53,10 +59,26 @@ class TaskStatusConverter {
 }
 
 
-fun List<Project>.countCollection(collectionName: String): Int {
+fun List<Project>.countCollection(collectionId: Long): Int {
     var tempCount = 0
     for (project in this){
-        if(project.collectionName == collectionName) tempCount++
+        if(project.collectionId == collectionId) tempCount++
     }
     return tempCount
+}
+
+fun List<CollectionRawData>.getCollectionName(id: Long): String{
+    for (item in this){
+        if(item.id == id) return item.name
+    }
+
+    return ""
+}
+
+fun List<CollectionRawData>.getCollectionId(name: String): Long{
+    for (item in this){
+        if(item.name == name) return item.id
+    }
+
+    return 0
 }
