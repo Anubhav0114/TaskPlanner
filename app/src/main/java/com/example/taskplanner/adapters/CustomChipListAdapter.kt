@@ -45,7 +45,7 @@ class CustomChipListAdapter(private val chipsParentView: LinearLayout, private v
 
         // adding
         if(list.size > previousList.size){
-            while (index < list.lastIndex){
+            while (index <= list.lastIndex){
                 previousList.add(list[index])
                 addView(list[index])
                 index++
@@ -56,7 +56,7 @@ class CustomChipListAdapter(private val chipsParentView: LinearLayout, private v
 
             val pendingRemove = ArrayList<ChipData>()
             val removeIndex = index
-            while (index < previousList.lastIndex){
+            while (index <= previousList.lastIndex){
                 pendingRemove.add(previousList[index])
                 removeView(removeIndex)
                 index++
