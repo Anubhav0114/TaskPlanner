@@ -31,7 +31,6 @@ class CollectionFragment : Fragment() {
     private lateinit var binding: FragmentCollectionBinding
     private lateinit var collectionListAdapter: CollectionListAdapter
     private lateinit var contextApp: Context
-    private lateinit var spManager: SharedPreferenceManager
     private var allProjects = emptyList<Project>()
     private var collectionNames = emptyList<CollectionRawData>()
 
@@ -61,7 +60,6 @@ class CollectionFragment : Fragment() {
 
 
     private fun setupUi(){
-        spManager = SharedPreferenceManager(lifecycleScope, contextApp)
 
         collectionListAdapter = CollectionListAdapter(object : CollectionListAdapter.OnItemClickListener{
 
@@ -92,7 +90,7 @@ class CollectionFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            spManager.getCollection().collect {
+            mainActivityViewModel.spManager.getCollection().collect {
                 collectionNames = it
                 if(isUpdateAllowed){
                     updateCollection()
@@ -129,7 +127,7 @@ class CollectionFragment : Fragment() {
 
             }
             .setPositiveButton(resources.getString(R.string.delete)) { dialog, which ->
-                spManager.removeCollectionItem(collectionData.id)
+                mainActivityViewModel.spManager.removeCollectionItem(collectionData.id)
             }
             .show()
     }
@@ -167,10 +165,10 @@ class CollectionFragment : Fragment() {
                 val userInput = editTextInput.text.toString().trim()
                 if(userInput.isBlank()){
                     Toast.makeText(contextApp, "Collection name must not be empty!", Toast.LENGTH_SHORT).show()
-                }else if(spManager.isCollectionExist(userInput)){
+                }else if(mainActivityViewModel.spManager.isCollectionExist(userInput)){
                     Toast.makeText(contextApp, "Collection name already exist!", Toast.LENGTH_SHORT).show()
                 }else{
-                    spManager.addCollectionItem(userInput)
+                    mainActivityViewModel.spManager.addCollectionItem(userInput)
                 }
             }
             .setNegativeButton("Cancel") { dialog, which ->

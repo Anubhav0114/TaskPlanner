@@ -48,7 +48,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private var allProjects: List<Project> = ArrayList()
-    private lateinit var spManager: SharedPreferenceManager
     private lateinit var projectListAdapter: HomeProjectListAdapter
     private lateinit var taskListAdapter: HomeTodayTaskListAdapter
     private lateinit var contextApp: Context
@@ -94,7 +93,6 @@ class HomeFragment : Fragment() {
 
 
         contextApp = requireContext()
-        spManager = SharedPreferenceManager(lifecycleScope, contextApp)
 
         setupUI()
         addObservers()
@@ -260,7 +258,7 @@ class HomeFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            spManager.getCollection().collect {
+            mainActivityViewModel.spManager.getCollection().collect {
                 collectionNames = it
                 updateChips()
             }
