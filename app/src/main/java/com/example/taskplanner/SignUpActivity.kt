@@ -19,8 +19,6 @@ class SignUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
-
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -37,7 +35,7 @@ class SignUpActivity : AppCompatActivity() {
             var email = binding.emailEt.text.toString()
             var password = binding.passwordEt.text.toString()
             var name = binding.nameInput.text.toString()
-            if (email.isNullOrEmpty() || password.isNullOrEmpty() || name.isNullOrEmpty()){
+            if (email.isEmpty() || password.isEmpty() || name.isEmpty()){
                 Toast.makeText(this , "Please enter a valid Input" , Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }else{
@@ -80,8 +78,6 @@ class SignUpActivity : AppCompatActivity() {
             val mainActivityIntent = Intent(this , MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
-        }else{
-
         }
 
     }
