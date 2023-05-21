@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +18,12 @@ import com.example.taskplanner.databinding.FragmentCollectionBinding
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.utils.ChipData
 import com.example.taskplanner.utils.CollectionData
+import com.example.taskplanner.utils.CollectionRawData
 import com.example.taskplanner.utils.SharedPreferenceManager
 import com.example.taskplanner.utils.countCollection
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class CollectionFragment : Fragment() {
@@ -27,9 +31,8 @@ class CollectionFragment : Fragment() {
     private lateinit var binding: FragmentCollectionBinding
     private lateinit var collectionListAdapter: CollectionListAdapter
     private lateinit var contextApp: Context
-    private lateinit var spManager: SharedPreferenceManager
     private var allProjects = emptyList<Project>()
-    private var collectionNames = emptyList<String>()
+    private var collectionNames = emptyList<CollectionRawData>()
 
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
@@ -57,18 +60,27 @@ class CollectionFragment : Fragment() {
 
 
     private fun setupUi(){
-        spManager = SharedPreferenceManager(lifecycleScope, contextApp)
 
         collectionListAdapter = CollectionListAdapter(object : CollectionListAdapter.OnItemClickListener{
-            override fun onMenuClick(data: CollectionData, view: View) {
 
+            override fun onRenameClick(data: CollectionData) {
+                showRenameDialog(data)
+            }
+
+            override fun onDeleteClick(data: CollectionData) {
+               showDeleteDialog(data)
             }
 
         })
+        binding.createCollection.setOnClickListener {
+            createCollectionDialog()
+        }
+
         binding.collectionRecyclerview.adapter = collectionListAdapter
         binding.collectionRecyclerview.layoutManager = LinearLayoutManager(contextApp)
     }
 
+    private var isUpdateAllowed = false
     private fun addObserver(){
         lifecycleScope.launch {
             mainActivityViewModel.getAllProjects().collect {
@@ -78,9 +90,14 @@ class CollectionFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            spManager.getCollection().collect {
+            mainActivityViewModel.spManager.getCollection().collect {
                 collectionNames = it
-                updateCollection()
+                if(isUpdateAllowed){
+                    updateCollection()
+                }
+
+                isUpdateAllowed = true
+
             }
         }
     }
@@ -90,13 +107,81 @@ class CollectionFragment : Fragment() {
         val list = ArrayList<CollectionData>()
         for(index in collectionNames.indices){
 
-            val count = if(collectionNames[index] == "All"){
+            val count = if(collectionNames[index].name == "All"){
                 allProjects.size
             }else{
-                allProjects.countCollection(collectionNames[index])
+                allProjects.countCollection(collectionNames[index].id)
             }
-            list.add(CollectionData(collectionNames[index], count))
+            list.add(CollectionData(collectionNames[index].id, collectionNames[index].name, count))
         }
         collectionListAdapter.submitList(list)
+    }
+
+
+    private fun showDeleteDialog(collectionData: CollectionData){
+        MaterialAlertDialogBuilder(contextApp)
+            .setTitle("Delete Collection")
+            .setMessage("Do you really want to delete '${collectionData.name}'? This will delete all projects from this collection!")
+
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
+
+            }
+            .setPositiveButton(resources.getString(R.string.delete)) { dialog, which ->
+                mainActivityViewModel.deleteCollectionAllProject(collectionData.id)
+            }
+            .show()
+    }
+
+
+    private fun showRenameDialog(collectionData: CollectionData){
+        val dialogView = LayoutInflater.from(contextApp).inflate(R.layout.one_input_dialog, null)
+        val editTextInput = dialogView.findViewById<EditText>(R.id.editText).apply {
+            setText(collectionData.name)
+        }
+
+        val dialog = MaterialAlertDialogBuilder(contextApp)
+            .setTitle("Rename Collection")
+            .setView(dialogView)
+            .setPositiveButton("Rename") { dialog, which ->
+                val userInput = editTextInput.text.toString().trim()
+                if(userInput.isBlank()){
+                    Toast.makeText(contextApp, "Collection name must not be empty!", Toast.LENGTH_SHORT).show()
+                }else if(mainActivityViewModel.spManager.isCollectionExist(userInput)){
+                    Toast.makeText(contextApp, "Collection name already exist!", Toast.LENGTH_SHORT).show()
+                }else{
+                    mainActivityViewModel.spManager.renameCollectionName(collectionData.id, userInput)
+                }
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .create()
+
+        dialog.show()
+    }
+
+    private fun createCollectionDialog(){
+        val dialogView = LayoutInflater.from(contextApp).inflate(R.layout.one_input_dialog, null)
+        val editTextInput = dialogView.findViewById<EditText>(R.id.editText)
+
+        val dialog = MaterialAlertDialogBuilder(contextApp)
+            .setTitle("Create Collection")
+            .setView(dialogView)
+            .setPositiveButton("Create") { dialog, which ->
+                val userInput = editTextInput.text.toString().trim()
+                if(userInput.isBlank()){
+                    Toast.makeText(contextApp, "Collection name must not be empty!", Toast.LENGTH_SHORT).show()
+                }else if(mainActivityViewModel.spManager.isCollectionExist(userInput)){
+                    Toast.makeText(contextApp, "Collection name already exist!", Toast.LENGTH_SHORT).show()
+                }else{
+                    mainActivityViewModel.spManager.addCollectionItem(userInput)
+                }
+            }
+            .setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .create()
+
+        dialog.show()
     }
 }

@@ -16,4 +16,6 @@
     <string name="loginText">Already \nhave an \nAccount?</string>
     <string name="progressText">Please Wait ...</string>
     <string name="signup_new_account"><![CDATA[Don\'t have an Account? <font color="#FF0000">Register</font>]]></string>
+    <string name="ok">Ok</string>
+    <string name="delete">Delete</string>
 </resources>
