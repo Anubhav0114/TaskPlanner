@@ -15,11 +15,15 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.taskplanner.databinding.ActivityMainBinding
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var auth : FirebaseAuth
 
     private val mainActivityViewModel: MainActivityViewModel by viewModels {
         MainActivityViewModelFactory(
@@ -36,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
 
         mainActivityViewModel.setupViewModel(applicationContext)
+        auth = Firebase.auth
 
 
 //        val intent = Intent(this ,SignIn::class.java )
@@ -74,6 +79,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.moreApps_item -> {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://flax-studio.vercel.app"))
                     startActivity(browserIntent)
+                }
+
+                R.id.logOut_btn -> {
+                    auth.signOut()
+                    val intent = Intent(this , SignIn::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             }
 

@@ -34,5 +34,10 @@
         android:icon="@drawable/icon_more_apps"
         android:title="More apps"
         android:clickable="true"/>
+    <item android:id="@+id/logOut_btn"
+        android:icon="@drawable/ic_baseline_logout_24"
+        android:title="Log Out"
+        android:clickable="true"/>
+
 </menu>
 
