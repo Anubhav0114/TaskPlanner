@@ -103,12 +103,13 @@ class SignIn : AppCompatActivity() {
                     firebaseAuthWithGoogle(account?.idToken)
                 } catch (e: ApiException) {
                     // Google sign-in failed, handle the error
-                    Log.e("SignInActivity", "Google sign-in failed", e)
+                    Log.e(TAG, "Google sign-in failed", e)
                     // Show an error message or handle the failed sign-in
                 }
 
             }else{
                 // Google sign-in was canceled or failed, handle accordingly
+                Log.e(TAG, "Google sign-in Intent failed")
             }
         }
 
