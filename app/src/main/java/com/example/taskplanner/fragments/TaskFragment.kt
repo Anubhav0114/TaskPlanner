@@ -1,8 +1,10 @@
 package com.example.taskplanner.fragments
 
+import android.app.TimePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +23,11 @@ import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.google.android.material.transition.MaterialContainerTransform
+import java.time.LocalDateTime
+import java.util.Calendar
 
 
 class TaskFragment : Fragment() {
@@ -32,6 +38,8 @@ class TaskFragment : Fragment() {
     private var endDateTime = 0L
     private var taskMode = TaskMode.View
     private var isInProgress = false
+    private var startTime = 0L
+    private var endTime = 0L
 
     private val dateManager = DateTimeManager()
 
@@ -133,8 +141,8 @@ class TaskFragment : Fragment() {
             projectTask.taskName = binding.titleText.text.toString()
             projectTask.description = binding.description.text.toString()
             projectTask.isRemind = binding.remindSwitch.isChecked
-            projectTask.startTime = startDateTime
-            projectTask.endTime = endDateTime
+            projectTask.startTime = startDateTime + startTime
+            projectTask.endTime = endDateTime + endTime
 
             if(projectTask.taskStatus == TaskStatus.Failed){
                 projectTask.taskStatus = TaskStatus.Active
@@ -194,10 +202,15 @@ class TaskFragment : Fragment() {
     }
 
     private fun loadDataToUI(){
-        startDateTime = projectTask.startTime
-        endDateTime = projectTask.endTime
+        startDateTime = dateManager.parseDateOnly(projectTask.startTime)
+        endDateTime = dateManager.parseDateOnly(projectTask.endTime)
+        startTime = dateManager.parseTimeOnly(projectTask.startTime)
+        endTime = dateManager.parseTimeOnly(projectTask.endTime)
+
         binding.titleText.setText(projectTask.taskName)
         binding.description.setText(projectTask.description)
+        binding.startTimeText.text = dateManager.unixMillToTimeString(projectTask.startTime)
+        binding.endTimeText.text = dateManager.unixMillToTimeString(projectTask.endTime)
         binding.startDateText.text = dateManager.unixMillToDateString(projectTask.startTime)
         binding.endDateText.text = dateManager.unixMillToDateString(projectTask.endTime)
         binding.remindSwitch.isChecked = projectTask.isRemind
@@ -258,6 +271,29 @@ class TaskFragment : Fragment() {
     }
 
     private fun openTimePicker(isOpenedForStart: Boolean){
+
+        val picker =
+            MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(dateManager.getCurrentHour())
+                .setMinute(dateManager.getCurrentMin())
+                .build()
+        picker.show(parentFragmentManager, "Time")
+
+        picker.addOnPositiveButtonClickListener {
+            var timeMill = picker.hour * 3600000 + picker.minute * 60000L
+
+            // subtracting timezone offset
+            timeMill -= dateManager.getTimezoneOffset()
+
+            if(isOpenedForStart){
+                startTime = timeMill
+                binding.startTimeText.text = dateManager.unixMillToTimeString(timeMill)
+            }else{
+                endTime = timeMill
+                binding.endTimeText.text = dateManager.unixMillToTimeString(timeMill)
+            }
+        }
 
     }
 }
