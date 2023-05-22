@@ -15,6 +15,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.taskplanner.databinding.ActivityMainBinding
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -83,9 +86,13 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.logOut_btn -> {
                     auth.signOut()
-                    val intent = Intent(this , SignIn::class.java)
-                    startActivity(intent)
-                    finish()
+                    val googleSignInClient = GoogleSignIn.getClient(this , GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    googleSignInClient.signOut().addOnCompleteListener{
+                        val intent = Intent(this , SignIn::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
                 }
             }
 
