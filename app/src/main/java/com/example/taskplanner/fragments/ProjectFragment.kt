@@ -26,6 +26,7 @@ import com.example.taskplanner.customview.CustomChip
 import com.example.taskplanner.databinding.FragmentProjectBinding
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.room.ProjectTask
+import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.TaskMode
 import com.example.taskplanner.utils.TaskStatus
 import com.example.taskplanner.utils.generateUniqueId
@@ -46,6 +47,8 @@ class ProjectFragment : Fragment() {
     private lateinit var previousCheckedChip: CustomChip
     private lateinit var allTaskList: List<ProjectTask>
     private var projectId: Long = 0L
+
+    private val dateTimeManager = DateTimeManager()
 
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
         MainActivityViewModelFactory(
@@ -98,24 +101,48 @@ class ProjectFragment : Fragment() {
 
 
     private fun loadData() {
-        mainActivityViewModel.getProjectById(projectId) {
-            openedProject = it
-            binding.projectName.text = openedProject.projectName
-            binding.notifyCheckbox.isChecked = openedProject.isNotify
-            binding.pinCheckbox.isChecked = openedProject.isPinned
+
+        if(projectId == 100L){          // for today task only
+            binding.projectName.text = "Today Task"
+            binding.notifyCheckbox.visibility = View.INVISIBLE
+            binding.pinCheckbox.visibility = View.INVISIBLE
+            binding.createTask.visibility = View.GONE
+
+        }else{
+            mainActivityViewModel.getProjectById(projectId) {
+                openedProject = it
+                binding.projectName.text = openedProject.projectName
+                binding.notifyCheckbox.isChecked = openedProject.isNotify
+                binding.pinCheckbox.isChecked = openedProject.isPinned
+            }
         }
+
 
     }
 
     private fun addObserver(){
-        lifecycleScope.launch(Dispatchers.Default) {
-            mainActivityViewModel.getAllTaskFromProject(projectId).collect { tasks ->
-                allTaskList = tasks
-                withContext(Dispatchers.Main){
-                    updateRecyclerView()
+
+        if(projectId == 100L){         // only for today task
+            lifecycleScope.launch(Dispatchers.Default){
+                mainActivityViewModel.getAllTodayTasks(dateTimeManager.getTomorrowDate()).collect {
+                    allTaskList = it
+                    withContext(Dispatchers.Main){
+                        updateRecyclerView()
+                    }
+                }
+            }
+
+        }else{
+            lifecycleScope.launch(Dispatchers.Default) {
+                mainActivityViewModel.getAllTaskFromProject(projectId).collect {
+                    allTaskList = it
+                    withContext(Dispatchers.Main){
+                        updateRecyclerView()
+                    }
                 }
             }
         }
+
     }
 
 
@@ -192,7 +219,7 @@ class ProjectFragment : Fragment() {
 
                     val bundle = Bundle().apply {
                         putBoolean("isCreating", false)
-                        putLong("projectId", openedProject.projectId)
+                        putLong("projectId", projectId )
                         putLong("taskId", projectTask.taskId)
                     }
                     findNavController().navigate(

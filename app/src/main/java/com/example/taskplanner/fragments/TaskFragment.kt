@@ -196,7 +196,7 @@ class TaskFragment : Fragment() {
                 val taskId = requireArguments().getLong("taskId")
                 binding.projectName.text = taskMode.toString()
 
-                loadTaskData(projectId, taskId)
+                loadTaskData(taskId)
             }
         }
     }
@@ -236,8 +236,8 @@ class TaskFragment : Fragment() {
         }
     }
 
-    private fun loadTaskData(projectId: Long, taskId: Long){
-        mainActivityViewModel.getProjectTaskById(projectId, taskId){
+    private fun loadTaskData(taskId: Long){
+        mainActivityViewModel.getProjectTaskById(taskId){
             projectTask = it
             loadDataToUI()
         }
