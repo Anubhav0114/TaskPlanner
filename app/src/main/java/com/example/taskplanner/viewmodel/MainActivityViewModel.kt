@@ -98,8 +98,8 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
 
     // ------------------------- Room Task Handler Code ------------------------------------
-    fun getProjectTaskById(projectId: Long, taskId: Long , callback: (ProjectTask) -> Unit) = viewModelScope.launch(Dispatchers.Default){
-        val projects = taskRepository.getTaskById(projectId, taskId)
+    fun getProjectTaskById(taskId: Long , callback: (ProjectTask) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+        val projects = taskRepository.getTaskById(taskId)
         withContext(Dispatchers.Main){
             callback(projects)
         }

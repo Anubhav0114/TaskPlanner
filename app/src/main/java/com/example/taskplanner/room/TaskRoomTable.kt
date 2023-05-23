@@ -1,5 +1,6 @@
 package com.example.taskplanner.room
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.room.ColumnInfo
 import androidx.room.Dao
@@ -41,8 +42,8 @@ interface ProjectTaskDao {
     @Query("SELECT * FROM project_task WHERE project_id = :projectId ORDER BY start_time ASC")
     fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>>
 
-    @Query("SELECT * FROM project_task WHERE project_id = :projectId AND task_id = :taskId LIMIT 1")
-    fun getTaskById(projectId: Long, taskId: Long): ProjectTask
+    @Query("SELECT * FROM project_task WHERE task_id = :taskId LIMIT 1")
+    fun getTaskById(taskId: Long): ProjectTask
 
     @Query("SELECT ROUND(COUNT(CASE WHEN task_status = 1 THEN 1 END) * 100.0 / COUNT(*)) FROM project_task WHERE project_id = :projectId")
     fun getDonePercentage(projectId: Long): Int
@@ -53,8 +54,8 @@ interface ProjectTaskDao {
     @Query("SELECT * FROM project_task WHERE start_time <= :todayTime AND end_time >= :todayTime")
     fun getAllTodayTask(todayTime: Long): Flow<List<ProjectTask>>
 
-    @Update
-    fun updateTask(task: ProjectTask)
+    @Query("UPDATE project_task SET task_name = :taskName, description = :description, is_remind = :isRemind, start_time = :startTime, end_time = :endTime, tags = :tags, task_status = :taskStatus WHERE task_id = :taskId")
+    fun updateTask(taskId: Long, taskName: String, description: String, isRemind: Boolean, startTime: Long, endTime: Long, tags: String, taskStatus: Int)
 
     @Insert
     fun addTask(task: ProjectTask)
@@ -83,7 +84,7 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
 
     @WorkerThread
     suspend fun update(task: ProjectTask) {
-        projectTaskDao.updateTask(task)
+        projectTaskDao.updateTask(task.taskId, task.taskName, task.description, task.isRemind, task.startTime, task.endTime, task.tags, task.taskStatus.ordinal)
     }
 
 
@@ -93,8 +94,8 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     }
 
     @WorkerThread
-    suspend fun getTaskById(projectId: Long, taskId: Long): ProjectTask {
-        return projectTaskDao.getTaskById(projectId, taskId)
+    suspend fun getTaskById(taskId: Long): ProjectTask {
+        return projectTaskDao.getTaskById(taskId)
     }
 
     @WorkerThread

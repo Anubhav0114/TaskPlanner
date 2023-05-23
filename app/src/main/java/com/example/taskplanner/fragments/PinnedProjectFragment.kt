@@ -14,12 +14,15 @@ import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
 import com.example.taskplanner.databinding.FragmentPinnedProjectBinding
 import com.example.taskplanner.room.Project
+import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.TaskStatus
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import kotlinx.coroutines.launch
 
 class PinnedProjectFragment(private val isDaily: Boolean, private val project: Project) : Fragment() {
+
+    private val dateTimeManager = DateTimeManager()
 
     private lateinit var binding: FragmentPinnedProjectBinding
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels {
@@ -53,7 +56,8 @@ class PinnedProjectFragment(private val isDaily: Boolean, private val project: P
     private fun setupListeners(){
         binding.pinnedProject.setOnClickListener {
 
-            if(project.projectName == "Today Task") return@setOnClickListener
+//            if(project.projectName == "Today Task") return@setOnClickListener
+
             val bundle = Bundle().apply {
                 putLong("project_id", project.projectId)
             }
@@ -76,6 +80,19 @@ class PinnedProjectFragment(private val isDaily: Boolean, private val project: P
                     var taskDone = 0
                     for(task in it){
                         if(task.taskStatus != TaskStatus.Active){
+                            taskDone++
+                        }
+                    }
+
+                    binding.taskDone.text = "$taskDone/${it.size}"
+                }
+            }
+        }else{
+            lifecycleScope.launch {
+                mainActivityViewModel.getAllTodayTasks(dateTimeManager.getTomorrowDate()).collect {
+                    var taskDone = 0
+                    for (task in it) {
+                        if (task.taskStatus != TaskStatus.Active) {
                             taskDone++
                         }
                     }

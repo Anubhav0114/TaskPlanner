@@ -7,7 +7,7 @@ import com.example.taskplanner.room.Project
 
 class PinnedViewPagerAdapter(private val fragment: Fragment): FragmentStateAdapter(fragment) {
     private val projects = ArrayList<Project>()
-    private val dailyProject = Project(0,0L, "Today Task", 0L, 0,isNotify = false, isPinned = false)
+    private val dailyProject = Project(0,100L, "Today Task", 0L, 0,isNotify = false, isPinned = false)
 
     fun addProjects(list: List<Project>){
         projects.clear()
