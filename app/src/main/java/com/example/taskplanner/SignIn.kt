@@ -131,7 +131,7 @@ class SignIn : AppCompatActivity() {
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     Toast.makeText(
                         baseContext,
-                        "Authentication failed.",
+                        "No such user found",
                         Toast.LENGTH_SHORT,
                     ).show()
                     updateUi(null)
@@ -158,6 +158,9 @@ class SignIn : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.IO){
             val auth = auth.signInWithCredential(credential).await()
             val firebaseUser = auth.user
+            val user = User(firebaseUser!!.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
+            val userDao = UserDao()
+            userDao.addUser(user)
             withContext(Dispatchers.Main){
                 updateUi(firebaseUser)
             }
@@ -167,9 +170,9 @@ class SignIn : AppCompatActivity() {
     private fun updateUi(firebaseUser: FirebaseUser?) {
 
         if (firebaseUser != null){
-            val user = User(firebaseUser.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
-            val userDao = UserDao()
-            userDao.addUser(user)
+//            val user = User(firebaseUser.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
+//            val userDao = UserDao()
+//            userDao.addUser(user)
             val mainActivityIntent = Intent(this , MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
