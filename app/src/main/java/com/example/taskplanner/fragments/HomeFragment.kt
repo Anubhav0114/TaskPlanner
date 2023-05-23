@@ -35,6 +35,7 @@ import com.example.taskplanner.utils.CollectionRawData
 import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.countCollection
 import com.example.taskplanner.utils.SharedPreferenceManager
+import com.example.taskplanner.utils.TaskStatus
 import com.example.taskplanner.utils.getCollectionId
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
@@ -265,7 +266,15 @@ class HomeFragment : Fragment() {
 
         lifecycleScope.launch{
             mainActivityViewModel.getAllTodayTasks(dateTimeManager.getTomorrowDate()).collect{
-                taskListAdapter.submitList(it)
+                val filteredTask = ArrayList<ProjectTask>()
+                for (task in it){
+                    if(task.taskStatus != TaskStatus.Done){
+                        filteredTask.add(task)
+                    }
+                }
+
+                binding.todoLabel.text = filteredTask.size.toString()
+                taskListAdapter.submitList(filteredTask)
             }
         }
     }
