@@ -55,10 +55,13 @@ interface ProjectDao {
     fun addProject(project: Project)
 
     @Insert
-    fun addProjectSync(project: List<Project>)
+    fun addProjectSync(projects: List<Project>)
 
     @Delete
     fun deleteProject(project: Project)
+
+    @Query("DELETE FROM projects")
+    fun clearTable()
 }
 
 class ProjectRepository(private val projectDao: ProjectDao) {
@@ -116,7 +119,8 @@ class ProjectRepository(private val projectDao: ProjectDao) {
 
     @WorkerThread
     suspend fun saveAllProjectSync(projects: List<Project>){
-        return projectDao.addProjectSync(projects)
+        projectDao.clearTable()
+        projectDao.addProjectSync(projects)
     }
 
 

@@ -45,6 +45,9 @@ interface ProjectTaskDao {
     @Insert
     fun addAllTaskSync(tasks: List<ProjectTask>)
 
+    @Query("DELETE FROM project_task")
+    fun clearTable()
+
     @Query("SELECT * FROM project_task WHERE project_id = :projectId ORDER BY start_time ASC")
     fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>>
 
@@ -120,6 +123,7 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
 
     @WorkerThread
     suspend fun saveAllTaskSync(tasks: List<ProjectTask>) {
+        projectTaskDao.clearTable()
         projectTaskDao.addAllTaskSync(tasks)
     }
 
