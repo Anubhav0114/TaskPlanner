@@ -39,6 +39,15 @@ data class ProjectTask(
 @Dao
 interface ProjectTaskDao {
 
+    @Query("SELECT * FROM project_task")
+    fun getAllTaskSync(): List<ProjectTask>
+
+    @Insert
+    fun addAllTaskSync(tasks: List<ProjectTask>)
+
+    @Query("DELETE FROM project_task")
+    fun clearTable()
+
     @Query("SELECT * FROM project_task WHERE project_id = :projectId ORDER BY start_time ASC")
     fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>>
 
@@ -60,8 +69,8 @@ interface ProjectTaskDao {
     @Insert
     fun addTask(task: ProjectTask)
 
-    @Delete
-    fun deleteTask(task: ProjectTask)
+    @Query("DELETE FROM project_task WHERE task_id = :taskId")
+    fun deleteTask(taskId: Long)
 }
 
 class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
@@ -70,7 +79,6 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     suspend fun insert(task: ProjectTask) {
         projectTaskDao.addTask(task)
     }
-
 
     @WorkerThread
     suspend fun getTaskDonePercentage(projectId: Long): Int {
@@ -89,8 +97,8 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
 
 
     @WorkerThread
-    suspend fun delete(task: ProjectTask) {
-        projectTaskDao.deleteTask(task)
+    suspend fun delete(taskId: Long) {
+        projectTaskDao.deleteTask(taskId)
     }
 
     @WorkerThread
@@ -106,6 +114,17 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     @WorkerThread
     suspend fun getAllTodayTask(todayTime: Long): Flow<List<ProjectTask>>{
         return projectTaskDao.getAllTodayTask(todayTime)
+    }
+
+    @WorkerThread
+    suspend fun getAllTaskSync(): List<ProjectTask>{
+        return projectTaskDao.getAllTaskSync()
+    }
+
+    @WorkerThread
+    suspend fun saveAllTaskSync(tasks: List<ProjectTask>) {
+        projectTaskDao.clearTable()
+        projectTaskDao.addAllTaskSync(tasks)
     }
 
 }

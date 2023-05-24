@@ -13,8 +13,10 @@ import androidx.activity.addCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.example.taskplanner.ProjectApplication
+import com.example.taskplanner.R
 import com.example.taskplanner.databinding.FragmentTaskBinding
 import com.example.taskplanner.room.ProjectTask
+import com.example.taskplanner.utils.CollectionData
 import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.TaskMode
 import com.example.taskplanner.utils.TaskStatus
@@ -23,6 +25,7 @@ import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.android.material.transition.MaterialContainerTransform
@@ -169,6 +172,10 @@ class TaskFragment : Fragment() {
             setupData()
         }
 
+        binding.deleteTask.setOnClickListener {
+            showDeleteDialog(projectTask.taskId)
+        }
+
         binding.titleText.addTextChangedListener {
             projectTask.taskName = it!!.toString()
         }
@@ -295,5 +302,23 @@ class TaskFragment : Fragment() {
             }
         }
 
+    }
+
+
+    private fun showDeleteDialog(taskId: Long){
+        MaterialAlertDialogBuilder(contextApp)
+            .setTitle("Delete Collection")
+            .setMessage("Do you really want to delete?")
+
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, which ->
+
+            }
+            .setPositiveButton(resources.getString(R.string.delete)) { dialog, which ->
+                mainActivityViewModel.deleteTask(taskId){
+                    // back to previous
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
+            .show()
     }
 }
