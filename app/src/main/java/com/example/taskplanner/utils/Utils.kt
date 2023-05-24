@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.util.TypedValue
 import androidx.room.TypeConverter
 import com.example.taskplanner.room.Project
+import com.example.taskplanner.room.ProjectTask
 
 val Number.toPx get() = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,
@@ -26,6 +27,8 @@ enum class TaskMode{
     Edit,
     View
 }
+
+data class SyncData(val collections: String, val allProjects: List<Project>, val allTasks: List<ProjectTask>)
 
 data class CollectionData(val id: Long, val name: String, val count: Int)
 data class CollectionRawData(val id: Long, var name: String){

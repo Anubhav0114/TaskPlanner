@@ -11,6 +11,7 @@ import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.room.ProjectTaskRepository
 import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.SharedPreferenceManager
+import com.example.taskplanner.utils.SyncData
 import com.example.taskplanner.utils.generateUniqueId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -63,6 +64,24 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         withContext(Dispatchers.Main){
             callback()
         }
+    }
+
+
+
+    fun getSyncData(callback: (SyncData) -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+        val allTask = taskRepository.getAllTaskSync()
+        val allProject = projectRepository.getAllProjectSync()
+
+        withContext(Dispatchers.Main){
+            callback(SyncData(spManager.getSyncData(), allProject, allTask))
+        }
+    }
+
+    fun saveSyncData(data: SyncData) = viewModelScope.launch(Dispatchers.Default){
+        spManager.saveSyncData(data.collections)
+        projectRepository.saveAllProjectSync(data.allProjects)
+        taskRepository.saveAllTaskSync(data.allTasks)
+
     }
 
     fun updateProject(project: Project) = viewModelScope.launch(Dispatchers.Default) {

@@ -33,6 +33,9 @@ interface ProjectDao {
     @Query("SELECT * FROM projects")
     fun getAllProjects(): Flow<List<Project>>
 
+    @Query("SELECT * FROM projects")
+    fun getAllProjectsSync(): List<Project>
+
     @Query("SELECT * FROM projects WHERE is_pinned = 1")
     fun getAllPinnedProjects(): Flow<List<Project>>
 
@@ -50,6 +53,9 @@ interface ProjectDao {
 
     @Insert
     fun addProject(project: Project)
+
+    @Insert
+    fun addProjectSync(project: List<Project>)
 
     @Delete
     fun deleteProject(project: Project)
@@ -101,6 +107,16 @@ class ProjectRepository(private val projectDao: ProjectDao) {
     @WorkerThread
     suspend fun searchProject(searchText: String):List<Project>{
         return projectDao.searchProject(searchText)
+    }
+
+    @WorkerThread
+    suspend fun getAllProjectSync():List<Project>{
+        return projectDao.getAllProjectsSync()
+    }
+
+    @WorkerThread
+    suspend fun saveAllProjectSync(projects: List<Project>){
+        return projectDao.addProjectSync(projects)
     }
 
 

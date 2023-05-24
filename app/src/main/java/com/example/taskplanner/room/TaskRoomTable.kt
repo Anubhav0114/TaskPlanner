@@ -39,6 +39,12 @@ data class ProjectTask(
 @Dao
 interface ProjectTaskDao {
 
+    @Query("SELECT * FROM project_task")
+    fun getAllTaskSync(): List<ProjectTask>
+
+    @Insert
+    fun addAllTaskSync(tasks: List<ProjectTask>)
+
     @Query("SELECT * FROM project_task WHERE project_id = :projectId ORDER BY start_time ASC")
     fun getAllTaskFromProject(projectId: Long): Flow<List<ProjectTask>>
 
@@ -70,7 +76,6 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     suspend fun insert(task: ProjectTask) {
         projectTaskDao.addTask(task)
     }
-
 
     @WorkerThread
     suspend fun getTaskDonePercentage(projectId: Long): Int {
@@ -106,6 +111,16 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
     @WorkerThread
     suspend fun getAllTodayTask(todayTime: Long): Flow<List<ProjectTask>>{
         return projectTaskDao.getAllTodayTask(todayTime)
+    }
+
+    @WorkerThread
+    suspend fun getAllTaskSync(): List<ProjectTask>{
+        return projectTaskDao.getAllTaskSync()
+    }
+
+    @WorkerThread
+    suspend fun saveAllTaskSync(tasks: List<ProjectTask>) {
+        projectTaskDao.addAllTaskSync(tasks)
     }
 
 }
