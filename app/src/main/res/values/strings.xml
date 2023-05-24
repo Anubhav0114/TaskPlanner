@@ -19,5 +19,5 @@
     <string name="ok">Ok</string>
     <string name="delete">Delete</string>
     <string name="forgetPassword">Forgot\nPassword??</string>
-    <string name="forgetText" tools:ignore="StringEscaping">Don't Worry it happens. please enter the email address associated with your account.</string>
+    <string name="forgetText" tools:ignore="StringEscaping">Do not Worry it happens. please enter the email address associated with your account.</string>
 </resources>
