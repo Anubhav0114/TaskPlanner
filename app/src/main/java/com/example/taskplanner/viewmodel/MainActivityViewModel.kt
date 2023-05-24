@@ -136,6 +136,13 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         return taskRepository.getAllTodayTask(todayTime)
     }
 
+    fun deleteTask(taskId: Long, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+        taskRepository.delete(taskId)
+        withContext(Dispatchers.Main){
+            callback()
+        }
+    }
+
 
 
 

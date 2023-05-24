@@ -60,8 +60,8 @@ interface ProjectTaskDao {
     @Insert
     fun addTask(task: ProjectTask)
 
-    @Delete
-    fun deleteTask(task: ProjectTask)
+    @Query("DELETE FROM project_task WHERE task_id = :taskId")
+    fun deleteTask(taskId: Long)
 }
 
 class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
@@ -89,8 +89,8 @@ class ProjectTaskRepository(private val projectTaskDao: ProjectTaskDao) {
 
 
     @WorkerThread
-    suspend fun delete(task: ProjectTask) {
-        projectTaskDao.deleteTask(task)
+    suspend fun delete(taskId: Long) {
+        projectTaskDao.deleteTask(taskId)
     }
 
     @WorkerThread
