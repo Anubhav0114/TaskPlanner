@@ -22,7 +22,12 @@
         android:icon="@drawable/icon_about"
         android:title="About"
         android:clickable="true"/>
+    <item
+        android:id="@+id/themeItem"
+        android:icon="@drawable/icon_more_apps"
+        android:title="Theme"
 
+        android:clickable="true"/>
     <item
         android:id="@+id/shareItem"
         android:icon="@drawable/icon_share"
@@ -34,6 +39,7 @@
         android:icon="@drawable/icon_more_apps"
         android:title="More apps"
         android:clickable="true"/>
+
     <item android:id="@+id/logOut_btn"
         android:icon="@drawable/ic_baseline_logout_24"
         android:title="Log Out"

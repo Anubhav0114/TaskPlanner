@@ -5,7 +5,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.taskplanner.fragments.PinnedProjectFragment
 import com.example.taskplanner.room.Project
 
-class PinnedViewPagerAdapter(private val fragment: Fragment): FragmentStateAdapter(fragment) {
+class PinnedViewPagerAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
     private val projects = ArrayList<Project>()
     private val dailyProject = Project(0,100L, "Today Task", 0L, 0,isNotify = false, isPinned = false)
 
