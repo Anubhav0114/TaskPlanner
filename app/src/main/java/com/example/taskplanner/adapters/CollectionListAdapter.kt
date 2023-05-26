@@ -1,6 +1,7 @@
 package com.example.taskplanner.adapters
 
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -52,7 +53,7 @@ class CollectionListAdapter (private val itemClickListener: OnItemClickListener)
 
 
     private fun showMenu(v: View, data: CollectionData, itemClickListener: OnItemClickListener) {
-        val popup = PopupMenu(v.context, v)
+        val popup = PopupMenu(v.context, v,Gravity.END)
         popup.menuInflater.inflate(R.menu.collection_menu, popup.menu)
 
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->

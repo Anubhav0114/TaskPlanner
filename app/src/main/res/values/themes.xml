@@ -24,6 +24,80 @@
     </style>
 
 
+    <style name="Theme_red" parent="Theme.TaskPlanner">
+        <item name="popupMenuStyle">@style/collection_menu</item>
+
+        <item name="colorPrimary">@color/red_600</item>
+        <item name="colorOnPrimary">@color/red_900</item>
+        <!-- Secondary brand color. -->
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="colorOnSurface">@color/black_600</item>
+        <item name="colorPrimarySurface">@color/white</item>
+
+        <item name="colorAccent">@color/red_300</item>
+        <item name="colorSurface">@color/red_100</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/red_100</item>
+    </style>
+
+
+    <style name="Theme_blue" parent="Theme.TaskPlanner">
+        <item name="popupMenuStyle">@style/collection_menu</item>
+
+        <item name="colorPrimary">@color/blue_700</item>
+        <item name="colorOnPrimary">@color/blue_900</item>
+        <!-- Secondary brand color. -->
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="colorOnSurface">@color/black_600</item>
+        <item name="colorPrimarySurface">@color/white</item>
+
+        <item name="colorAccent">@color/blue_200</item>
+        <item name="colorSurface">@color/blue_100</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/blue_100</item>
+    </style>
+
+
+    <style name="Theme_orange" parent="Theme.TaskPlanner">
+        <item name="popupMenuStyle">@style/collection_menu</item>
+
+        <item name="colorPrimary">@color/orange_600</item>
+        <item name="colorOnPrimary">@color/orange_900</item>
+        <!-- Secondary brand color. -->
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="colorOnSurface">@color/black_600</item>
+        <item name="colorPrimarySurface">@color/white</item>
+
+        <item name="colorAccent">@color/orange_200</item>
+        <item name="colorSurface">@color/orange_100</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/orange_100</item>
+    </style>
+
+
+    <style name="Theme_green" parent="Theme.TaskPlanner">
+        <item name="popupMenuStyle">@style/collection_menu</item>
+
+        <item name="colorPrimary">@color/green_600</item>
+        <item name="colorOnPrimary">@color/green_900</item>
+        <!-- Secondary brand color. -->
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="colorOnSurface">@color/black_600</item>
+        <item name="colorPrimarySurface">@color/white</item>
+
+        <item name="colorAccent">@color/green_200</item>
+        <item name="colorSurface">@color/green_100</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/green_100</item>
+    </style>
 
 
 </resources>

@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:background="@drawable/very_small_rounded_bg"
-        android:backgroundTint="@color/blue_700"
+        android:backgroundTint="?colorPrimary"
         android:paddingHorizontal="16dp"
         android:paddingVertical="2dp"
         android:text="3"
