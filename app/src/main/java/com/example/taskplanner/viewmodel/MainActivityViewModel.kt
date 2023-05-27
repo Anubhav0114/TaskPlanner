@@ -77,6 +77,7 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
         }
     }
 
+    //TODO: call getSync data with callback call saveSyncData
     fun saveSyncData(data: SyncData) = viewModelScope.launch(Dispatchers.Default){
         spManager.saveSyncData(data.collections)
         projectRepository.saveAllProjectSync(data.allProjects)
