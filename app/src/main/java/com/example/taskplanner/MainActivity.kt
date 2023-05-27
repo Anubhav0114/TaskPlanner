@@ -1,10 +1,9 @@
 package com.example.taskplanner
 
+import ThemeManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -14,6 +13,7 @@ import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        applySavedTheme()
 
         mainActivityViewModel.setupViewModel(applicationContext)
         auth = Firebase.auth
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.about_item -> {
                     Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_LONG).show()
                 }
-//   error coming here  //R.id.themeItem->{themeChange()}
+                R.id.themeItem->{themeChange()}
                 R.id.feedback_item -> {
                     val intent = Intent().apply{
                         action = Intent.ACTION_SENDTO
@@ -99,50 +99,37 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    private fun applySavedTheme() {
+        val savedThemeMode = ThemeManager.getSavedThemeMode(this)
+        ThemeManager.applyTheme(this, savedThemeMode)
+    }
     private fun themeChange() {
-        val themeOptions = arrayOf("Purple Theme", "Red Theme", "Green Theme", "Orange Theme")
+        val themeNames = arrayOf("Blue", "Red", "Purple", "Orange", "Green")
+
+        val currentThemeMode = ThemeManager.getSavedThemeMode(this)
+
+        val selectedThemeIndex = currentThemeMode.ordinal
 
         val builder = AlertDialog.Builder(this)
-        val inflater = layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_theme_change, null)
-
-        builder.setView(dialogView)
-        builder.setTitle("Change App Theme")
-
-        val listView = dialogView.findViewById<ListView>(R.id.list_theme_options)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, themeOptions)
-        listView.adapter = adapter
-
-        val dialog = builder.create()
-        listView.setOnItemClickListener { _, _, position, _ ->
-            when (position) {
-                0 -> {
-                    // Apply purple theme
-                    recreate() // Recreate the activity to apply the new theme
-                    setTheme(R.style.Theme_purple)
-                }
-                1 -> {
-                    // Apply red theme
-                    recreate() // Recreate the activity to apply the new theme
-                    setTheme(R.style.Theme_red)
-                }
-                2 -> {
-                    // Apply green theme
-                    recreate() // Recreate the activity to apply the new theme
-                    setTheme(R.style.Theme_green)
-                }
-                3 -> {
-                    // Apply orange theme
-                    recreate() // Recreate the activity to apply the new theme
-                    setTheme(R.style.Theme_orange)
-                }
+        builder.setTitle("Select Theme")
+            .setSingleChoiceItems(themeNames, selectedThemeIndex) { dialog, selection ->
+                val selectedThemeMode = ThemeManager.ThemeMode.values()[selection]
+                ThemeManager.applyTheme(this, selectedThemeMode)
+                Snackbar.make(binding.root, "Restart the application for seeing the change", Snackbar.LENGTH_LONG)
+                    .setAction("Restart") {
+                        // Responds to click on the action
+                        finish()
+                        startActivity(intent)
+                    }
+                    .show()
+                dialog.dismiss()
             }
-            dialog.dismiss()
-        }
-
-        dialog.show()
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+        builder.create().show()
     }
+
     fun openNavDrawer(){
         binding.drawerLayout.open()
     }
