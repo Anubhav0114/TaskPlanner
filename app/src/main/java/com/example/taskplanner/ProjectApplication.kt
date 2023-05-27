@@ -14,4 +14,8 @@ class ProjectApplication : Application() {
     private val database by lazy { AppDatabase.getDatabase(this) }
     val projectRepository by lazy { ProjectRepository(database.projectDao()) }
     val taskRepository by lazy { ProjectTaskRepository(database.taskDao()) }
+
+    override fun onCreate() {
+        super.onCreate()
+    }
 }
