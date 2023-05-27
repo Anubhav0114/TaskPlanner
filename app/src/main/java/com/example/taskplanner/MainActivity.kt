@@ -1,35 +1,26 @@
 package com.example.taskplanner
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.appcompat.app.AppCompatActivity
 import com.example.taskplanner.databinding.ActivityMainBinding
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-
+    //  0= Theme_blue, 1= Theme_red, 2= Theme_purple, 3= Theme_orange,4= Theme_green
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth : FirebaseAuth
 
@@ -62,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.about_item -> {
                     Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_LONG).show()
                 }
-                R.id.themeItem->{themeChange()}
+//   error coming here  //R.id.themeItem->{themeChange()}
                 R.id.feedback_item -> {
                     val intent = Intent().apply{
                         action = Intent.ACTION_SENDTO
@@ -109,7 +100,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("MissingInflatedId")
     private fun themeChange() {
         val themeOptions = arrayOf("Purple Theme", "Red Theme", "Green Theme", "Orange Theme")
 
