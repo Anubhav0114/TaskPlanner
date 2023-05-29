@@ -179,9 +179,9 @@ class SignIn : AppCompatActivity() {
 //            val user = User(firebaseUser.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
 //            val userDao = UserDao()
 //            userDao.addUser(user)
-            mainActivityViewModel.getSyncData { it->
-
-            }
+//            mainActivityViewModel.getSyncData { it->
+//
+//            }
             val mainActivityIntent = Intent(this , MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()

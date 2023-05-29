@@ -3,6 +3,8 @@ package com.example.taskplanner
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -43,9 +45,9 @@ class MainActivity : AppCompatActivity() {
 
 //        val intent = Intent(this ,SignIn::class.java )
 //        startActivity(intent)
-
-
-
+        val v: View = binding.navView.getHeaderView(0)
+        val text:TextView = v.findViewById(R.id.textView11)
+        text.text = "Hi Boss"
         binding.navView.setNavigationItemSelectedListener { menuItem ->
 
             when(menuItem.itemId){
