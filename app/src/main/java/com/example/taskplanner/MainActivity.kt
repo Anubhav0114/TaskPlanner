@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 //        startActivity(intent)
         val v: View = binding.navView.getHeaderView(0)
         val text:TextView = v.findViewById(R.id.textView11)
-        text.text = "Hi Boss"
+        text.text = "Hi Sayam"
         binding.navView.setNavigationItemSelectedListener { menuItem ->
 
             when(menuItem.itemId){
