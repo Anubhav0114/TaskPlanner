@@ -1,6 +1,5 @@
 package com.example.taskplanner
 
-import ThemeManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -44,6 +43,9 @@ class MainActivity : AppCompatActivity() {
 
 //        val intent = Intent(this ,SignIn::class.java )
 //        startActivity(intent)
+
+
+
         binding.navView.setNavigationItemSelectedListener { menuItem ->
 
             when(menuItem.itemId){

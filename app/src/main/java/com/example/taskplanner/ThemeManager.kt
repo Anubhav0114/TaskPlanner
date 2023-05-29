@@ -1,7 +1,8 @@
+package com.example.taskplanner
+
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.taskplanner.R
 
 object ThemeManager {
     private const val THEME_PREFS = "theme_prefs"
