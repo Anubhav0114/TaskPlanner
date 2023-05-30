@@ -1,97 +1,43 @@
 package com.example.taskplanner.utils
 
 import android.os.Build
+import kotlinx.datetime.*
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.time.ZoneId
-import java.time.ZoneOffset
-import java.util.*
+import java.util.Date
+import java.util.Locale
+
 
 class DateTimeManager {
 
 
-    fun currentTimeMillisecond(): Long {
+    fun localUnixMillisToUtcUnixMillis(localUnixMillis: Long): Long {
+        val localInstant = Instant.fromEpochMilliseconds(localUnixMillis)
+        return localInstant.toLocalDateTime(TimeZone.UTC).toInstant(TimeZone.UTC).toEpochMilliseconds()
+    }
 
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val current = LocalDateTime.now()
-            current.toEpochSecond(ZoneOffset.UTC) * 1000L
-        }else{
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis
-        }
+    fun currentTimeMillisecond(): Long {
+        val currentTime = Clock.System.now()
+        return currentTime.toEpochMilliseconds()
     }
 
     fun getTomorrowDate(): Long{
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val tomorrow = LocalDate.now().plusDays(1)
-            val startOfDay = tomorrow.atStartOfDay().toInstant(ZoneOffset.UTC)
-            startOfDay.toEpochMilli()
-        }else{
-            val calendar = Calendar.getInstance()
-            calendar.add(Calendar.DAY_OF_YEAR, 1) // Add 1 day to get tomorrow's date
-            calendar.set(Calendar.HOUR_OF_DAY, 0) // Set the time to 00:00:00
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-            calendar.timeInMillis
-        }
+        val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        val endOfDay = LocalDateTime(currentDate, LocalTime(23, 59, 59))
+        return endOfDay.toInstant(TimeZone.UTC).toEpochMilliseconds()
     }
+
 
 
     fun parseDateOnly(unixTimestampMillis: Long): Long{
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-
-            // Convert Unix timestamp to LocalDateTime
-            val dateTime = Instant.ofEpochMilli(unixTimestampMillis)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime()
-
-            // Extract the date portion from the LocalDateTime
-            val date = dateTime.toLocalDate()
-            // Convert the date to milliseconds
-            val dateInMillis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            dateInMillis
-        }else{
-            val calendar = Calendar.getInstance(TimeZone.getDefault())
-            calendar.timeInMillis = unixTimestampMillis
-
-            // Clear the time portion of the Calendar
-            calendar.set(Calendar.HOUR_OF_DAY, 0)
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-            val date = calendar.time
-            date.time
-        }
+        val instant = Instant.fromEpochMilliseconds(unixTimestampMillis)
+        return instant.toLocalDateTime(TimeZone.currentSystemDefault()).date.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds()
     }
 
     fun parseTimeOnly(unixTimestampMillis: Long): Long{
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val instant = Instant.fromEpochMilliseconds(unixTimestampMillis)
+        val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
 
-            // Convert Unix timestamp to LocalDateTime
-            val dateTime = LocalDateTime.ofInstant(
-                Instant.ofEpochMilli(unixTimestampMillis),
-                ZoneId.systemDefault()
-            )
-
-            // Extract the time portion from the LocalDateTime
-            val time = dateTime.toLocalTime()
-            time.toNanoOfDay() / 1000
-
-        }else {
-
-            val calendar = Calendar.getInstance(TimeZone.getDefault())
-            calendar.timeInMillis = unixTimestampMillis
-
-            val hour = calendar.get(Calendar.HOUR_OF_DAY)
-            val minute = calendar.get(Calendar.MINUTE)
-            val second = calendar.get(Calendar.SECOND)
-            val millisecond = calendar.get(Calendar.MILLISECOND)
-            (hour * 60L * 60L * 1000L) + (minute * 60L * 1000L) + (second * 1000L) + millisecond
-        }
+        return (localDateTime.hour * 3600 + localDateTime.minute * 60 + localDateTime.second) * 1000L
     }
 
 
@@ -103,10 +49,9 @@ class DateTimeManager {
     }
 
     fun unixMillToTimeString(milliSec: Long): String{
-        val sdf = SimpleDateFormat("h:mm a", Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = milliSec
-        return sdf.format(calendar.time).uppercase()
+        val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+        val dateTime = Date(milliSec)
+        return timeFormat.format(dateTime)
     }
 
     fun rawTimeToString(hours: Int, minutes: Int): String {
@@ -121,31 +66,16 @@ class DateTimeManager {
     }
 
     fun getCurrentHour(): Int {
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val now = LocalDateTime.now()
-            now.hour
-        }else{
-            val now = Calendar.getInstance()
-            now.get(Calendar.HOUR_OF_DAY)
-        }
+        return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).hour
     }
 
     fun getCurrentMin(): Int{
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val now = LocalDateTime.now()
-            now.minute
-        }else{
-            val now = Calendar.getInstance()
-            now.get(Calendar.MINUTE)
-        }
+        return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).minute
     }
 
     fun getTimezoneOffset(): Long {
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            OffsetDateTime.now().offset.totalSeconds * 1000L
-        }else{
-            TimeZone.getDefault().rawOffset.toLong()
-        }
+        val currentOffset = TimeZone.currentSystemDefault().offsetAt(Clock.System.now())
+        return currentOffset.totalSeconds * 1000L
     }
 
 
