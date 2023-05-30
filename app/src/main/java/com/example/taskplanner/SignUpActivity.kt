@@ -3,10 +3,11 @@ package com.example.taskplanner
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import com.example.taskplanner.databinding.ActivitySignUpBinding
+import com.example.taskplanner.room.Users
+import com.example.taskplanner.room.UserDao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -52,10 +53,10 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful){
                     val user = auth.currentUser
 
-                    val userData =
-                        user?.let { User(it.uid , name , " ") }
+                    val usersData =
+                        user?.let { Users(name , " " , it.uid) }
                     val userDao = UserDao()
-                    userDao.addUser(userData)
+                    userDao.addUser(usersData)
 
                     updateUi(user)
 

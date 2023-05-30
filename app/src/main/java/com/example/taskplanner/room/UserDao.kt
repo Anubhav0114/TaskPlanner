@@ -1,4 +1,4 @@
-package com.example.taskplanner
+package com.example.taskplanner.room
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -10,10 +10,10 @@ class UserDao {
     private val db = FirebaseFirestore.getInstance()
     private val userCollection = db.collection("users")
 
-    fun addUser(user: User?) {
-        user?.let {
+    fun addUser(users: Users?) {
+        users?.let {
             GlobalScope.launch(Dispatchers.IO) {
-                userCollection.document(user.uid).set(it)
+                userCollection.document(users.uid).set(it)
             }
         }
     }

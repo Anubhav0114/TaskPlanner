@@ -36,13 +36,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/projectName"
+                android:id="@+id/UserName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Hello, Pathak"
+                tools:text="Hello, Pathak"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="@dimen/very_big_text"
                 app:layout_constraintBottom_toBottomOf="parent"
