@@ -3,11 +3,13 @@ package com.example.taskplanner.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 
 import androidx.appcompat.app.AlertDialog
@@ -17,12 +19,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.taskplanner.MainActivity
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
+import com.example.taskplanner.room.Users
 import com.example.taskplanner.adapters.CustomChipListAdapter
 import com.example.taskplanner.adapters.HomeProjectListAdapter
 import com.example.taskplanner.adapters.HomeTodayTaskListAdapter
@@ -34,17 +35,18 @@ import com.example.taskplanner.utils.ChipData
 import com.example.taskplanner.utils.CollectionRawData
 import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.countCollection
-import com.example.taskplanner.utils.SharedPreferenceManager
 import com.example.taskplanner.utils.TaskStatus
 import com.example.taskplanner.utils.getCollectionId
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.transition.MaterialElevationScale
-import kotlinx.coroutines.Dispatchers
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
-
-
+private const val TAG = "HomeFragment"
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
@@ -57,6 +59,7 @@ class HomeFragment : Fragment() {
     private var selectedChipIndex = 0
     private var selectedCollectionId = 1234567L
     private lateinit var pinnedProjectAdapter: PinnedViewPagerAdapter
+    private lateinit var auth : FirebaseAuth
 
     private val dateTimeManager = DateTimeManager()
 
@@ -88,6 +91,11 @@ class HomeFragment : Fragment() {
         binding.motionLayout.post{
             binding.motionLayout.progress = mainActivityViewModel.motionProgress
         }
+
+        // code to update the user name
+        auth  = Firebase.auth
+        updateUserName()
+
         // handle animations
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
@@ -98,7 +106,30 @@ class HomeFragment : Fragment() {
         setupUI()
         addObservers()
         setupListener()
+
     }
+
+    private fun updateUserName() {
+        val currentUser = auth.currentUser!!.uid
+        if (currentUser == null){
+            Log.i(TAG , "current user is null")
+        }
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users").document(currentUser).get()
+            .addOnSuccessListener { userSnapshot ->
+
+                if (userSnapshot == null){
+                    Log.i(TAG , "the user object received is null")
+                }else{
+                    val signedInUsers = userSnapshot.toObject(Users::class.java)
+                    binding.UserName.text = "Hello, " + signedInUsers!!.displayName
+                }
+            }
+            .addOnFailureListener{ exception ->
+                Log.i(TAG , "Failure Fetching User" , exception)
+            }
+    }
+
 
     private fun dialog() {
         val dialogView = LayoutInflater.from(contextApp).inflate(R.layout.add_project_dialog, null)

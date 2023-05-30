@@ -11,8 +11,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import com.example.taskplanner.databinding.ActivitySignInBinding
+
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+
+import com.example.taskplanner.room.Users
+import com.example.taskplanner.room.UserDao
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -164,9 +169,9 @@ class SignIn : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.IO){
             val auth = auth.signInWithCredential(credential).await()
             val firebaseUser = auth.user
-            val user = User(firebaseUser!!.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
+            val users = Users( firebaseUser?.displayName.toString() , firebaseUser?.photoUrl.toString() , firebaseUser!!.uid )
             val userDao = UserDao()
-            userDao.addUser(user)
+            userDao.addUser(users)
             withContext(Dispatchers.Main){
                 updateUi(firebaseUser)
             }

@@ -1,13 +1,19 @@
 package com.example.taskplanner
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.taskplanner.databinding.ActivityMainBinding
+import com.example.taskplanner.room.Users
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -15,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     //  0= Theme_blue, 1= Theme_red, 2= Theme_purple, 3= Theme_orange,4= Theme_green
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth : FirebaseAuth
+    private lateinit var userName : TextView
+    private lateinit var userImage: ImageView
 
     private val mainActivityViewModel: MainActivityViewModel by viewModels {
         MainActivityViewModelFactory(
@@ -39,6 +48,14 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel.setupViewModel(applicationContext)
         auth = Firebase.auth
+
+
+       val navView =binding.navView.getHeaderView(0)
+        userName = navView.findViewById(R.id.NavUserName)
+        userImage = navView.findViewById(R.id.UserImage)
+
+
+        updateNameAndImage()
 
 
 //        val intent = Intent(this ,SignIn::class.java )
@@ -134,5 +151,24 @@ class MainActivity : AppCompatActivity() {
 
     fun openNavDrawer(){
         binding.drawerLayout.open()
+    }
+    private fun updateNameAndImage(){
+        val currUser = auth.currentUser?.uid
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users").document(currUser!!).get().addOnSuccessListener { userSnapshot ->
+            val user = userSnapshot.toObject(Users::class.java)
+            if (user!!.displayName != null){
+                userName.text = "Hello, " + user.displayName
+            }else{
+                userName.text = "Hello, User"
+            }
+            if (user!!.imageUrl != null){
+                Glide.with(userImage.context).load(user!!.imageUrl).circleCrop().into(userImage)
+            }else{
+
+            }
+        }.addOnFailureListener{
+            Log.i("MainActivity" , " Failure while fetching the user")
+        }
     }
 }

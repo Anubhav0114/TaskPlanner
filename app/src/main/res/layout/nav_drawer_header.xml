@@ -8,21 +8,21 @@
     android:fitsSystemWindows="true">
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/NavUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Hello, Pathak"
-        android:textColor="?colorOnPrimary"
+        tools:text="Hello, Pathak"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="@dimen/very_big_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+        app:layout_constraintEnd_toStartOf="@+id/UserImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/UserImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"

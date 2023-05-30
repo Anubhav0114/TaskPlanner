@@ -49,7 +49,7 @@
             android:name=".room.NotificationManager$StartTimeReceiver"
             android:enabled="true"
             android:exported="true"
-            android:label="DiaperChangeReceiver">
+            android:label="StartTimeReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -58,7 +58,7 @@
             android:name=".room.NotificationManager$EndTimeReceiver"
             android:enabled="true"
             android:exported="true"
-            android:label="DiaperChangeReceiver">
+            android:label="EndTimeReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
