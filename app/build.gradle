@@ -27,7 +27,6 @@ android {
         }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -44,8 +43,8 @@ dependencies {
     implementation 'com.google.android.play:review-ktx:2.0.1'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.2'
 
-    // datetime
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation 'com.google.code.gson:gson:2.9.0'
+
 
 
     // room
@@ -82,7 +81,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
 
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+
 
 
 

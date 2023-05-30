@@ -1,6 +1,5 @@
 package com.example.taskplanner
 
-import ThemeManager
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -61,6 +60,9 @@ class MainActivity : AppCompatActivity() {
 
 //        val intent = Intent(this ,SignIn::class.java )
 //        startActivity(intent)
+//        val v: View = binding.navView.getHeaderView(0)
+//        val text:TextView = v.findViewById(R.id.textView11)
+//        text.text = "Hi Sayam"
         binding.navView.setNavigationItemSelectedListener { menuItem ->
 
             when(menuItem.itemId){
