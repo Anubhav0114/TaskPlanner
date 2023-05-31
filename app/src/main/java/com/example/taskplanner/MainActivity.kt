@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
 
     //  0= Theme_blue, 1= Theme_red, 2= Theme_purple, 3= Theme_orange,4= Theme_green
     private lateinit var binding: ActivityMainBinding
-    private lateinit var auth : FirebaseAuth
-    private lateinit var userName : TextView
+    private lateinit var auth: FirebaseAuth
+    private lateinit var userName: TextView
     private lateinit var userImage: ImageView
 
     private val mainActivityViewModel: MainActivityViewModel by viewModels {
@@ -50,9 +50,14 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
 
 
-       val navView =binding.navView.getHeaderView(0)
+        val navView = binding.navView.getHeaderView(0)
         userName = navView.findViewById(R.id.NavUserName)
         userImage = navView.findViewById(R.id.UserImage)
+
+        mainActivityViewModel.getSyncData {
+            Log.e("----------** ----", it)
+        }
+
 
 
         updateNameAndImage()
@@ -65,16 +70,18 @@ class MainActivity : AppCompatActivity() {
 //        text.text = "Hi Sayam"
         binding.navView.setNavigationItemSelectedListener { menuItem ->
 
-            when(menuItem.itemId){
+            when (menuItem.itemId) {
                 R.id.notification_item -> {
                     Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_LONG).show()
                 }
                 R.id.about_item -> {
                     Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_LONG).show()
                 }
-                R.id.themeItem->{themeChange()}
+                R.id.themeItem -> {
+                    themeChange()
+                }
                 R.id.feedback_item -> {
-                    val intent = Intent().apply{
+                    val intent = Intent().apply {
                         action = Intent.ACTION_SENDTO
                         data = Uri.parse("mailto:")
                         putExtra(Intent.EXTRA_EMAIL, arrayOf("flaxstudiohelp@gmail.com"))
@@ -87,24 +94,30 @@ class MainActivity : AppCompatActivity() {
                     startActivity(browserIntent)
                 }
                 R.id.shareItem -> {
-                    val sendIntent : Intent = Intent().apply {
+                    val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT , "Hey, I just made a really cool Task using Task Planner App .You should also download this amazing App.")
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "Hey, I just made a really cool Task using Task Planner App .You should also download this amazing App."
+                        )
                         type = "text/plain"
                     }
-                    val shareIntent = Intent.createChooser(sendIntent , "Share Task Planner to your Friends")
+                    val shareIntent =
+                        Intent.createChooser(sendIntent, "Share Task Planner to your Friends")
                     startActivity(shareIntent)
                 }
                 R.id.moreApps_item -> {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://flax-studio.vercel.app"))
+                    val browserIntent =
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://flax-studio.vercel.app"))
                     startActivity(browserIntent)
                 }
 
                 R.id.logOut_btn -> {
                     auth.signOut()
-                    val googleSignInClient = GoogleSignIn.getClient(this , GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    googleSignInClient.signOut().addOnCompleteListener{
-                        val intent = Intent(this , SignIn::class.java)
+                    val googleSignInClient =
+                        GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    googleSignInClient.signOut().addOnCompleteListener {
+                        val intent = Intent(this, SignIn::class.java)
                         startActivity(intent)
                         finish()
                     }
@@ -122,6 +135,7 @@ class MainActivity : AppCompatActivity() {
         val savedThemeMode = ThemeManager.getSavedThemeMode(this)
         ThemeManager.applyTheme(this, savedThemeMode)
     }
+
     private fun themeChange() {
         val themeNames = arrayOf("Blue", "Red", "Purple", "Orange", "Green")
 
@@ -134,7 +148,11 @@ class MainActivity : AppCompatActivity() {
             .setSingleChoiceItems(themeNames, selectedThemeIndex) { dialog, selection ->
                 val selectedThemeMode = ThemeManager.ThemeMode.values()[selection]
                 ThemeManager.applyTheme(this, selectedThemeMode)
-                Snackbar.make(binding.root, "Restart the application for seeing the change", Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    binding.root,
+                    "Restart the application for seeing the change",
+                    Snackbar.LENGTH_LONG
+                )
                     .setAction("Restart") {
                         // Responds to click on the action
                         finish()
@@ -149,26 +167,23 @@ class MainActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    fun openNavDrawer(){
+    fun openNavDrawer() {
         binding.drawerLayout.open()
     }
-    private fun updateNameAndImage(){
+
+    private fun updateNameAndImage() {
         val currUser = auth.currentUser?.uid
         val db = FirebaseFirestore.getInstance()
         db.collection("users").document(currUser!!).get().addOnSuccessListener { userSnapshot ->
             val user = userSnapshot.toObject(Users::class.java)
-            if (user!!.displayName != null){
+            if (user != null) {
                 userName.text = "Hello, " + user.displayName
-            }else{
-                userName.text = "Hello, User"
             }
-            if (user!!.imageUrl != null){
-                Glide.with(userImage.context).load(user!!.imageUrl).circleCrop().into(userImage)
-            }else{
-
+            if (user != null) {
+                Glide.with(userImage.context).load(user.imageUrl).circleCrop().into(userImage)
             }
-        }.addOnFailureListener{
-            Log.i("MainActivity" , " Failure while fetching the user")
+        }.addOnFailureListener {
+            Log.i("MainActivity", " Failure while fetching the user")
         }
     }
 }

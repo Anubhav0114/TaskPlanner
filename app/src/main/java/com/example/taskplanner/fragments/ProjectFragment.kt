@@ -252,12 +252,31 @@ class ProjectFragment : Fragment() {
 
     private fun setupListener() {
         binding.createTask.setOnClickListener {
+
+            exitTransition = MaterialElevationScale(false).apply {
+                duration = 1000
+            }
+            reenterTransition = MaterialElevationScale(true).apply {
+                duration = 1000
+            }
+
+            val extras = FragmentNavigatorExtras(it to "task_fragment")
+
+            val id = generateUniqueId()
+            it.transitionName = id.toString()
+
             val bundle = Bundle().apply {
                 putBoolean("isCreating", true)
                 putLong("projectId", openedProject.projectId)
-                putLong("taskId", generateUniqueId())
+                putLong("taskId", id)
             }
-            findNavController().navigate(R.id.action_projectFragment_to_taskFragment, bundle)
+            findNavController().navigate(
+                R.id.action_projectFragment_to_taskFragment,
+                bundle,
+                null,
+                extras
+            )
+
         }
 
         binding.backBtn.setOnClickListener {

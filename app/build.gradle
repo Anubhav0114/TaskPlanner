@@ -27,6 +27,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -45,7 +46,8 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.9.0'
 
-
+    // datetime
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     // room
     def room_version = "2.5.1"
@@ -80,9 +82,11 @@ dependencies {
     // Also add the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
 
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
 
 
 
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
 
 
 
