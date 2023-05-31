@@ -7,11 +7,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    namespace 'com.example.taskplanner'
+    namespace 'com.flaxstudio.taskplanner'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.taskplanner"
+        applicationId "com.flaxstudio.taskplanner"
         minSdk 21
         targetSdk 33
         versionCode 1

@@ -54,7 +54,7 @@
         app:layout_constraintStart_toStartOf="@+id/circularProgress"
         app:layout_constraintTop_toTopOf="@+id/circularProgress" />
 
-    <com.example.taskplanner.customview.CircularProgress
+    <com.flaxstudio.taskplanner.customview.CircularProgress
         android:id="@+id/circularProgress"
         android:layout_width="50dp"
         android:layout_height="50dp"

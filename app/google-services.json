@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:468633020759:android:8a266debd3f0ac48263612",
         "android_client_info": {
-          "package_name": "com.example.taskplanner"
+          "package_name": "com.flaxstudio.taskplanner"
         }
       },
       "oauth_client": [
