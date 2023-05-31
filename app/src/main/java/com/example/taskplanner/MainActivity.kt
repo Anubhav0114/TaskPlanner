@@ -1,7 +1,6 @@
 package com.example.taskplanner
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.taskplanner.databinding.ActivityMainBinding
 import com.example.taskplanner.room.Users
+import com.example.taskplanner.utils.removeSurname
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -178,9 +178,8 @@ class MainActivity : AppCompatActivity() {
         db.collection("users").document(currUser!!).get().addOnSuccessListener { userSnapshot ->
             val user = userSnapshot.toObject(Users::class.java)
             if (user != null) {
-                userName.text = "Hello, " + user.displayName
-            }
-            if (user != null) {
+                val name = "Hello, ${removeSurname(user.displayName)}"
+                userName.text = name
                 Glide.with(userImage.context).load(user.imageUrl).circleCrop().into(userImage)
             }
         }.addOnFailureListener {
