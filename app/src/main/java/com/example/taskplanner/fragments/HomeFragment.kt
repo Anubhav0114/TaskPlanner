@@ -9,9 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -23,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taskplanner.MainActivity
 import com.example.taskplanner.ProjectApplication
 import com.example.taskplanner.R
-import com.example.taskplanner.room.Users
 import com.example.taskplanner.adapters.CustomChipListAdapter
 import com.example.taskplanner.adapters.HomeProjectListAdapter
 import com.example.taskplanner.adapters.HomeTodayTaskListAdapter
@@ -32,12 +29,14 @@ import com.example.taskplanner.databinding.FragmentHomeBinding
 import com.example.taskplanner.decorator.HomeTaskDecorator
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.room.ProjectTask
+import com.example.taskplanner.room.Users
 import com.example.taskplanner.utils.ChipData
 import com.example.taskplanner.utils.CollectionRawData
 import com.example.taskplanner.utils.DateTimeManager
-import com.example.taskplanner.utils.countCollection
 import com.example.taskplanner.utils.TaskStatus
+import com.example.taskplanner.utils.countCollection
 import com.example.taskplanner.utils.getCollectionId
+import com.example.taskplanner.utils.removeSurname
 import com.example.taskplanner.viewmodel.MainActivityViewModel
 import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.transition.MaterialElevationScale
@@ -141,7 +140,8 @@ class HomeFragment : Fragment() {
                     Log.i(TAG , "the user object received is null")
                 }else{
                     val signedInUsers = userSnapshot.toObject(Users::class.java)
-                    binding.UserName.text = "Hello, " + signedInUsers!!.displayName
+                    val name = "Hello, ${removeSurname(signedInUsers!!.displayName)}"
+                    binding.UserName.text = name
                 }
             }
             .addOnFailureListener{ exception ->

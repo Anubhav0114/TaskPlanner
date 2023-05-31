@@ -22,6 +22,17 @@ fun generateUniqueId(): Long{
     return System.currentTimeMillis()
 }
 
+fun removeSurname(fullName: String): String {
+    val nameParts = fullName.trim().split(" ") // Split the full name into parts
+    return if (nameParts.size > 1) {
+        val firstName = nameParts.first() // Get the first part as the first name
+        firstName
+    } else {
+        fullName // Return the full name if no surname is found
+    }
+}
+
+
 enum class TaskMode{
     Create,
     Edit,
