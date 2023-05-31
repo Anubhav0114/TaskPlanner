@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                     val googleSignInClient =
                         GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN)
                     googleSignInClient.signOut().addOnCompleteListener {
-                        val intent = Intent(this, SignIn::class.java)
+                        val intent = Intent(this, com.flaxstudio.taskplanner.SignIn::class.java)
                         startActivity(intent)
                         finish()
                     }
@@ -133,22 +133,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun applySavedTheme() {
-        val savedThemeMode = ThemeManager.getSavedThemeMode(this)
-        ThemeManager.applyTheme(this, savedThemeMode)
+        val savedThemeMode = com.flaxstudio.taskplanner.ThemeManager.getSavedThemeMode(this)
+        com.flaxstudio.taskplanner.ThemeManager.applyTheme(this, savedThemeMode)
     }
 
     private fun themeChange() {
         val themeNames = arrayOf("Blue", "Red", "Purple", "Orange", "Green")
 
-        val currentThemeMode = ThemeManager.getSavedThemeMode(this)
+        val currentThemeMode = com.flaxstudio.taskplanner.ThemeManager.getSavedThemeMode(this)
 
         val selectedThemeIndex = currentThemeMode.ordinal
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select Theme")
             .setSingleChoiceItems(themeNames, selectedThemeIndex) { dialog, selection ->
-                val selectedThemeMode = ThemeManager.ThemeMode.values()[selection]
-                ThemeManager.applyTheme(this, selectedThemeMode)
+                val selectedThemeMode = com.flaxstudio.taskplanner.ThemeManager.ThemeMode.values()[selection]
+                com.flaxstudio.taskplanner.ThemeManager.applyTheme(this, selectedThemeMode)
                 Snackbar.make(
                     binding.root,
                     "Restart the application for seeing the change",

@@ -187,7 +187,7 @@ class SignIn : AppCompatActivity() {
 //            mainActivityViewModel.getSyncData { it->
 //
 //            }
-            val mainActivityIntent = Intent(this , MainActivity::class.java)
+            val mainActivityIntent = Intent(this , com.flaxstudio.taskplanner.MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
         }else{

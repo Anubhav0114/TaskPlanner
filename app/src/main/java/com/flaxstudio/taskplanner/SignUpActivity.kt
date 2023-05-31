@@ -75,7 +75,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun updateUi(firebaseUser: FirebaseUser?) {
 
         if (firebaseUser != null){
-            val mainActivityIntent = Intent(this , MainActivity::class.java)
+            val mainActivityIntent = Intent(this , com.flaxstudio.taskplanner.MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
         }
