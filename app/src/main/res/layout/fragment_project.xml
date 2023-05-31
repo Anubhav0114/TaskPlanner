@@ -122,7 +122,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <com.example.taskplanner.customview.CustomChip
+            <com.flaxstudio.taskplanner.customview.CustomChip
                 android:id="@+id/allChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                 app:textColor="?attr/colorOnPrimary"
                 app:textSize="@dimen/small_text" />
 
-            <com.example.taskplanner.customview.CustomChip
+            <com.flaxstudio.taskplanner.customview.CustomChip
                 android:id="@+id/progressChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
                 app:textColor="?attr/colorOnPrimary"
                 app:textSize="@dimen/small_text" />
 
-            <com.example.taskplanner.customview.CustomChip
+            <com.flaxstudio.taskplanner.customview.CustomChip
                 android:id="@+id/doneChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -203,7 +203,7 @@
                 app:textColor="?attr/colorOnPrimary"
                 app:textSize="@dimen/small_text" />
 
-            <com.example.taskplanner.customview.CustomChip
+            <com.flaxstudio.taskplanner.customview.CustomChip
                 android:id="@+id/failedChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
