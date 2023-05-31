@@ -23,13 +23,13 @@ fun generateUniqueId(): Long{
 }
 
 fun removeSurname(fullName: String): String {
-    val nameParts = fullName.split(" ")
-    if (nameParts.size > 1) {
-        // Remove the last name/surname
-        nameParts.dropLast(1)
+    val nameParts = fullName.split(" ") // Split the full name into parts
+    return if (nameParts.size > 1) {
+        val firstName = nameParts.first() // Get the first part as the first name
+        firstName
+    } else {
+        fullName // Return the full name if no surname is found
     }
-    // Join the remaining name parts
-    return nameParts.joinToString(" ")
 }
 
 

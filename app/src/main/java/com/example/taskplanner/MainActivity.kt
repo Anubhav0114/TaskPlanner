@@ -179,8 +179,6 @@ class MainActivity : AppCompatActivity() {
             if (user != null) {
                 val name = "Hello, ${removeSurname(user.displayName)}"
                 userName.text = name
-            }
-            if (user != null) {
                 Glide.with(userImage.context).load(user.imageUrl).circleCrop().into(userImage)
             }
         }.addOnFailureListener {
