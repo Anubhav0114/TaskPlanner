@@ -23,7 +23,7 @@ fun generateUniqueId(): Long{
 }
 
 fun removeSurname(fullName: String): String {
-    val nameParts = fullName.split(" ") // Split the full name into parts
+    val nameParts = fullName.trim().split(" ") // Split the full name into parts
     return if (nameParts.size > 1) {
         val firstName = nameParts.first() // Get the first part as the first name
         firstName

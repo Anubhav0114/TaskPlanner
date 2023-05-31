@@ -110,9 +110,6 @@ class HomeFragment : Fragment() {
 
     private fun updateUserName() {
         val currentUser = auth.currentUser!!.uid
-        if (currentUser == null){
-            Log.i(TAG , "current user is null")
-        }
         val db = FirebaseFirestore.getInstance()
         db.collection("users").document(currentUser).get()
             .addOnSuccessListener { userSnapshot ->
