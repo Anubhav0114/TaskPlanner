@@ -157,15 +157,11 @@ class MainActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         db.collection("users").document(currUser!!).get().addOnSuccessListener { userSnapshot ->
             val user = userSnapshot.toObject(Users::class.java)
-            if (user!!.displayName != null){
+            if (user != null) {
                 userName.text = "Hello, " + user.displayName
-            }else{
-                userName.text = "Hello, User"
             }
-            if (user!!.imageUrl != null){
-                Glide.with(userImage.context).load(user!!.imageUrl).circleCrop().into(userImage)
-            }else{
-
+            if (user != null) {
+                Glide.with(userImage.context).load(user.imageUrl).circleCrop().into(userImage)
             }
         }.addOnFailureListener{
             Log.i("MainActivity" , " Failure while fetching the user")
