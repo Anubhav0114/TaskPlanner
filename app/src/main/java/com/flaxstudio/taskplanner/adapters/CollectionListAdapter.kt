@@ -11,8 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.taskplanner.R
-import com.example.taskplanner.utils.CollectionData
+import com.flaxstudio.taskplanner.R
+import com.flaxstudio.taskplanner.utils.CollectionData
 import com.google.android.material.button.MaterialButton
 
 

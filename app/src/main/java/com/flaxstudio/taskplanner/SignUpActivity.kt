@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
-import com.example.taskplanner.databinding.ActivitySignUpBinding
-import com.example.taskplanner.room.Users
-import com.example.taskplanner.room.UserDao
+import com.flaxstudio.taskplanner.databinding.ActivitySignUpBinding
+import com.flaxstudio.taskplanner.room.Users
+import com.flaxstudio.taskplanner.room.UserDao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth

@@ -3,9 +3,9 @@ package com.flaxstudio.taskplanner.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.LinearLayout
-import com.example.taskplanner.R
-import com.example.taskplanner.customview.CustomChip
-import com.example.taskplanner.utils.ChipData
+import com.flaxstudio.taskplanner.R
+import com.flaxstudio.taskplanner.customview.CustomChip
+import com.flaxstudio.taskplanner.utils.ChipData
 import kotlin.math.min
 
 class CustomChipListAdapter(private val chipsParentView: LinearLayout, private val contextApp: Context, private val itemClickListener: OnItemClickListener) {

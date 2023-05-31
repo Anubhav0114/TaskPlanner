@@ -3,8 +3,8 @@ package com.flaxstudio.taskplanner.utils
 import android.content.res.Resources
 import android.util.TypedValue
 import androidx.room.TypeConverter
-import com.example.taskplanner.room.Project
-import com.example.taskplanner.room.ProjectTask
+import com.flaxstudio.taskplanner.room.Project
+import com.flaxstudio.taskplanner.room.ProjectTask
 
 val Number.toPx get() = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,

@@ -3,7 +3,7 @@ package com.flaxstudio.taskplanner.decorator
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.example.taskplanner.utils.toPx
+import com.flaxstudio.taskplanner.utils.toPx
 
 
 class HomeTaskDecorator: RecyclerView.ItemDecoration() {

@@ -13,13 +13,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.taskplanner.ProjectApplication
-import com.example.taskplanner.R
-import com.example.taskplanner.adapters.SearchListAdapter
-import com.example.taskplanner.databinding.FragmentSearchBinding
-import com.example.taskplanner.room.Project
-import com.example.taskplanner.viewmodel.MainActivityViewModel
-import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.flaxstudio.taskplanner.ProjectApplication
+import com.flaxstudio.taskplanner.R
+import com.flaxstudio.taskplanner.adapters.SearchListAdapter
+import com.flaxstudio.taskplanner.databinding.FragmentSearchBinding
+import com.flaxstudio.taskplanner.room.Project
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.transition.MaterialElevationScale
 import kotlinx.coroutines.Job
 

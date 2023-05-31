@@ -11,16 +11,16 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.taskplanner.ProjectApplication
-import com.example.taskplanner.R
-import com.example.taskplanner.adapters.CollectionListAdapter
-import com.example.taskplanner.databinding.FragmentCollectionBinding
-import com.example.taskplanner.room.Project
-import com.example.taskplanner.utils.CollectionData
-import com.example.taskplanner.utils.CollectionRawData
-import com.example.taskplanner.utils.countCollection
-import com.example.taskplanner.viewmodel.MainActivityViewModel
-import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.flaxstudio.taskplanner.ProjectApplication
+import com.flaxstudio.taskplanner.R
+import com.flaxstudio.taskplanner.adapters.CollectionListAdapter
+import com.flaxstudio.taskplanner.databinding.FragmentCollectionBinding
+import com.flaxstudio.taskplanner.room.Project
+import com.flaxstudio.taskplanner.utils.CollectionData
+import com.flaxstudio.taskplanner.utils.CollectionRawData
+import com.flaxstudio.taskplanner.utils.countCollection
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 

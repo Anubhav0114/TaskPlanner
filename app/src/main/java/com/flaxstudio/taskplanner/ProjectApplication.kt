@@ -1,9 +1,9 @@
 package com.flaxstudio.taskplanner
 
 import android.app.Application
-import com.example.taskplanner.room.AppDatabase
-import com.example.taskplanner.room.ProjectRepository
-import com.example.taskplanner.room.ProjectTaskRepository
+import com.flaxstudio.taskplanner.room.AppDatabase
+import com.flaxstudio.taskplanner.room.ProjectRepository
+import com.flaxstudio.taskplanner.room.ProjectTaskRepository
 
 
 class ProjectApplication : Application() {

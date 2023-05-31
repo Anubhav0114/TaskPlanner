@@ -10,14 +10,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.taskplanner.ProjectApplication
-import com.example.taskplanner.R
-import com.example.taskplanner.databinding.FragmentPinnedProjectBinding
-import com.example.taskplanner.room.Project
-import com.example.taskplanner.utils.DateTimeManager
-import com.example.taskplanner.utils.TaskStatus
-import com.example.taskplanner.viewmodel.MainActivityViewModel
-import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.flaxstudio.taskplanner.ProjectApplication
+import com.flaxstudio.taskplanner.R
+import com.flaxstudio.taskplanner.databinding.FragmentPinnedProjectBinding
+import com.flaxstudio.taskplanner.room.Project
+import com.flaxstudio.taskplanner.utils.DateTimeManager
+import com.flaxstudio.taskplanner.utils.TaskStatus
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
 import kotlinx.coroutines.launch
 
 class PinnedProjectFragment(private val isDaily: Boolean, private val project: Project) : Fragment() {

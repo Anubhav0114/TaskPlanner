@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.taskplanner.R
-import com.example.taskplanner.customview.CircularProgress
-import com.example.taskplanner.room.Project
+import com.flaxstudio.taskplanner.R
+import com.flaxstudio.taskplanner.customview.CircularProgress
+import com.flaxstudio.taskplanner.room.Project
 import kotlin.math.roundToInt
 
 

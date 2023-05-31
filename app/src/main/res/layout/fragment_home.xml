@@ -193,7 +193,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-                <com.example.taskplanner.customview.CustomChip
+                <com.flaxstudio.taskplanner.customview.CustomChip
                     android:id="@+id/allChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -220,7 +220,7 @@
                     app:activeInfoBackgroundColor="#4FFFFFFF"
                     app:activeBackgroundColor="?attr/colorPrimary" />
 
-                <com.example.taskplanner.customview.CustomChip
+                <com.flaxstudio.taskplanner.customview.CustomChip
                     android:id="@+id/addChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

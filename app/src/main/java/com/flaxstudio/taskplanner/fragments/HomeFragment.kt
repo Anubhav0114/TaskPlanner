@@ -18,26 +18,27 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.taskplanner.ProjectApplication
-import com.example.taskplanner.R
-import com.example.taskplanner.adapters.CustomChipListAdapter
-import com.example.taskplanner.adapters.HomeProjectListAdapter
-import com.example.taskplanner.adapters.HomeTodayTaskListAdapter
-import com.example.taskplanner.adapters.PinnedViewPagerAdapter
-import com.example.taskplanner.databinding.FragmentHomeBinding
-import com.example.taskplanner.decorator.HomeTaskDecorator
-import com.example.taskplanner.room.Project
-import com.example.taskplanner.room.ProjectTask
-import com.example.taskplanner.room.Users
-import com.example.taskplanner.utils.ChipData
-import com.example.taskplanner.utils.CollectionRawData
-import com.example.taskplanner.utils.DateTimeManager
-import com.example.taskplanner.utils.TaskStatus
-import com.example.taskplanner.utils.countCollection
-import com.example.taskplanner.utils.getCollectionId
-import com.example.taskplanner.utils.removeSurname
-import com.example.taskplanner.viewmodel.MainActivityViewModel
-import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.flaxstudio.taskplanner.MainActivity
+import com.flaxstudio.taskplanner.ProjectApplication
+import com.flaxstudio.taskplanner.R
+import com.flaxstudio.taskplanner.adapters.CustomChipListAdapter
+import com.flaxstudio.taskplanner.adapters.HomeProjectListAdapter
+import com.flaxstudio.taskplanner.adapters.HomeTodayTaskListAdapter
+import com.flaxstudio.taskplanner.adapters.PinnedViewPagerAdapter
+import com.flaxstudio.taskplanner.databinding.FragmentHomeBinding
+import com.flaxstudio.taskplanner.decorator.HomeTaskDecorator
+import com.flaxstudio.taskplanner.room.Project
+import com.flaxstudio.taskplanner.room.ProjectTask
+import com.flaxstudio.taskplanner.room.Users
+import com.flaxstudio.taskplanner.utils.ChipData
+import com.flaxstudio.taskplanner.utils.CollectionRawData
+import com.flaxstudio.taskplanner.utils.DateTimeManager
+import com.flaxstudio.taskplanner.utils.TaskStatus
+import com.flaxstudio.taskplanner.utils.countCollection
+import com.flaxstudio.taskplanner.utils.getCollectionId
+import com.flaxstudio.taskplanner.utils.removeSurname
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -184,7 +185,7 @@ class HomeFragment : Fragment() {
 
     private fun setupListener() {
         binding.navButton.setOnClickListener {
-            (activity as com.flaxstudio.taskplanner.MainActivity).openNavDrawer()
+            (activity as MainActivity).openNavDrawer()
         }
 
         binding.newProjectBtn.setOnClickListener {

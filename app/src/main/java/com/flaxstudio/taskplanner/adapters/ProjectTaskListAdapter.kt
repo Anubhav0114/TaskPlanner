@@ -9,10 +9,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.taskplanner.R
-import com.example.taskplanner.room.ProjectTask
-import com.example.taskplanner.utils.DateTimeManager
-import com.example.taskplanner.utils.TaskStatus
+import com.flaxstudio.taskplanner.R
+import com.flaxstudio.taskplanner.room.ProjectTask
+import com.flaxstudio.taskplanner.utils.DateTimeManager
+import com.flaxstudio.taskplanner.utils.TaskStatus
 
 class ProjectTaskListAdapter(private val itemClickListener: OnItemClickListener): ListAdapter<ProjectTask, ProjectTaskListAdapter.CustomViewHolder>(ItemDiffCallback()){
 

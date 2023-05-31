@@ -8,8 +8,8 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.TypeConverters
-import com.example.taskplanner.utils.TaskStatus
-import com.example.taskplanner.utils.TaskStatusConverter
+import com.flaxstudio.taskplanner.utils.TaskStatus
+import com.flaxstudio.taskplanner.utils.TaskStatusConverter
 import kotlinx.coroutines.flow.Flow
 
 /*

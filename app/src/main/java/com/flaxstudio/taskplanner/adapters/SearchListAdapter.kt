@@ -11,9 +11,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.taskplanner.R
+import com.flaxstudio.taskplanner.R
 
-import com.example.taskplanner.room.Project
+import com.flaxstudio.taskplanner.room.Project
 
 class SearchListAdapter(private val itemClickListener: OnItemClickListener): ListAdapter<Project, SearchListAdapter.CustomViewHolder>(ItemDiffCallback()){
     var searchQuery = ""

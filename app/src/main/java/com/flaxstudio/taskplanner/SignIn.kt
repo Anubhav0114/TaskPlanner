@@ -10,13 +10,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
-import com.example.taskplanner.databinding.ActivitySignInBinding
+import com.flaxstudio.taskplanner.databinding.ActivitySignInBinding
 
-import com.example.taskplanner.viewmodel.MainActivityViewModel
-import com.example.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
+import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
 
-import com.example.taskplanner.room.Users
-import com.example.taskplanner.room.UserDao
+import com.flaxstudio.taskplanner.room.Users
+import com.flaxstudio.taskplanner.room.UserDao
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

@@ -2,8 +2,8 @@ package com.flaxstudio.taskplanner.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.taskplanner.fragments.PinnedProjectFragment
-import com.example.taskplanner.room.Project
+import com.flaxstudio.taskplanner.fragments.PinnedProjectFragment
+import com.flaxstudio.taskplanner.room.Project
 
 class PinnedViewPagerAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
     private val projects = ArrayList<Project>()

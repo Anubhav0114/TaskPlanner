@@ -2,7 +2,7 @@ package com.flaxstudio.taskplanner.transformer
 
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
-import com.example.taskplanner.utils.toPx
+import com.flaxstudio.taskplanner.utils.toPx
 
 
 class ScalePageTransformer : ViewPager2.PageTransformer {

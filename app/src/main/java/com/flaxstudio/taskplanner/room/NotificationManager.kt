@@ -12,8 +12,8 @@ import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import com.example.taskplanner.R
-import com.example.taskplanner.Task
+import com.flaxstudio.taskplanner.R
+import com.flaxstudio.taskplanner.Task
 
 class NotificationManager {
 
