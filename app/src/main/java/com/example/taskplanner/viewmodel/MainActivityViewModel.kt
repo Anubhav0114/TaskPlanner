@@ -13,6 +13,7 @@ import com.example.taskplanner.utils.DateTimeManager
 import com.example.taskplanner.utils.SharedPreferenceManager
 import com.example.taskplanner.utils.SyncData
 import com.example.taskplanner.utils.generateUniqueId
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +34,7 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
 
     private val dateTimeManager = DateTimeManager()
+    private val gson = Gson()
     init {
         checkTaskStatus()
     }
@@ -68,20 +70,33 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
 
 
-    fun getSyncData(callback: (SyncData) -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+    fun getSyncData(callback: (String) -> Unit) = viewModelScope.launch(Dispatchers.Default) {
         val allTask = taskRepository.getAllTaskSync()
         val allProject = projectRepository.getAllProjectSync()
-
+        val data = SyncData(spManager.getSyncData(), allProject, allTask)
+        val json = gson.toJson(data)
         withContext(Dispatchers.Main){
-            callback(SyncData(spManager.getSyncData(), allProject, allTask))
+            callback(json)
         }
     }
 
     //TODO: call getSync data with callback call saveSyncData
-    fun saveSyncData(data: SyncData) = viewModelScope.launch(Dispatchers.Default){
-        spManager.saveSyncData(data.collections)
-        projectRepository.saveAllProjectSync(data.allProjects)
-        taskRepository.saveAllTaskSync(data.allTasks)
+    fun saveSyncData(data: String, callback: (Boolean) -> Unit) = viewModelScope.launch(Dispatchers.Default){
+        try {
+            val syncData = gson.fromJson(data, SyncData::class.java)
+            spManager.saveSyncData(syncData.collections)
+            projectRepository.saveAllProjectSync(syncData.allProjects)
+            taskRepository.saveAllTaskSync(syncData.allTasks)
+            withContext(Dispatchers.Main){
+                callback(true)
+            }
+        }catch (ex: Exception){
+            ex.printStackTrace()
+            withContext(Dispatchers.Main){
+                callback(false)
+            }
+        }
+
 
     }
 
