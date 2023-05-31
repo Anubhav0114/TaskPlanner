@@ -41,10 +41,11 @@ class MainActivity : AppCompatActivity() {
 
     private val appLink = "https://play.google.com/store/apps/details?id=com.flaxstudio.drawon"
     override fun onCreate(savedInstanceState: Bundle?) {
+        applySavedTheme()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        applySavedTheme()
+
 
         mainActivityViewModel.setupViewModel(applicationContext)
         auth = Firebase.auth
