@@ -26,6 +26,7 @@ import com.example.taskplanner.adapters.HomeProjectListAdapter
 import com.example.taskplanner.adapters.HomeTodayTaskListAdapter
 import com.example.taskplanner.adapters.PinnedViewPagerAdapter
 import com.example.taskplanner.databinding.FragmentHomeBinding
+import com.example.taskplanner.decorator.HomeTaskDecorator
 import com.example.taskplanner.room.Project
 import com.example.taskplanner.room.ProjectTask
 import com.example.taskplanner.room.Users
@@ -82,14 +83,34 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         mainActivityViewModel.motionProgress = binding.motionLayout.progress
+        mainActivityViewModel.projectRecyclerViewPosition = (binding.allProjectRecyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        mainActivityViewModel.viewpagerIndex = binding.viewPager2.currentItem
+        mainActivityViewModel.homeTaskPosition = (binding.todayTaskRecyclerview.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun restoreState(){
 
         binding.motionLayout.post{
             binding.motionLayout.progress = mainActivityViewModel.motionProgress
         }
+
+        binding.allProjectRecyclerView.post {
+            binding.allProjectRecyclerView.scrollToPosition(mainActivityViewModel.projectRecyclerViewPosition)
+        }
+
+        binding.viewPager2.post {
+            binding.viewPager2.setCurrentItem(mainActivityViewModel.viewpagerIndex, false)
+        }
+
+        binding.todayTaskRecyclerview.post {
+            binding.todayTaskRecyclerview.scrollToPosition(mainActivityViewModel.homeTaskPosition)
+        }
+
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // code to update the user name
         auth  = Firebase.auth
@@ -105,6 +126,7 @@ class HomeFragment : Fragment() {
         setupUI()
         addObservers()
         setupListener()
+        restoreState()
 
     }
 
@@ -213,6 +235,7 @@ class HomeFragment : Fragment() {
 
         val taskLayoutManager = LinearLayoutManager(contextApp, LinearLayoutManager.HORIZONTAL, false)
         binding.todayTaskRecyclerview.adapter = taskListAdapter
+        binding.todayTaskRecyclerview.addItemDecoration(HomeTaskDecorator())
         binding.todayTaskRecyclerview.layoutManager = taskLayoutManager
 
 

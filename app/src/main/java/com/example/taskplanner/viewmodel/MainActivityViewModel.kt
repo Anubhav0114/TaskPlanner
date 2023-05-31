@@ -27,6 +27,9 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     // ----------------------- Animation state -------------------
     // home fragment
     var motionProgress = 0f
+    var projectRecyclerViewPosition = 0
+    var viewpagerIndex = 0
+    var homeTaskPosition = 0
 
 
 
