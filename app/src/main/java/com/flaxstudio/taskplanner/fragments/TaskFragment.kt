@@ -13,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import com.flaxstudio.taskplanner.ProjectApplication
 import com.flaxstudio.taskplanner.R
 import com.flaxstudio.taskplanner.databinding.FragmentTaskBinding
-import com.flaxstudio.taskplanner.room.NotificationManager
+import com.flaxstudio.taskplanner.utils.NotificationManager
 import com.flaxstudio.taskplanner.room.ProjectTask
 import com.flaxstudio.taskplanner.utils.DateTimeManager
 import com.flaxstudio.taskplanner.utils.TaskMode

@@ -46,7 +46,7 @@
             android:exported="true" />
 
         <receiver
-            android:name=".room.NotificationManager$StartTimeReceiver"
+            android:name=".utils.NotificationManager$StartTimeReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="StartTimeReceiver">
@@ -55,7 +55,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".room.NotificationManager$EndTimeReceiver"
+            android:name=".utils.NotificationManager$EndTimeReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="EndTimeReceiver">
