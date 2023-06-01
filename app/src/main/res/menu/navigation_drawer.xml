@@ -3,46 +3,51 @@
     <item
         android:id="@+id/notification_item"
         android:icon="@drawable/icon_bell_off"
-        android:title="Notifications"
+        android:title="@string/notifications"
         android:clickable="true"/>
     <item
         android:id="@+id/feedback_item"
         android:icon="@drawable/icon_feedback"
-        android:title="Feedback"
+        android:title="@string/feedback"
         android:clickable="true"/>
 
     <item
         android:id="@+id/rating_item"
         android:icon="@drawable/icon_star"
-        android:title="Rating"
+        android:title="@string/rating"
         android:clickable="true"/>
 
     <item
         android:id="@+id/about_item"
         android:icon="@drawable/icon_about"
-        android:title="About"
+        android:title="@string/about"
         android:clickable="true"/>
     <item
         android:id="@+id/themeItem"
-        android:icon="@drawable/icon_more_apps"
-        android:title="Theme"
-
+        android:icon="@drawable/icon_theme"
+        android:title="@string/theme"
         android:clickable="true"/>
     <item
         android:id="@+id/shareItem"
         android:icon="@drawable/icon_share"
-        android:title="Share"
+        android:title="@string/share"
         android:clickable="true"/>
 
     <item
         android:id="@+id/moreApps_item"
         android:icon="@drawable/icon_more_apps"
-        android:title="More apps"
+        android:title="@string/more_apps"
+        android:clickable="true"/>
+
+    <item
+        android:id="@+id/syncData_item"
+        android:icon="@drawable/icon_sync"
+        android:title="@string/sync_data"
         android:clickable="true"/>
 
     <item android:id="@+id/logOut_btn"
         android:icon="@drawable/ic_baseline_logout_24"
-        android:title="Log Out"
+        android:title="@string/log_out"
         android:clickable="true"/>
 
 </menu>

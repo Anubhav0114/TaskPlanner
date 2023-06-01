@@ -11,13 +11,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import com.flaxstudio.taskplanner.databinding.ActivitySignInBinding
-
+import com.flaxstudio.taskplanner.room.UserDao
+import com.flaxstudio.taskplanner.room.Users
 import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
 import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
-
-import com.flaxstudio.taskplanner.room.Users
-import com.flaxstudio.taskplanner.room.UserDao
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -56,6 +53,7 @@ class SignIn : AppCompatActivity() {
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        mainActivityViewModel.setupViewModel(applicationContext)
 
         val text = "Don't have an Account? <font color=#1E7EE4>Register</font>"
         binding.registerTextview.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -85,9 +83,9 @@ class SignIn : AppCompatActivity() {
         }
 
         binding.buttonLogin.setOnClickListener {
-            var email  = binding.etEmail.text.toString()
-            var password = binding.etPassword.text.toString()
-            if (email.isNullOrBlank() || password.isNullOrBlank()){
+            val email  = binding.etEmail.text.toString()
+            val password = binding.etPassword.text.toString()
+            if (email.isBlank() || password.isBlank()){
                 Toast.makeText(this, "Bad Credentials" , Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }else{
@@ -185,21 +183,15 @@ class SignIn : AppCompatActivity() {
 //            val user = User(firebaseUser.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
 //            val userDao = UserDao()
 //            userDao.addUser(user)
-//            mainActivityViewModel.getSyncData {
-//                val storage = Firebase.storage
-//                val storageRef = storage.reference
-//                val jsonRef = storageRef.child("${firebaseUser.uid}.json")
-//                jsonRef.putString(it)
-//                    .addOnSuccessListener {
-//                        // JSON data uploaded successfully
-//                        println("JSON data uploaded successfully!")
-//                    }
-//                    .addOnFailureListener { exception ->
-//                        // Handle any errors that occurred during the upload
-//                        println("Error uploading JSON data: ${exception.message}")
-//                    }
-//
-//            }
+            mainActivityViewModel.getSyncData {
+                Log.d(TAG, "updateUi: ${it}")
+                val jsonRef = Firebase.storage.reference.child("${firebaseUser.uid}.json")
+                jsonRef.putBytes(it.toByteArray()).addOnCompleteListener {
+                    Log.d(TAG, "updateUi: data added successfully")
+                }.addOnFailureListener {
+                    Log.d(TAG, "updateUi: error:${it.toString()}")
+                }
+            }
             val mainActivityIntent = Intent(this , com.flaxstudio.taskplanner.MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
