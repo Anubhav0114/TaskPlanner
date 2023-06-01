@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -184,7 +185,19 @@ class SignIn : AppCompatActivity() {
 //            val user = User(firebaseUser.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
 //            val userDao = UserDao()
 //            userDao.addUser(user)
-//            mainActivityViewModel.getSyncData { it->
+//            mainActivityViewModel.getSyncData {
+//                val storage = Firebase.storage
+//                val storageRef = storage.reference
+//                val jsonRef = storageRef.child("${firebaseUser.uid}.json")
+//                jsonRef.putString(it)
+//                    .addOnSuccessListener {
+//                        // JSON data uploaded successfully
+//                        println("JSON data uploaded successfully!")
+//                    }
+//                    .addOnFailureListener { exception ->
+//                        // Handle any errors that occurred during the upload
+//                        println("Error uploading JSON data: ${exception.message}")
+//                    }
 //
 //            }
             val mainActivityIntent = Intent(this , com.flaxstudio.taskplanner.MainActivity::class.java)
