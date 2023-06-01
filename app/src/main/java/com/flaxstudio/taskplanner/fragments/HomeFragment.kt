@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -27,6 +28,7 @@ import com.flaxstudio.taskplanner.adapters.HomeTodayTaskListAdapter
 import com.flaxstudio.taskplanner.adapters.PinnedViewPagerAdapter
 import com.flaxstudio.taskplanner.databinding.FragmentHomeBinding
 import com.flaxstudio.taskplanner.decorator.HomeTaskDecorator
+import com.flaxstudio.taskplanner.decorator.ItemDeleteHelper
 import com.flaxstudio.taskplanner.room.Project
 import com.flaxstudio.taskplanner.room.ProjectTask
 import com.flaxstudio.taskplanner.room.Users
@@ -268,10 +270,13 @@ class HomeFragment : Fragment() {
         val projectLayoutManager = LinearLayoutManager(contextApp)
         binding.allProjectRecyclerView.adapter = projectListAdapter
         binding.allProjectRecyclerView.layoutManager = projectLayoutManager
+        val deleteIcon = ContextCompat.getDrawable(contextApp, R.drawable.icon_delete)
+        val itemDeleteHelper = ItemDeleteHelper(deleteIcon!!, ContextCompat.getColor(contextApp, R.color.red_600)){
 
-//        binding.allProjectRecyclerView.addItemDecoration(
-//            DividerItemDecoration(contextApp, projectLayoutManager.orientation)
-//        )
+            Toast.makeText(contextApp, it.toString(), Toast.LENGTH_SHORT).show()
+        }
+        val itemTouchHelper = itemDeleteHelper.setup(binding.allProjectRecyclerView)
+
 
         // 4
         chipsAdapter = CustomChipListAdapter(binding.chipsContainer, contextApp, object : CustomChipListAdapter.OnItemClickListener{
