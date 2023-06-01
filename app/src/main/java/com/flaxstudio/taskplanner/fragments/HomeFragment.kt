@@ -271,10 +271,7 @@ class HomeFragment : Fragment() {
         binding.allProjectRecyclerView.adapter = projectListAdapter
         binding.allProjectRecyclerView.layoutManager = projectLayoutManager
         val deleteIcon = ContextCompat.getDrawable(contextApp, R.drawable.icon_delete)
-        val itemDeleteHelper = ItemDeleteHelper(deleteIcon!!, ContextCompat.getColor(contextApp, R.color.red_600)){
-
-            Toast.makeText(contextApp, it.toString(), Toast.LENGTH_SHORT).show()
-        }
+        val itemDeleteHelper = ItemDeleteHelper(deleteIcon!!, ContextCompat.getColor(contextApp, R.color.red_600))
         val itemTouchHelper = itemDeleteHelper.setup(binding.allProjectRecyclerView)
 
 
