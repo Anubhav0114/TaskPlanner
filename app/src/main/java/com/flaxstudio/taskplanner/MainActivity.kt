@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.flaxstudio.taskplanner.databinding.ActivityMainBinding
 import com.flaxstudio.taskplanner.room.Users
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var userName: TextView
     private lateinit var userImage: ImageView
+     val TAG = "MainActivity"
 
     private val mainActivityViewModel: MainActivityViewModel by viewModels {
         MainActivityViewModelFactory(
@@ -93,6 +96,17 @@ class MainActivity : AppCompatActivity() {
                 R.id.rating_item -> {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(appLink))
                     startActivity(browserIntent)
+                }
+                R.id.syncData_item->{
+                    mainActivityViewModel.getSyncData { it ->
+                        Log.d(TAG, "updateUi: $it")
+                        val jsonRef = Firebase.storage.reference.child("${auth.currentUser!!.uid}.json")
+                        jsonRef.putBytes(it.toByteArray()).addOnCompleteListener {
+                            Log.d(TAG, "updateUi: data added successfully")
+                        }.addOnFailureListener {
+                            Log.d(TAG, "updateUi: error:${it.toString()}")
+                        }
+                    }
                 }
                 R.id.shareItem -> {
                     val sendIntent: Intent = Intent().apply {

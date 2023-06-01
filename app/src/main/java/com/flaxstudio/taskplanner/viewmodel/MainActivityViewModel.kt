@@ -12,6 +12,9 @@ import com.flaxstudio.taskplanner.utils.DateTimeManager
 import com.flaxstudio.taskplanner.utils.SharedPreferenceManager
 import com.flaxstudio.taskplanner.utils.SyncData
 import com.flaxstudio.taskplanner.utils.generateUniqueId
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -101,6 +104,63 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
     }
 
+    fun saveSyncDataToStorage(data: String, callback: (Boolean) -> Unit) = viewModelScope.launch(Dispatchers.Default) {
+        try {
+            val storage = Firebase.storage
+            val storageRef = storage.reference
+            val jsonRef = storageRef.child("${FirebaseAuth.getInstance().currentUser!!.uid}.json")
+
+            // Check if the data already exists at the specified location
+            jsonRef.metadata
+                .addOnSuccessListener { metadata ->
+                    if (metadata.sizeBytes > 0) {
+                        // Data exists, update the JSON data
+
+                        // Convert the updated JSON data to a byte array
+                        val updatedJsonBytes = data.toByteArray()
+
+                        // Update the data in Firebase Storage
+                        jsonRef.putBytes(updatedJsonBytes)
+                            .addOnSuccessListener {
+                                // JSON data updated successfully
+                                println("JSON data updated successfully!")
+                                callback(true)
+                            }
+                            .addOnFailureListener { exception ->
+                                // Handle any errors that occurred during the update
+                                println("Error updating JSON data: ${exception.message}")
+                                callback(false)
+                            }
+                    } else {
+                        // Data does not exist, save the JSON data
+
+                        // Convert the JSON data to a byte array
+                        val jsonBytes = data.toByteArray()
+
+                        // Save the data in Firebase Storage
+                        jsonRef.putBytes(jsonBytes)
+                            .addOnSuccessListener {
+                                // JSON data saved successfully
+                                println("JSON data saved successfully!")
+                                callback(true)
+                            }
+                            .addOnFailureListener { exception ->
+                                // Handle any errors that occurred during the save
+                                println("Error saving JSON data: ${exception.message}")
+                                callback(false)
+                            }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // Handle any errors that occurred during the metadata retrieval
+                    println("Error retrieving metadata: ${exception.message}")
+                    callback(false)
+                }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            callback(false)
+        }
+    }
     fun updateProject(project: Project) = viewModelScope.launch(Dispatchers.Default) {
         projectRepository.update(project)
     }
