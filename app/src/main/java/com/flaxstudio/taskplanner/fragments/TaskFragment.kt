@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import com.flaxstudio.taskplanner.ProjectApplication
 import com.flaxstudio.taskplanner.R
 import com.flaxstudio.taskplanner.databinding.FragmentTaskBinding
+import com.flaxstudio.taskplanner.room.NotificationManager
 import com.flaxstudio.taskplanner.room.ProjectTask
 import com.flaxstudio.taskplanner.utils.DateTimeManager
 import com.flaxstudio.taskplanner.utils.TaskMode
@@ -48,6 +49,7 @@ class TaskFragment : Fragment() {
         )
     }
     private lateinit var contextApp: Context
+    private lateinit var notificationManager: NotificationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +101,9 @@ class TaskFragment : Fragment() {
 
         setupData()
         setupListener()
+
+        // kabir
+        notificationManager = NotificationManager()
     }
 
 
@@ -149,6 +154,9 @@ class TaskFragment : Fragment() {
 
             if(taskMode == TaskMode.Create){
                 mainActivityViewModel.createProjectTask(projectTask){
+
+                    // kabir
+                   // notificationManager.addNotification(contextApp , projectTask)
 
                     // back to previous
                     requireActivity().onBackPressedDispatcher.onBackPressed()
