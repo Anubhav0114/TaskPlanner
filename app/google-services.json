@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "468633020759-pg9o57b4ejg0rkop955ndgrta1g087a6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flaxstudio.taskplanner",
+            "certificate_hash": "b0967cc93b9a623455009e9d19aa5500bfcd3c99"
+          }
+        },
+        {
           "client_id": "468633020759-vnk43aqksok6ab8vs4sbr1007olska0o.apps.googleusercontent.com",
           "client_type": 3
         }
