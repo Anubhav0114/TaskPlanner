@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         userImage = navView.findViewById(R.id.UserImage)
 
         mainActivityViewModel.getSyncData {
-            Log.e("----------** ----", it)
+            Log.e("MainActivity", it)
         }
 
 
