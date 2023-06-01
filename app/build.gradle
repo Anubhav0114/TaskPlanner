@@ -38,6 +38,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+
 }
 
 dependencies {
@@ -73,6 +74,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.firebaseui:firebase-ui-firestore:7.2.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.6.1'
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
 
     // Add the dependency for the Firebase Authentication library
