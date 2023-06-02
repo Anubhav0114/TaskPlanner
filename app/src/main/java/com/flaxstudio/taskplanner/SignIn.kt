@@ -183,16 +183,8 @@ class SignIn : AppCompatActivity() {
 //            val user = User(firebaseUser.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
 //            val userDao = UserDao()
 //            userDao.addUser(user)
-            mainActivityViewModel.getSyncData {
-                Log.d(TAG, "updateUi: ${it}")
-                val jsonRef = Firebase.storage.reference.child("${firebaseUser.uid}.json")
-                jsonRef.putBytes(it.toByteArray()).addOnCompleteListener {
-                    Log.d(TAG, "updateUi: data added successfully")
-                }.addOnFailureListener {
-                    Log.d(TAG, "updateUi: error:${it.toString()}")
-                }
-            }
-            val mainActivityIntent = Intent(this , com.flaxstudio.taskplanner.MainActivity::class.java)
+
+            val mainActivityIntent = Intent(this , MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
         }else{

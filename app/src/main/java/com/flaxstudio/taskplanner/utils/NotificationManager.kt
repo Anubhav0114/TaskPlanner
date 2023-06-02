@@ -1,4 +1,4 @@
-package com.flaxstudio.taskplanner.room
+package com.flaxstudio.taskplanner.utils
 
 import android.app.AlarmManager
 import android.app.NotificationChannel
@@ -14,7 +14,8 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.flaxstudio.taskplanner.R
-import com.flaxstudio.taskplanner.Task
+import com.flaxstudio.taskplanner.room.ProjectTask
+import com.flaxstudio.taskplanner.room.Task
 
 class NotificationManager {
 
