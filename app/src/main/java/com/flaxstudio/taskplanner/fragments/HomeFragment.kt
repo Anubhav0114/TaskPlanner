@@ -2,13 +2,16 @@ package com.flaxstudio.taskplanner.fragments
 
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -32,21 +35,18 @@ import com.flaxstudio.taskplanner.decorator.ItemDeleteHelper
 import com.flaxstudio.taskplanner.room.Project
 import com.flaxstudio.taskplanner.room.ProjectTask
 import com.flaxstudio.taskplanner.room.Users
-import com.flaxstudio.taskplanner.utils.ChipData
-import com.flaxstudio.taskplanner.utils.CollectionRawData
-import com.flaxstudio.taskplanner.utils.DateTimeManager
-import com.flaxstudio.taskplanner.utils.TaskStatus
-import com.flaxstudio.taskplanner.utils.countCollection
-import com.flaxstudio.taskplanner.utils.getCollectionId
-import com.flaxstudio.taskplanner.utils.removeSurname
+import com.flaxstudio.taskplanner.utils.*
 import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
 import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
+
 
 private const val TAG = "HomeFragment"
 class HomeFragment : Fragment() {
@@ -271,7 +271,13 @@ class HomeFragment : Fragment() {
         binding.allProjectRecyclerView.adapter = projectListAdapter
         binding.allProjectRecyclerView.layoutManager = projectLayoutManager
         val deleteIcon = ContextCompat.getDrawable(contextApp, R.drawable.icon_delete)
-        val itemDeleteHelper = ItemDeleteHelper(deleteIcon!!, ContextCompat.getColor(contextApp, R.color.red_600))
+        val itemDeleteHelper = ItemDeleteHelper(deleteIcon!!, ContextCompat.getColor(contextApp, R.color.red_600), object : ItemDeleteHelper.OnItemDeleteListener{
+            override fun onItemDelete(index: Int) {
+                mainActivityViewModel.toggleProjectTempDelete(allProjects[index].projectId, true)
+                showUndoDeleteProjectSnackBar(binding.root,"Project deleted temporarily!", allProjects[index].projectId)
+            }
+
+        })
         val itemTouchHelper = itemDeleteHelper.setup(binding.allProjectRecyclerView)
 
 
@@ -365,6 +371,24 @@ class HomeFragment : Fragment() {
         }
 
         updateChips()
+    }
+
+
+    private fun showUndoDeleteProjectSnackBar(view: View, message: String, projectId: Long) {
+        val snackBar = Snackbar.make(view, "", Snackbar.LENGTH_LONG)
+        val customSnackBarLayout: View = layoutInflater.inflate(R.layout.undo_snakbar, snackBar.view as ViewGroup, false)
+        snackBar.view.setBackgroundColor(Color.TRANSPARENT)
+        val snackBarLayout = snackBar.view as SnackbarLayout
+        snackBarLayout.setPadding(0, 0, 0, 0)
+        customSnackBarLayout.findViewById<TextView>(R.id.message).text = message
+        customSnackBarLayout.findViewById<Button>(R.id.button).setOnClickListener {
+            mainActivityViewModel.toggleProjectTempDelete(projectId, false)
+            snackBar.dismiss()
+        }
+
+        snackBarLayout.addView(customSnackBarLayout, 0)
+
+        snackBar.show()
     }
 
 
