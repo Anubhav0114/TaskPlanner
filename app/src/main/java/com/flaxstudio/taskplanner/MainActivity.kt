@@ -145,7 +145,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-
     }
 
     private fun applySavedTheme() {
@@ -154,12 +153,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun themeChange() {
-        val themeNames = arrayOf("Blue", "Red", "Purple", "Orange", "Green")
-
-        val currentThemeMode = com.flaxstudio.taskplanner.ThemeManager.getSavedThemeMode(this)
-
-        val selectedThemeIndex = currentThemeMode.ordinal
-
         val builder = AlertDialog.Builder(this)
         val inflater = LayoutInflater.from(applicationContext)
         val customView = inflater.inflate(R.layout.theme_picker_dialog, binding.root, false)
