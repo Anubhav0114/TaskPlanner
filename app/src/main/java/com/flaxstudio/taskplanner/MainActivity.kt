@@ -1,9 +1,14 @@
 package com.flaxstudio.taskplanner
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -19,6 +24,7 @@ import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
 import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -33,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var userName: TextView
     private lateinit var userImage: ImageView
-     val TAG = "MainActivity"
+    val TAG = "MainActivity"
 
     private val mainActivityViewModel: MainActivityViewModel by viewModels {
         MainActivityViewModelFactory(
@@ -92,10 +98,11 @@ class MainActivity : AppCompatActivity() {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(appLink))
                     startActivity(browserIntent)
                 }
-                R.id.syncData_item->{
+                R.id.syncData_item -> {
                     mainActivityViewModel.getSyncData { it ->
                         Log.d(TAG, "updateUi: $it")
-                        val jsonRef = Firebase.storage.reference.child("${auth.currentUser!!.uid}.json")
+                        val jsonRef =
+                            Firebase.storage.reference.child("${auth.currentUser!!.uid}.json")
                         jsonRef.putBytes(it.toByteArray()).addOnCompleteListener {
                             Log.d(TAG, "updateUi: data added successfully")
                         }.addOnFailureListener {
@@ -138,7 +145,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-
     }
 
     private fun applySavedTheme() {
@@ -147,34 +153,44 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun themeChange() {
-        val themeNames = arrayOf("Blue", "Red", "Purple", "Orange", "Green")
-
-        val currentThemeMode = ThemeManager.getSavedThemeMode(this)
-
-        val selectedThemeIndex = currentThemeMode.ordinal
-
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Select Theme")
-            .setSingleChoiceItems(themeNames, selectedThemeIndex) { dialog, selection ->
-                val selectedThemeMode = ThemeManager.ThemeMode.values()[selection]
-                ThemeManager.applyTheme(this, selectedThemeMode)
-                Snackbar.make(
-                    binding.root,
-                    "Restart the application for seeing the change",
-                    Snackbar.LENGTH_LONG
-                )
-                    .setAction("Restart") {
-                        // Responds to click on the action
-                        finish()
-                        startActivity(intent)
-                    }
-                    .show()
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-        builder.create().show()
+        val inflater = LayoutInflater.from(applicationContext)
+        val customView = inflater.inflate(R.layout.theme_picker_dialog, binding.root, false)
+        builder.setView(customView)
+        val dialog = builder.create()
+
+        customView.findViewById<ShapeableImageView>(R.id.blue).setOnClickListener {
+            ThemeManager.applyTheme(this, ThemeManager.ThemeMode.BLUE)
+            openRestartSnackBar()
+            dialog.dismiss()
+        }
+
+        customView.findViewById<ShapeableImageView>(R.id.orange).setOnClickListener {
+            ThemeManager.applyTheme(this, ThemeManager.ThemeMode.ORANGE)
+            openRestartSnackBar()
+            dialog.dismiss()
+        }
+
+        customView.findViewById<ShapeableImageView>(R.id.green).setOnClickListener {
+            ThemeManager.applyTheme(this, ThemeManager.ThemeMode.GREEN)
+            openRestartSnackBar()
+            dialog.dismiss()
+        }
+
+        customView.findViewById<ShapeableImageView>(R.id.red).setOnClickListener {
+            ThemeManager.applyTheme(this, ThemeManager.ThemeMode.RED)
+            openRestartSnackBar()
+            dialog.dismiss()
+        }
+
+        customView.findViewById<ShapeableImageView>(R.id.purple).setOnClickListener {
+            ThemeManager.applyTheme(this, ThemeManager.ThemeMode.PURPLE)
+            openRestartSnackBar()
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
     }
 
     fun openNavDrawer() {
@@ -199,4 +215,23 @@ class MainActivity : AppCompatActivity() {
             Log.i("MainActivity", " Failure while fetching the user")
         }
     }
+
+    private fun openRestartSnackBar(){
+
+        val snackBar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT)
+        val customSnackBarLayout: View = layoutInflater.inflate(R.layout.undo_snakbar, snackBar.view as ViewGroup, false)
+        snackBar.view.setBackgroundColor(Color.TRANSPARENT)
+        val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout
+        snackBarLayout.setPadding(0, 0, 0, 0)
+        customSnackBarLayout.findViewById<TextView>(R.id.message).text = "Restart the application for seeing the change"
+        customSnackBarLayout.findViewById<Button>(R.id.button).text = "Restart"
+        customSnackBarLayout.findViewById<Button>(R.id.button).setOnClickListener {
+            snackBar.dismiss()
+            finish()
+            startActivity(intent)
+        }
+        snackBarLayout.addView(customSnackBarLayout, 0)
+        snackBar.show()
+    }
+
 }

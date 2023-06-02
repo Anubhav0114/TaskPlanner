@@ -15,4 +15,9 @@
     <style name="collection_menu" parent="Widget.MaterialComponents.PopupMenu">
         <item name="android:layout_marginRight">16dp</item> <!-- Set your desired margin value -->
     </style>
+
+    <style name="RoundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
 </resources>
