@@ -10,10 +10,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.flaxstudio.taskplanner.databinding.ActivityMainBinding
 import com.flaxstudio.taskplanner.room.Users
+import com.flaxstudio.taskplanner.utils.ThemeManager
 import com.flaxstudio.taskplanner.utils.removeSurname
 import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
 import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
@@ -67,11 +67,6 @@ class MainActivity : AppCompatActivity() {
         updateNameAndImage()
 
 
-//        val intent = Intent(this ,SignIn::class.java )
-//        startActivity(intent)
-//        val v: View = binding.navView.getHeaderView(0)
-//        val text:TextView = v.findViewById(R.id.textView11)
-//        text.text = "Hi Sayam"
         binding.navView.setNavigationItemSelectedListener { menuItem ->
 
             when (menuItem.itemId) {
@@ -147,22 +142,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun applySavedTheme() {
-        val savedThemeMode = com.flaxstudio.taskplanner.ThemeManager.getSavedThemeMode(this)
-        com.flaxstudio.taskplanner.ThemeManager.applyTheme(this, savedThemeMode)
+        val savedThemeMode = ThemeManager.getSavedThemeMode(this)
+        ThemeManager.applyTheme(this, savedThemeMode)
     }
 
     private fun themeChange() {
         val themeNames = arrayOf("Blue", "Red", "Purple", "Orange", "Green")
 
-        val currentThemeMode = com.flaxstudio.taskplanner.ThemeManager.getSavedThemeMode(this)
+        val currentThemeMode = ThemeManager.getSavedThemeMode(this)
 
         val selectedThemeIndex = currentThemeMode.ordinal
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select Theme")
             .setSingleChoiceItems(themeNames, selectedThemeIndex) { dialog, selection ->
-                val selectedThemeMode = com.flaxstudio.taskplanner.ThemeManager.ThemeMode.values()[selection]
-                com.flaxstudio.taskplanner.ThemeManager.applyTheme(this, selectedThemeMode)
+                val selectedThemeMode = ThemeManager.ThemeMode.values()[selection]
+                ThemeManager.applyTheme(this, selectedThemeMode)
                 Snackbar.make(
                     binding.root,
                     "Restart the application for seeing the change",
@@ -194,7 +189,11 @@ class MainActivity : AppCompatActivity() {
             if (user != null) {
                 val name = "Hello, ${removeSurname(user.displayName)}"
                 userName.text = name
-                Glide.with(userImage.context).load(user.imageUrl).circleCrop().into(userImage)
+                if(user.imageUrl.isBlank()){
+                    Glide.with(userImage.context).load(R.drawable.icon_profile).circleCrop().into(userImage)
+                }else{
+                    Glide.with(userImage.context).load(user.imageUrl).circleCrop().into(userImage)
+                }
             }
         }.addOnFailureListener {
             Log.i("MainActivity", " Failure while fetching the user")

@@ -24,8 +24,8 @@ class HomeProjectListAdapter(private val itemClickListener: OnItemClickListener)
         fun bind(project: Project){
             itemView.findViewById<TextView>(R.id.task_title).text = project.projectName
 //            itemView.findViewById<TextView>(R.id.collection_name).text = project.collectionName
-
-            itemView.findViewById<TextView>(R.id.progress_value).text = "${project.donePercent}%"
+            val name = "${project.donePercent}%"
+            itemView.findViewById<TextView>(R.id.progress_value).text = name
             itemView.findViewById<CircularProgress>(R.id.circularProgress).setMaxProgressValue(1000)
             itemView.findViewById<CircularProgress>(R.id.circularProgress).setProgressValue((project.donePercent / 100f * 1000).roundToInt())
             itemView.transitionName = project.projectId.toString()
