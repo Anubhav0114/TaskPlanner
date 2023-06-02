@@ -64,12 +64,17 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     fun createNewProject(projectName: String, collectionId: Long, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
         val newProject = Project(0, generateUniqueId(), projectName, collectionId,0,
             isNotify = true,
-            isPinned = false
+            isPinned = false,
+            isDeleted = false
         )
         projectRepository.insert(newProject)
         withContext(Dispatchers.Main){
             callback()
         }
+    }
+
+    fun toggleProjectTempDelete(projectId: Long, isDeleted: Boolean) = viewModelScope.launch(Dispatchers.Default){
+        projectRepository.toggleTempProjectDelete(projectId, isDeleted)
     }
 
 
