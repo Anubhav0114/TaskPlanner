@@ -1,8 +1,9 @@
-package com.flaxstudio.taskplanner
+package com.flaxstudio.taskplanner.utils
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.flaxstudio.taskplanner.R
 
 object ThemeManager {
     private const val THEME_PREFS = "theme_prefs"
