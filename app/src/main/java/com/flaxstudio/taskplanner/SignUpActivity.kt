@@ -87,15 +87,6 @@ class SignUpActivity : AppCompatActivity() {
     private fun updateUi(firebaseUser: FirebaseUser?) {
 
         if (firebaseUser != null){
-            mainActivityViewModel.getSyncData { it ->
-                Log.d(TAG, "updateUi: $it")
-                val jsonRef = Firebase.storage.reference.child("${auth.currentUser!!.uid}.json")
-                jsonRef.putBytes(it.toByteArray()).addOnCompleteListener {
-                    Log.d(TAG, "updateUi: data added successfully")
-                }.addOnFailureListener {
-                    Log.d(TAG, "updateUi: error:${it.toString()}")
-                }
-            }
             val mainActivityIntent = Intent(this , com.flaxstudio.taskplanner.MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
