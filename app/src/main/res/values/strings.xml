@@ -20,4 +20,13 @@
     <string name="delete">Delete</string>
     <string name="forgetPassword">Forgot\nPassword??</string>
     <string name="forgetText" tools:ignore="StringEscaping">Do not Worry it happens. please enter the email address associated with your account.</string>
+    <string name="sync_data">Sync Data</string>
+    <string name="more_apps">More apps</string>
+    <string name="log_out">Log Out</string>
+    <string name="notifications">Notifications</string>
+    <string name="feedback">Feedback</string>
+    <string name="rating">Rating</string>
+    <string name="about">About</string>
+    <string name="theme">Theme</string>
+    <string name="share">Share</string>
 </resources>
