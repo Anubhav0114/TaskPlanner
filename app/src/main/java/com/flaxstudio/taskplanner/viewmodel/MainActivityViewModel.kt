@@ -29,6 +29,9 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     var viewpagerIndex = 0
     var homeTaskPosition = 0
 
+    // project fragment
+    var selectedChipIndex = 1
+
 
 
 
