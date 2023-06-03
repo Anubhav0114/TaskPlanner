@@ -1,6 +1,7 @@
 package com.flaxstudio.taskplanner.fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 
 class CollectionFragment : Fragment() {
 
+    private var previousStatusBarColor: Int? = null
     private lateinit var binding: FragmentCollectionBinding
     private lateinit var collectionListAdapter: CollectionListAdapter
     private lateinit var contextApp: Context
@@ -51,10 +53,19 @@ class CollectionFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        previousStatusBarColor = activity?.window?.statusBarColor
         super.onViewCreated(view, savedInstanceState)
+        activity?.window?.statusBarColor = Color.WHITE
         contextApp = requireContext()
         setupUi()
         addObserver()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        previousStatusBarColor?.let {
+            activity?.window?.statusBarColor = it
+        }
     }
 
 

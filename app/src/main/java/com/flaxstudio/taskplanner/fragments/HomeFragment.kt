@@ -124,6 +124,8 @@ class HomeFragment : Fragment() {
         // handle animations
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
+        exitTransition = null
+        reenterTransition = null
 
 
         contextApp = requireContext()
