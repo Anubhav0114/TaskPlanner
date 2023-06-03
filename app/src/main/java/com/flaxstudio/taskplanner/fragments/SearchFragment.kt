@@ -1,12 +1,14 @@
 package com.flaxstudio.taskplanner.fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
@@ -26,6 +28,7 @@ import kotlinx.coroutines.Job
 
 class SearchFragment : Fragment() {
 
+    private var previousStatusBarColor: Int? = null
     private lateinit var binding: FragmentSearchBinding
     private var searchJob: Job? = null
     private lateinit var searchListAdapter: SearchListAdapter
@@ -57,11 +60,13 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        previousStatusBarColor = activity?.window?.statusBarColor
         super.onViewCreated(view, savedInstanceState)
 
         // handle animations
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
+        activity?.window?.statusBarColor = Color.WHITE
 
         contextApp = requireContext()
         setupUI()
@@ -69,6 +74,12 @@ class SearchFragment : Fragment() {
         searchProject("")
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        previousStatusBarColor?.let {
+            activity?.window?.statusBarColor = it
+        }
+    }
 
     private fun setupUI(){
         searchListAdapter = SearchListAdapter(object : SearchListAdapter.OnItemClickListener{
@@ -96,6 +107,12 @@ class SearchFragment : Fragment() {
 
         binding.resultRecyclerview.adapter = searchListAdapter
         binding.resultRecyclerview.layoutManager = LinearLayoutManager(contextApp, LinearLayoutManager.VERTICAL, false)
+        binding.resultRecyclerview.itemAnimator?.apply {
+            addDuration = 0
+            changeDuration = 0
+            moveDuration = 0
+            removeDuration = 0
+        }
 
 
         // 2
@@ -120,6 +137,11 @@ class SearchFragment : Fragment() {
 
         searchJob = mainActivityViewModel.searchProject(query){
             searchListAdapter.submitList(it)
+            if(it.isEmpty()){
+                binding.resultTextview.visibility = View.VISIBLE
+            }else{
+                binding.resultTextview.visibility = View.INVISIBLE
+            }
         }
     }
 
