@@ -1,4 +1,4 @@
-package com.flaxstudio.taskplanner
+package com.flaxstudio.taskplanner.room
 
 import android.os.Parcelable
 import com.flaxstudio.taskplanner.utils.TaskStatus

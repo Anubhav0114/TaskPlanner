@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.flaxstudio.taskplanner.ProjectApplication
 import com.flaxstudio.taskplanner.R
@@ -73,7 +74,7 @@ class CollectionFragment : Fragment() {
         binding.createCollection.setOnClickListener {
             createCollectionDialog()
         }
-
+        binding.backBtn.setOnClickListener{findNavController().popBackStack()}
         binding.collectionRecyclerview.adapter = collectionListAdapter
         binding.collectionRecyclerview.layoutManager = LinearLayoutManager(contextApp)
     }

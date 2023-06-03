@@ -86,11 +86,33 @@ class ProjectFragment : Fragment() {
 
         contextApp = requireContext()
         projectId = requireArguments().getLong("project_id")
-        previousCheckedChip = binding.progressChip
+        restoreState()
         setupData()
         loadData()
         addObserver()
         setupListener()
+
+    }
+
+
+    private fun restoreState(){
+
+        previousCheckedChip = when(mainActivityViewModel.selectedChipIndex){
+            0 -> {
+                binding.allChip
+            }
+            1 -> {
+                binding.progressChip
+            }
+            2 -> {
+                binding.doneChip
+            }
+            else -> {
+                binding.failedChip
+            }
+        }
+
+        previousCheckedChip.setActive(true)
 
     }
 
@@ -292,6 +314,7 @@ class ProjectFragment : Fragment() {
         binding.allChip.setOnClickListener {
             if (previousCheckedChip == it as CustomChip) return@setOnClickListener
             it.setActive(true)
+            mainActivityViewModel.selectedChipIndex = 0
             previousCheckedChip.setActive(false)
             previousCheckedChip = it
             updateRecyclerView()
@@ -300,6 +323,7 @@ class ProjectFragment : Fragment() {
         binding.progressChip.setOnClickListener {
             if (previousCheckedChip == it as CustomChip) return@setOnClickListener
             it.setActive(true)
+            mainActivityViewModel.selectedChipIndex = 1
             previousCheckedChip.setActive(false)
             previousCheckedChip = it
             updateRecyclerView()
@@ -308,6 +332,7 @@ class ProjectFragment : Fragment() {
         binding.doneChip.setOnClickListener {
             if (previousCheckedChip == it as CustomChip) return@setOnClickListener
             it.setActive(true)
+            mainActivityViewModel.selectedChipIndex = 2
             previousCheckedChip.setActive(false)
             previousCheckedChip = it
             updateRecyclerView()
@@ -316,6 +341,7 @@ class ProjectFragment : Fragment() {
         binding.failedChip.setOnClickListener {
             if (previousCheckedChip == it as CustomChip) return@setOnClickListener
             it.setActive(true)
+            mainActivityViewModel.selectedChipIndex = 3
             previousCheckedChip.setActive(false)
             previousCheckedChip = it
             updateRecyclerView()

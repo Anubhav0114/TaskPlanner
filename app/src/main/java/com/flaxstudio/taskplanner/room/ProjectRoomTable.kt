@@ -21,6 +21,7 @@ data class Project(
     @ColumnInfo(name = "done_percent") var donePercent: Int,
     @ColumnInfo(name = "is_notify") var isNotify: Boolean,
     @ColumnInfo(name = "is_pinned") var isPinned: Boolean,
+    @ColumnInfo(name = "is_deleted") var isDeleted: Boolean,
     )
 
 @Dao
@@ -29,13 +30,13 @@ interface ProjectDao {
     @Query("SELECT * FROM projects WHERE project_id = :projectId LIMIT 1")
     fun getProjectById(projectId: Long): Project
 
-    @Query("SELECT * FROM projects")
+    @Query("SELECT * FROM projects WHERE is_deleted = 0")
     fun getAllProjects(): Flow<List<Project>>
 
     @Query("SELECT * FROM projects")
     fun getAllProjectsSync(): List<Project>
 
-    @Query("SELECT * FROM projects WHERE is_pinned = 1")
+    @Query("SELECT * FROM projects WHERE is_pinned = 1 AND is_deleted = 0")
     fun getAllPinnedProjects(): Flow<List<Project>>
 
     @Query("UPDATE projects SET project_name = :projectName, is_notify = :isNotify, is_pinned = :isPinned WHERE project_id = :projectId")
@@ -56,6 +57,8 @@ interface ProjectDao {
     @Insert
     fun addProjectSync(projects: List<Project>)
 
+    @Query("UPDATE projects SET is_deleted = :isDeleted  WHERE project_id = :projectId")
+    fun toggleTempProjectDelete(projectId: Long, isDeleted: Boolean)
     @Delete
     fun deleteProject(project: Project)
 
@@ -120,6 +123,11 @@ class ProjectRepository(private val projectDao: ProjectDao) {
     suspend fun saveAllProjectSync(projects: List<Project>){
         projectDao.clearTable()
         projectDao.addProjectSync(projects)
+    }
+
+    @WorkerThread
+    suspend fun toggleTempProjectDelete(projectId: Long, isDeleted: Boolean){
+        projectDao.toggleTempProjectDelete(projectId, isDeleted)
     }
 
 

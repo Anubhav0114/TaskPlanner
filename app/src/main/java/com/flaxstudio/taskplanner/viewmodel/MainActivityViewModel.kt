@@ -1,6 +1,7 @@
 package com.flaxstudio.taskplanner.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -28,6 +29,9 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     var projectRecyclerViewPosition = 0
     var viewpagerIndex = 0
     var homeTaskPosition = 0
+
+    // project fragment
+    var selectedChipIndex = 1
 
 
 
@@ -60,12 +64,17 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     fun createNewProject(projectName: String, collectionId: Long, callback: () -> Unit) = viewModelScope.launch(Dispatchers.Default) {
         val newProject = Project(0, generateUniqueId(), projectName, collectionId,0,
             isNotify = true,
-            isPinned = false
+            isPinned = false,
+            isDeleted = false
         )
         projectRepository.insert(newProject)
         withContext(Dispatchers.Main){
             callback()
         }
+    }
+
+    fun toggleProjectTempDelete(projectId: Long, isDeleted: Boolean) = viewModelScope.launch(Dispatchers.Default){
+        projectRepository.toggleTempProjectDelete(projectId, isDeleted)
     }
 
 
@@ -83,6 +92,7 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     //TODO: call getSync data with callback call saveSyncData
     fun saveSyncData(data: String, callback: (Boolean) -> Unit) = viewModelScope.launch(Dispatchers.Default){
         try {
+            Log.d("TAG", "saveSyncData: $data")
             val syncData = gson.fromJson(data, SyncData::class.java)
             spManager.saveSyncData(syncData.collections)
             projectRepository.saveAllProjectSync(syncData.allProjects)
@@ -100,63 +110,6 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
     }
 
-    fun saveSyncDataToStorage(data: String, callback: (Boolean) -> Unit) = viewModelScope.launch(Dispatchers.Default) {
-        try {
-            val storage = Firebase.storage
-            val storageRef = storage.reference
-            val jsonRef = storageRef.child("${FirebaseAuth.getInstance().currentUser!!.uid}.json")
-
-            // Check if the data already exists at the specified location
-            jsonRef.metadata
-                .addOnSuccessListener { metadata ->
-                    if (metadata.sizeBytes > 0) {
-                        // Data exists, update the JSON data
-
-                        // Convert the updated JSON data to a byte array
-                        val updatedJsonBytes = data.toByteArray()
-
-                        // Update the data in Firebase Storage
-                        jsonRef.putBytes(updatedJsonBytes)
-                            .addOnSuccessListener {
-                                // JSON data updated successfully
-                                println("JSON data updated successfully!")
-                                callback(true)
-                            }
-                            .addOnFailureListener { exception ->
-                                // Handle any errors that occurred during the update
-                                println("Error updating JSON data: ${exception.message}")
-                                callback(false)
-                            }
-                    } else {
-                        // Data does not exist, save the JSON data
-
-                        // Convert the JSON data to a byte array
-                        val jsonBytes = data.toByteArray()
-
-                        // Save the data in Firebase Storage
-                        jsonRef.putBytes(jsonBytes)
-                            .addOnSuccessListener {
-                                // JSON data saved successfully
-                                println("JSON data saved successfully!")
-                                callback(true)
-                            }
-                            .addOnFailureListener { exception ->
-                                // Handle any errors that occurred during the save
-                                println("Error saving JSON data: ${exception.message}")
-                                callback(false)
-                            }
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    // Handle any errors that occurred during the metadata retrieval
-                    println("Error retrieving metadata: ${exception.message}")
-                    callback(false)
-                }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            callback(false)
-        }
-    }
     fun updateProject(project: Project) = viewModelScope.launch(Dispatchers.Default) {
         projectRepository.update(project)
     }

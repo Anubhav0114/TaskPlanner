@@ -56,7 +56,7 @@ interface ProjectTaskDao {
     @Query("UPDATE project_task SET task_status = 2 WHERE task_status = 0 AND end_time < :millisecond")
     fun checkAndUpdateFailedTask(millisecond: Long)
 
-    @Query("SELECT * FROM project_task WHERE start_time <= :todayTime AND end_time >= :todayTime")
+    @Query("SELECT * FROM project_task INNER JOIN projects ON project_task.project_id = projects.project_id WHERE projects.is_deleted = 0 AND project_task.start_time <= :todayTime AND project_task.end_time >= :todayTime")
     fun getAllTodayTask(todayTime: Long): Flow<List<ProjectTask>>
 
     @Query("UPDATE project_task SET task_name = :taskName, description = :description, is_remind = :isRemind, start_time = :startTime, end_time = :endTime, tags = :tags, task_status = :taskStatus WHERE task_id = :taskId")

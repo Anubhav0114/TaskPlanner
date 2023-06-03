@@ -1,6 +1,7 @@
 package com.flaxstudio.taskplanner
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -30,6 +31,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 
 private const val TAG = "SignIn"
@@ -183,16 +186,16 @@ class SignIn : AppCompatActivity() {
 //            val user = User(firebaseUser.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
 //            val userDao = UserDao()
 //            userDao.addUser(user)
-            mainActivityViewModel.getSyncData {
-                Log.d(TAG, "updateUi: ${it}")
-                val jsonRef = Firebase.storage.reference.child("${firebaseUser.uid}.json")
-                jsonRef.putBytes(it.toByteArray()).addOnCompleteListener {
-                    Log.d(TAG, "updateUi: data added successfully")
-                }.addOnFailureListener {
-                    Log.d(TAG, "updateUi: error:${it.toString()}")
-                }
-            }
-            val mainActivityIntent = Intent(this , com.flaxstudio.taskplanner.MainActivity::class.java)
+//            restoreData("${firebaseUser.uid}.json") { success ->
+//                if (success) {
+//                    // The data was restored successfully.
+//                    val mainActivityIntent = Intent(this , MainActivity::class.java)
+//                    startActivity(mainActivityIntent)
+//                    finish()
+//                }
+//            }
+
+            val mainActivityIntent = Intent(this , MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
         }else{
@@ -202,6 +205,31 @@ class SignIn : AppCompatActivity() {
             binding.container.isClickable = true
         }
 
+    }
+
+    private fun restoreData(fileName: String, callback: (Boolean) -> Unit) {
+        val storageRef = Firebase.storage.reference
+        val jsonFileRef = storageRef.child(fileName)
+
+        jsonFileRef.stream.addOnSuccessListener { taskSnapshot ->
+            val inputStream = taskSnapshot.stream
+            val reader = BufferedReader(InputStreamReader(inputStream))
+            val content = StringBuilder()
+
+            reader.useLines { lines ->
+                lines.forEach {
+                    content.append(it)
+                }
+            }
+
+            val fileContent = content.toString()
+            Log.d(TAG, "restoreData: $fileContent")
+            mainActivityViewModel.saveSyncData(fileContent,callback)
+
+        }.addOnFailureListener { exception ->
+            // Handle any errors that occurred during the download
+            exception.printStackTrace()
+        }
     }
 
 

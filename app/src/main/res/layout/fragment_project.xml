@@ -167,12 +167,12 @@
                 app:iconTint="?attr/colorPrimary"
                 app:infoBackgroundColor="?attr/colorSurface"
                 app:infoBackgroundRadius="11dp"
+                app:infoText="0"
                 app:infoTextColor="?attr/colorOnPrimary"
                 app:infoTextSize="@dimen/small_text"
-                app:isChecked="true"
+                app:isChecked="false"
                 app:isIcon="false"
                 app:text="Progress"
-                app:infoText="0"
                 app:textColor="?attr/colorOnPrimary"
                 app:textSize="@dimen/small_text" />
 
