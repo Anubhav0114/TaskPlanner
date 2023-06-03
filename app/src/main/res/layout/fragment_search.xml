@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
+    android:background="#FFFFFF"
+    android:fitsSystemWindows="true"
     tools:context=".fragments.SearchFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -60,6 +61,7 @@
                 android:inputType="text"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
+                android:textColor="?attr/colorOnPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.503"
@@ -71,6 +73,18 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
+    <TextView
+        android:id="@+id/resultTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No result found"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="@dimen/medium_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resultRecyclerview"
