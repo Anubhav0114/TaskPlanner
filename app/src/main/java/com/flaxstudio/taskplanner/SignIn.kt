@@ -186,15 +186,9 @@ class SignIn : AppCompatActivity() {
 //            val user = User(firebaseUser.uid , firebaseUser.displayName.toString() , firebaseUser.photoUrl.toString())
 //            val userDao = UserDao()
 //            userDao.addUser(user)
-//            restoreData("${firebaseUser.uid}.json") { success ->
-//                if (success) {
-//                    // The data was restored successfully.
-//                    val mainActivityIntent = Intent(this , MainActivity::class.java)
-//                    startActivity(mainActivityIntent)
-//                    finish()
-//                }
-//            }
-
+            Firebase.storage.reference.child("${firebaseUser.uid}.json").downloadUrl.addOnSuccessListener {
+                Log.d(TAG, "updateUi: $it")
+            }
             val mainActivityIntent = Intent(this , MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
@@ -207,30 +201,30 @@ class SignIn : AppCompatActivity() {
 
     }
 
-    private fun restoreData(fileName: String, callback: (Boolean) -> Unit) {
-        val storageRef = Firebase.storage.reference
-        val jsonFileRef = storageRef.child(fileName)
-
-        jsonFileRef.stream.addOnSuccessListener { taskSnapshot ->
-            val inputStream = taskSnapshot.stream
-            val reader = BufferedReader(InputStreamReader(inputStream))
-            val content = StringBuilder()
-
-            reader.useLines { lines ->
-                lines.forEach {
-                    content.append(it)
-                }
-            }
-
-            val fileContent = content.toString()
-            Log.d(TAG, "restoreData: $fileContent")
-            mainActivityViewModel.saveSyncData(fileContent,callback)
-
-        }.addOnFailureListener { exception ->
-            // Handle any errors that occurred during the download
-            exception.printStackTrace()
-        }
-    }
+//    private fun restoreData(fileName: String, callback: (Boolean) -> Unit) {
+//        val storageRef = Firebase.storage.reference
+//        val jsonFileRef = storageRef.child(fileName)
+//
+//        jsonFileRef.downloadUrl.addOnSuccessListener { taskSnapshot ->
+//
+//            val reader = BufferedReader(InputStreamReader(inputStream))
+//            val content = StringBuilder()
+//
+//            reader.useLines { lines ->
+//                lines.forEach {
+//                    content.append(it)
+//                }
+//            }
+//
+//            val fileContent = content.toString()
+//            Log.d(TAG, "restoreData: $fileContent")
+//            mainActivityViewModel.saveSyncData(fileContent,callback)
+//
+//        }.addOnFailureListener { exception ->
+//            // Handle any errors that occurred during the download
+//            exception.printStackTrace()
+//        }
+//    }
 
 
 }
