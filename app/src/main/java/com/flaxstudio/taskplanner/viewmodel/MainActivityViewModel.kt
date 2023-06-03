@@ -1,6 +1,7 @@
 package com.flaxstudio.taskplanner.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -95,6 +96,7 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
     //TODO: call getSync data with callback call saveSyncData
     fun saveSyncData(data: String, callback: (Boolean) -> Unit) = viewModelScope.launch(Dispatchers.Default){
         try {
+            Log.d("TAG", "saveSyncData: $data")
             val syncData = gson.fromJson(data, SyncData::class.java)
             spManager.saveSyncData(syncData.collections)
             projectRepository.saveAllProjectSync(syncData.allProjects)
