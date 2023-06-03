@@ -8,22 +8,21 @@
     <color name="smoke">#F1F1F1</color>
 
 <!--      Green Family -->
-    <color name="green_600">#1FC5A5</color>
-    <color name="green_200">#D3FFFD</color>
-    <color name="green_100">#E8FAF9</color>
-    <color name="green_900">#2DFFD7</color>
-
+    <color name="green_600">#26A69A</color>
+    <color name="green_500">#28BFB1</color>
+    <color name="green_200">#BDE1DF</color>
+    <color name="green_100">#D8F1EE</color>
 
 <!--    Orange Family -->
-    <color name="orange_100">#FEF0E4</color>
-    <color name="orange_200">#FAD8A5</color>
+    <color name="orange_100">#FFF7EF</color>
+    <color name="orange_200">#FFEAD7</color>
     <color name="orange_600">#F8B679</color>
     <color name="orange_900">#FF9430</color>
 
 
 <!--    Red Family -->
-    <color name="red_100">#FFE9E9</color>
-    <color name="red_300">#FFDADA</color>
+    <color name="red_100">#FFECEC</color>
+    <color name="red_300">#FFD2D2</color>
     <color name="red_600">#F87979</color>
     <color name="red_900">#D31E1B</color>
 
@@ -31,7 +30,7 @@
 
 <!--    Blue Family -->
     <color name="blue_700">#1E7EE4</color>
-    <color name="blue_200">#BBEAFF</color>
+    <color name="blue_200">#D2E8FF</color>
     <color name="blue_100">#EAF4FF</color>
     <color name="blue_900">#312052</color>
 
