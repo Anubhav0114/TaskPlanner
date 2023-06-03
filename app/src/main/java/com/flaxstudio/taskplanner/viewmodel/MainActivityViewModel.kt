@@ -9,10 +9,7 @@ import com.flaxstudio.taskplanner.room.Project
 import com.flaxstudio.taskplanner.room.ProjectRepository
 import com.flaxstudio.taskplanner.room.ProjectTask
 import com.flaxstudio.taskplanner.room.ProjectTaskRepository
-import com.flaxstudio.taskplanner.utils.DateTimeManager
-import com.flaxstudio.taskplanner.utils.SharedPreferenceManager
-import com.flaxstudio.taskplanner.utils.SyncData
-import com.flaxstudio.taskplanner.utils.generateUniqueId
+import com.flaxstudio.taskplanner.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -35,7 +32,6 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
 
     // project fragment
     var selectedChipIndex = 1
-
 
 
 

@@ -5,7 +5,9 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Message
+import android.transition.Slide
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +21,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -121,6 +124,8 @@ class HomeFragment : Fragment() {
         // handle animations
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
+        exitTransition = null
+        reenterTransition = null
 
 
         contextApp = requireContext()
@@ -196,7 +201,13 @@ class HomeFragment : Fragment() {
         }
 
         binding.searchButton.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+
+            findNavController().navigate(
+                R.id.action_homeFragment_to_searchFragment,
+                null,
+                null,
+                null
+            )
         }
     }
 
@@ -278,7 +289,7 @@ class HomeFragment : Fragment() {
             }
 
         })
-        val itemTouchHelper = itemDeleteHelper.setup(binding.allProjectRecyclerView)
+        itemDeleteHelper.setup(binding.allProjectRecyclerView)
 
 
         // 4

@@ -28,7 +28,7 @@
         <item name="popupMenuStyle">@style/collection_menu</item>
 
         <item name="colorPrimary">@color/red_600</item>
-        <item name="colorOnPrimary">@color/red_900</item>
+        <item name="colorOnPrimary">@color/blue_900</item>
         <!-- Secondary brand color. -->
         <item name="colorOnSecondary">@color/white</item>
 
@@ -66,7 +66,7 @@
         <item name="popupMenuStyle">@style/collection_menu</item>
 
         <item name="colorPrimary">@color/orange_600</item>
-        <item name="colorOnPrimary">@color/orange_900</item>
+        <item name="colorOnPrimary">@color/blue_900</item>
         <!-- Secondary brand color. -->
         <item name="colorOnSecondary">@color/white</item>
 
@@ -85,7 +85,7 @@
         <item name="popupMenuStyle">@style/collection_menu</item>
 
         <item name="colorPrimary">@color/green_600</item>
-        <item name="colorOnPrimary">@color/green_900</item>
+        <item name="colorOnPrimary">@color/blue_900</item>
         <!-- Secondary brand color. -->
         <item name="colorOnSecondary">@color/white</item>
 

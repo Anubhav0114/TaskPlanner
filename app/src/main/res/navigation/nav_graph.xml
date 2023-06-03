@@ -33,12 +33,11 @@
         android:id="@+id/searchFragment"
         android:name="com.flaxstudio.taskplanner.fragments.SearchFragment"
         android:label="fragment_search"
+        android:transitionName="home_to_search"
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_projectFragment"
-            app:destination="@id/projectFragment"
-            app:enterAnim="@anim/nav_default_pop_enter_anim"
-            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/projectFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskFragment"

@@ -64,7 +64,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:maxProgress="1000"
         app:progress="100"
-        app:progressColor="@color/green_600"
+        app:progressColor="@color/green_500"
         app:trackColor="@color/green_100"
         app:trackWidth="4dp" />
 

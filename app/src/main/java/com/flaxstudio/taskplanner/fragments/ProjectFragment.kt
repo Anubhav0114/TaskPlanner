@@ -83,6 +83,8 @@ class ProjectFragment : Fragment() {
         // handle animations
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
+        exitTransition = null
+        reenterTransition = null
 
         contextApp = requireContext()
         projectId = requireArguments().getLong("project_id")
@@ -270,11 +272,8 @@ class ProjectFragment : Fragment() {
     private fun setupListener() {
         binding.createTask.setOnClickListener {
 
-            exitTransition = MaterialElevationScale(false).apply {
-                duration = 1000
-            }
             reenterTransition = MaterialElevationScale(true).apply {
-                duration = 1000
+                duration = 400
             }
 
             val extras = FragmentNavigatorExtras(it to "task_fragment")

@@ -2,12 +2,14 @@ package com.flaxstudio.taskplanner.fragments
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.annotation.RequiresApi
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.flaxstudio.taskplanner.ProjectApplication
@@ -81,6 +83,7 @@ class TaskFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         contextApp = requireContext()
@@ -107,6 +110,7 @@ class TaskFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun setupListener(){
         binding.startDateText.setOnClickListener {
             if(taskMode != TaskMode.View){
@@ -150,6 +154,8 @@ class TaskFragment : Fragment() {
             if(projectTask.taskStatus == TaskStatus.Failed){
                 projectTask.taskStatus = TaskStatus.Active
             }
+
+            notificationManager.addNotification(contextApp )
 
 
             if(taskMode == TaskMode.Create){
