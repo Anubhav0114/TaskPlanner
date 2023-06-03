@@ -58,7 +58,7 @@
                 android:background="@android:color/transparent"
                 android:insetLeft="0dp"
                 android:insetTop="0dp"
-
+                android:transitionName="home_to_search"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 app:backgroundTint="@android:color/transparent"
