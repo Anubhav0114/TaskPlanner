@@ -106,9 +106,8 @@ class MainActivityViewModel(private val projectRepository: ProjectRepository, pr
                 callback(false)
             }
         }
-
-
     }
+
 
     fun updateProject(project: Project) = viewModelScope.launch(Dispatchers.Default) {
         projectRepository.update(project)

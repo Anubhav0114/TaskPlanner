@@ -10,6 +10,7 @@ import androidx.core.text.HtmlCompat
 import com.flaxstudio.taskplanner.databinding.ActivitySignUpBinding
 import com.flaxstudio.taskplanner.room.Users
 import com.flaxstudio.taskplanner.room.UserDao
+import com.flaxstudio.taskplanner.utils.SyncData
 import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModel
 import com.flaxstudio.taskplanner.viewmodel.MainActivityViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.google.gson.Gson
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -43,11 +45,10 @@ class SignUpActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-
         binding.buttonSignUp.setOnClickListener{
-            var email = binding.emailEt.text.toString()
-            var password = binding.passwordEt.text.toString()
-            var name = binding.nameInput.text.toString()
+            val email = binding.emailEt.text.toString()
+            val password = binding.passwordEt.text.toString()
+            val name = binding.nameInput.text.toString()
             if (email.isEmpty() || password.isEmpty() || name.isEmpty()){
                 Toast.makeText(this , "Please enter a valid Input" , Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -70,7 +71,7 @@ class SignUpActivity : AppCompatActivity() {
                     val userDao = UserDao()
                     userDao.addUser(usersData)
 
-                    updateUi(user)
+                    launchMainActivity()
 
                 }else{
                     Toast.makeText(this , "Sign Up Failed , Try again" , Toast.LENGTH_SHORT).show()
@@ -78,19 +79,12 @@ class SignUpActivity : AppCompatActivity() {
             }
     }
 
-    override fun onStart() {
-        super.onStart()
-        val currUser = auth.currentUser
-        updateUi(currUser)
-    }
 
-    private fun updateUi(firebaseUser: FirebaseUser?) {
-
-        if (firebaseUser != null){
-            val mainActivityIntent = Intent(this , com.flaxstudio.taskplanner.MainActivity::class.java)
-            startActivity(mainActivityIntent)
-            finish()
-        }
+    private fun launchMainActivity() {
+        val intent = Intent(this , MainActivity::class.java)
+        intent.putExtra("synced data", "{'allProjects':[],'allTasks':[],'collections':'1234567,All'}")
+        startActivity(intent)
+        finish()
 
     }
 }

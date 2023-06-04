@@ -14,8 +14,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.flaxstudio.taskplanner.R
-import com.flaxstudio.taskplanner.Task
 import com.flaxstudio.taskplanner.room.ProjectTask
+import com.flaxstudio.taskplanner.room.Task
 
 private const val TAG = "NotificationManager"
 
