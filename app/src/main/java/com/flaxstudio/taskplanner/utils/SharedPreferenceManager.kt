@@ -36,6 +36,7 @@ class SharedPreferenceManager(private val externalScope: CoroutineScope, context
 
     fun getCollection(): Flow<List<CollectionRawData>> = collectionFlow.asSharedFlow()
 
+
     fun getSyncData(): String {
         return sharedPref.getString("collection", "1234567,All")?: "1234567,All"
     }
@@ -44,6 +45,7 @@ class SharedPreferenceManager(private val externalScope: CoroutineScope, context
         val editor = sharedPref.edit()
         editor.putString("collection", data)
         editor.apply()
+        collectionNames.clear()
     }
 
 

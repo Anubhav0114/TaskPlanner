@@ -55,8 +55,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         mainActivityViewModel.setupViewModel(applicationContext)
+
+        val syncedData = intent.getStringExtra("synced data")
+        if(syncedData != null){
+            mainActivityViewModel.saveSyncData(syncedData){isSuccess ->
+                if(!isSuccess){
+                    Toast.makeText(applicationContext, "Something went wrong in fetching data", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         auth = Firebase.auth
 
 
