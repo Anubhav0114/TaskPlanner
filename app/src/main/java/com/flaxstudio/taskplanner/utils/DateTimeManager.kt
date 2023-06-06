@@ -9,6 +9,10 @@ import java.util.Locale
 class DateTimeManager {
 
 
+    fun toLocal(unixTimestampMillis: Long): Long{
+        val local = Instant.fromEpochMilliseconds(unixTimestampMillis)
+        return local.toLocalDateTime(TimeZone.currentSystemDefault()).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+    }
     fun localUnixMillisToUtcUnixMillis(localUnixMillis: Long): Long {
         val localInstant = Instant.fromEpochMilliseconds(localUnixMillis)
         return localInstant.toLocalDateTime(TimeZone.UTC).toInstant(TimeZone.UTC).toEpochMilliseconds()
