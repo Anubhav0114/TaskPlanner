@@ -5,6 +5,11 @@
 
     </style>
 
+    <style name="fullScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="O_MR1">shortEdges</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
     <style name="Theme_purple" parent="Theme.TaskPlanner">
         <item name="popupMenuStyle">@style/collection_menu</item>
 

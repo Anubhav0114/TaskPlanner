@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.flaxstudio.taskplanner.databinding.ActivityMainBinding
 import com.flaxstudio.taskplanner.room.Users
@@ -29,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
@@ -55,8 +57,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         mainActivityViewModel.setupViewModel(applicationContext)
+
+        val syncedData = intent.getStringExtra("synced data")
+        if(syncedData != null){
+            mainActivityViewModel.saveSyncData(syncedData){isSuccess ->
+                if(!isSuccess){
+                    Toast.makeText(applicationContext, "Something went wrong in fetching data", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         auth = Firebase.auth
 
 
@@ -101,13 +112,41 @@ class MainActivity : AppCompatActivity() {
                 R.id.syncData_item -> {
                     mainActivityViewModel.getSyncData { it ->
                         Log.d(TAG, "updateUi: $it")
+
                         val jsonRef =
                             Firebase.storage.reference.child("${auth.currentUser!!.uid}.json")
+                       // jsonRef.putFile(it.toUri())
+                        var uploadTask = jsonRef.putFile(it.toUri())
+
+                        var urlTask = uploadTask.continueWithTask { task ->
+
+                            if (!task.isSuccessful){
+                                task.exception?.let {
+                                    throw it
+                                }
+                                Log.e(TAG , "Exception while fetching url" , task.exception)
+                            }
+                            jsonRef.downloadUrl
+                        }.addOnCompleteListener{ task ->
+                            if (task.isSuccessful){
+
+                            }
+                        }
+
+                        /*
                         jsonRef.putBytes(it.toByteArray()).addOnCompleteListener {
                             Log.d(TAG, "updateUi: data added successfully")
                         }.addOnFailureListener {
                             Log.d(TAG, "updateUi: error:${it.toString()}")
                         }
+
+                         */
+
+
+                        // save the data at firebase realtime database
+
+
+
                     }
                 }
                 R.id.shareItem -> {
