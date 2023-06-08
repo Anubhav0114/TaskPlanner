@@ -155,16 +155,12 @@ class TaskFragment : Fragment() {
                 projectTask.taskStatus = TaskStatus.Active
             }
 
-            notificationManager.addNotification(contextApp )
+            notificationManager.addNotification(contextApp , projectTask  )
 
 
             if(taskMode == TaskMode.Create){
                 mainActivityViewModel.createProjectTask(projectTask){
 
-                    // kabir
-                   // notificationManager.addNotification(contextApp , projectTask)
-
-                    // back to previous
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
             }else{
@@ -172,6 +168,9 @@ class TaskFragment : Fragment() {
                     taskMode = TaskMode.View
                     isInProgress = false
                     setupData()
+
+                    // kabir
+                    notificationManager.updateNotification(contextApp , projectTask)
                 }
             }
         }

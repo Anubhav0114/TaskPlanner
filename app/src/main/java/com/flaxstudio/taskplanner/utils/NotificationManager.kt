@@ -21,74 +21,82 @@ private const val TAG = "NotificationManager"
 
 class NotificationManager {
 
-    private val dManager = DateTimeManager()
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun addNotification(contextApp: Context , currTask: ProjectTask) {
 
-    fun addNotification(contextApp: Context, task: Task) {
-
-        Log.i(TAG, " Creating Start Time Intent")
-        // Create an intent for the Start time notification with a unique request code
-        val startTimeIntent = Intent(contextApp, StartTimeReceiver::class.java)
-        startTimeIntent.putExtra("startTime", task.startTime)
-        startTimeIntent.putExtra("taskName", task.taskName)
-        startTimeIntent.putExtra("taskDescription", task.description)
-        startTimeIntent.putExtra("projectId", task.projectId)
-        startTimeIntent.putExtra("taskId", task.taskId)
-
-        val startTimePendingIntent = PendingIntent.getBroadcast(
-            contextApp,
-            task.id,
-            startTimeIntent,
-            0
+        //  This is the dummy data for testing don't remove it without Author's permission
+        val currTask1 = Task(
+            3,
+            453,
+            4532,
+            "Test Notification",
+            "Desc of test notification",
+            true,
+            SystemClock.elapsedRealtime() + 60 * 1000,
+            SystemClock.elapsedRealtime() + 120 * 1000,
+            " d",
+            TaskStatus.Active
         )
+        if (currTask.isRemind && currTask.taskStatus == TaskStatus.Active) {
+
+            val startTime = currTask.startTime
+            val endTime = currTask.endTime
+            val taskName = currTask.taskName
+            val taskDescription = currTask.description
+            val taskId = currTask.taskId
+            val projectId = currTask.projectId
 
 
-        Log.i(TAG, " Creating End Time Intent")
-
-        // Create an intent for the end time notification with a unique request code
-        val endTimeIntent = Intent(contextApp, EndTimeReceiver::class.java)
-        endTimeIntent.putExtra("endTime", task.endTime)
-        endTimeIntent.putExtra("taskName", task.taskName)
-        endTimeIntent.putExtra("taskDescription", task.description)
-        endTimeIntent.putExtra("projectId", task.projectId)
-        endTimeIntent.putExtra("taskId", task.taskId)
-
-        // adding some offset to end id
-        val endTimePendingIntent = PendingIntent.getBroadcast(
-            contextApp, task.id + 1000000, endTimeIntent,  0)
-
-        val alarmManager = contextApp.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            Log.i(TAG, " Creating Start Time Intent")
+            // Create an intent for the Start time notification with a unique request code
+            val startTimeIntent = Intent(contextApp, StartTimeReceiver::class.java)
+            startTimeIntent.putExtra("startTime", startTime)
+            startTimeIntent.putExtra("taskName", taskName)
+            startTimeIntent.putExtra("taskDescription", taskDescription)
+            startTimeIntent.putExtra("projectId", projectId)
+            val startTimePendingIntent = PendingIntent.getBroadcast(
+                contextApp,
+                projectId.hashCode(),
+                startTimeIntent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
 
 
+            Log.i(TAG, " Creating End Time Intent")
 
-        // Schedule the start time notification
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(
+            // Create an intent for the end time notification with a unique request code
+            val endTimeIntent = Intent(contextApp, EndTimeReceiver::class.java)
+            endTimeIntent.putExtra("endTime", endTime)
+            endTimeIntent.putExtra("taskName", taskName)
+            endTimeIntent.putExtra("taskDescription", taskDescription)
+            endTimeIntent.putExtra("taskId", taskId)
+            val endTimePendingIntent = PendingIntent.getBroadcast(
+                contextApp, taskId.hashCode(), endTimeIntent, PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val alarmManager1 = contextApp.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            // val alarmManager = ContextCompat.getSystemService(contextApp, AlarmManager::class.java) as AlarmManager
+
+            // Schedule the start time notification
+            alarmManager1.setExactAndAllowWhileIdle(
                 AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                dManager.toLocal(task.startTime),
+                SystemClock.elapsedRealtime() + 180 * 1000,
+                //currTask.startTime,
                 startTimePendingIntent
             )
-        }else{
-            alarmManager.setExact(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                dManager.toLocal(task.startTime),
-                startTimePendingIntent
-            )
-        }
 
-        // Schedule the end time notification
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(
+            // Schedule the end time notification
+            alarmManager1.setExactAndAllowWhileIdle(
                 AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                dManager.toLocal(task.endTime),
+                SystemClock.elapsedRealtime() + 200 * 1000,
+                // currTask.endTime,
                 endTimePendingIntent
             )
-        }else{
-            alarmManager.setExact(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                dManager.toLocal(task.endTime),
-                endTimePendingIntent
-            )
+
+        } else {
+
         }
 
         // startTimeIntent1.putExtra("taskDetail" , task)
@@ -103,7 +111,7 @@ class NotificationManager {
 
         val alarmManager1 = contextApp.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        if (currTask.isRemind) {
+        if (currTask.isRemind && currTask.taskStatus == TaskStatus.Active) {
 
             // This is to cancel the old pending intent
             val startIntent = Intent(contextApp, StartTimeReceiver::class.java)
@@ -114,6 +122,7 @@ class NotificationManager {
                 PendingIntent.FLAG_IMMUTABLE
             )
             alarmManager1.cancel(pendingIntentStart)
+            Log.i(TAG ,"Removing the old start Time Notification")
 
             val endIntent = Intent(contextApp, EndTimeReceiver::class.java)
             val pendingIntentEnd = PendingIntent.getBroadcast(
@@ -122,84 +131,22 @@ class NotificationManager {
                 endIntent,
                 PendingIntent.FLAG_IMMUTABLE
             )
+            Log.i(TAG ,"Removing the old End Time Notification")
             alarmManager1.cancel(pendingIntentEnd)
 
 
-            // After cancelling the old pending intent will create a new pending intent with sane ids
-            val startTime = currTask.startTime
-            val endTime = currTask.endTime
-            val taskName = currTask.taskName
-            val taskDescription = currTask.description
-            val taskId = currTask.taskId
-            val projectId = currTask.projectId
+             addNotification(contextApp , currTask)
 
 
-            // Create an intent for the Start time notification with a unique request code
-            val startTimeIntent = Intent(contextApp, StartTimeReceiver::class.java)
-            startTimeIntent.putExtra("startTime", startTime)
-            startTimeIntent.putExtra("taskName", taskName)
-            startTimeIntent.putExtra("taskDescription", taskDescription)
-            startTimeIntent.putExtra("projectId", projectId)
-            val startTimePendingIntent = PendingIntent.getBroadcast(
-                contextApp,
-                currTask.projectId.hashCode(),
-                startTimeIntent,
-                PendingIntent.FLAG_IMMUTABLE
-            )
-
-
-            // Create an intent for the end time notification with a unique request code
-            val endTimeIntent = Intent(contextApp, EndTimeReceiver::class.java)
-            endTimeIntent.putExtra("endTime", endTime)
-            endTimeIntent.putExtra("taskName", taskName)
-            endTimeIntent.putExtra("taskDescription", taskDescription)
-            endTimeIntent.putExtra("taskId", taskId)
-            val endTimePendingIntent = PendingIntent.getBroadcast(
-                contextApp, currTask.taskId.hashCode(), endTimeIntent, PendingIntent.FLAG_IMMUTABLE
-            )
-
-
-            // Schedule the start time notification
-            alarmManager1.setExactAndAllowWhileIdle(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                //  currTask.startTime,
-                System.currentTimeMillis() + 60 * 1000,
-                startTimePendingIntent
-            )
-
-            // Schedule the end time notification
-            alarmManager1.setExactAndAllowWhileIdle(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                //currTask.endTime,
-                System.currentTimeMillis() + 120 * 1000,
-                endTimePendingIntent
-            )
-
-        } else {
-
-            // This code will cancel the pending intent if the is remind is false
-            val startIntent = Intent(contextApp, StartTimeReceiver::class.java)
-            val pendingIntentStart = PendingIntent.getBroadcast(
-                contextApp,
-                currTask.projectId.hashCode(),
-                startIntent,
-                PendingIntent.FLAG_IMMUTABLE
-            )
-            alarmManager1.cancel(pendingIntentStart)
-
-
-            val endIntent = Intent(contextApp, EndTimeReceiver::class.java)
-            val pendingIntentEnd = PendingIntent.getBroadcast(
-                contextApp,
-                currTask.taskId.hashCode(),
-                endIntent,
-                PendingIntent.FLAG_IMMUTABLE
-            )
-            alarmManager1.cancel(pendingIntentEnd)
         }
 
-        // startTimeIntent1.putExtra("taskDetail" , task)
+    }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun addGroupNotification(contextApp: Context, taskList : List<ProjectTask>){
+        for (task in taskList){
+            addNotification(contextApp , task)
+        }
     }
 
 }
