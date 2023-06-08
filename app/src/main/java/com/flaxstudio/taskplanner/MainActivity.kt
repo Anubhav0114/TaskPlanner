@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                         val jsonRef =
                             Firebase.storage.reference.child("${auth.currentUser!!.uid}.json")
                        // jsonRef.putFile(it.toUri())
-                        var uploadTask = jsonRef.putFile(it.toUri())
+                        val uploadTask = jsonRef.putFile(it.toUri())
 
                         var urlTask = uploadTask.continueWithTask { task ->
 
@@ -173,7 +173,7 @@ class MainActivity : AppCompatActivity() {
                     val googleSignInClient =
                         GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN)
                     googleSignInClient.signOut().addOnCompleteListener {
-                        val intent = Intent(this, com.flaxstudio.taskplanner.SignIn::class.java)
+                        val intent = Intent(this, SignIn::class.java)
                         startActivity(intent)
                         finish()
                     }
