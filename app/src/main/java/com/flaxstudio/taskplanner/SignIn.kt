@@ -21,14 +21,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -38,7 +35,6 @@ private const val TAG = "SignIn"
 
 class SignIn : AppCompatActivity() {
 
-    private var RC_SIGN_IN: Int = 123
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
@@ -78,6 +74,10 @@ class SignIn : AppCompatActivity() {
             googleSignInLauncher.launch(signInIntent)
 
         }
+        binding.forgotText.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.registerTextview.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
@@ -93,6 +93,8 @@ class SignIn : AppCompatActivity() {
                 return@setOnClickListener
             } else {
                 authenticateWithEmail(email, password)
+                binding.progressBar.visibility = View.VISIBLE
+                binding.buttonLogin.isEnabled = false
             }
         }
 
@@ -145,6 +147,8 @@ class SignIn : AppCompatActivity() {
                         "No such user found",
                         Toast.LENGTH_SHORT,
                     ).show()
+                    binding.progressBar.visibility = View.GONE
+                    binding.buttonLogin.isEnabled = true
                 }
             }
 
@@ -155,10 +159,9 @@ class SignIn : AppCompatActivity() {
 
         val credential = GoogleAuthProvider.getCredential(idToken, null)
 
-        binding.buttonGoogle.visibility = View.GONE
+        binding.buttonGoogle.isEnabled= false
         binding.progressBar.visibility = View.VISIBLE
-        binding.progressTv.visibility = View.VISIBLE
-        binding.container.isClickable = false
+        binding.container.isEnabled = false
 
         lifecycleScope.launch(Dispatchers.IO) {
             val auth = auth.signInWithCredential(credential).await()
@@ -186,6 +189,8 @@ class SignIn : AppCompatActivity() {
             .addOnSuccessListener {
                 fileRef.getBytes(Long.MAX_VALUE)
                     .addOnSuccessListener {
+                        binding.progressBar.visibility = View.GONE
+                        binding.container.isEnabled = true
                         val text = String(it)
                         launchMainActivityWithData(text)
                     }
@@ -200,6 +205,8 @@ class SignIn : AppCompatActivity() {
                     }
             }.addOnFailureListener{
                 it.printStackTrace()
+                binding.progressBar.visibility = View.GONE
+                binding.container.isEnabled = true
                 launchMainActivityWithoutData()
             }
     }

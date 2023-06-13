@@ -115,32 +115,16 @@ class MainActivity : AppCompatActivity() {
 
                         val jsonRef =
                             Firebase.storage.reference.child("${auth.currentUser!!.uid}.json")
-                       // jsonRef.putFile(it.toUri())
-                        var uploadTask = jsonRef.putFile(it.toUri())
 
-                        var urlTask = uploadTask.continueWithTask { task ->
 
-                            if (!task.isSuccessful){
-                                task.exception?.let {
-                                    throw it
-                                }
-                                Log.e(TAG , "Exception while fetching url" , task.exception)
-                            }
-                            jsonRef.downloadUrl
-                        }.addOnCompleteListener{ task ->
-                            if (task.isSuccessful){
-
-                            }
-                        }
-
-                        /*
                         jsonRef.putBytes(it.toByteArray()).addOnCompleteListener {
                             Log.d(TAG, "updateUi: data added successfully")
+                            Toast.makeText(this , "data backed up successfully" ,Toast.LENGTH_SHORT).show()
                         }.addOnFailureListener {
                             Log.d(TAG, "updateUi: error:${it.toString()}")
-                        }
+                            Toast.makeText(this , "data back up unsuccessful" ,Toast.LENGTH_SHORT).show()
 
-                         */
+                        }
 
 
                         // save the data at firebase realtime database

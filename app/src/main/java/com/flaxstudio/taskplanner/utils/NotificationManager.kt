@@ -27,7 +27,6 @@ class NotificationManager {
 
     fun addNotification(contextApp: Context, task: ProjectTask) {
 
-
         Log.i(TAG, " Creating Start Time Intent")
         // Create an intent for the Start time notification with a unique request code
         val startTimeIntent = Intent(contextApp, StartTimeReceiver::class.java)
@@ -39,7 +38,7 @@ class NotificationManager {
 
         val startTimePendingIntent = PendingIntent.getBroadcast(
             contextApp,
-            task.projectId.hashCode(),
+            task.id,
             startTimeIntent,
             0
         )
@@ -57,7 +56,7 @@ class NotificationManager {
 
         // adding some offset to end id
         val endTimePendingIntent = PendingIntent.getBroadcast(
-            contextApp, task.taskId.hashCode(), endTimeIntent, 0
+            contextApp, task.id + 1000000, endTimeIntent, 0
         )
 
         val alarmManager = contextApp.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -98,49 +97,50 @@ class NotificationManager {
     }
 
 
+//    @RequiresApi(Build.VERSION_CODES.M)
+//    fun updateNotification(contextApp: Context, currTask: ProjectTask) {
+//
+//        //   val currTask : Task = task as Task
+//
+//        val alarmManager1 = contextApp.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//
+//        if (currTask.isRemind && currTask.taskStatus == TaskStatus.Active) {
+//
+//            // This is to cancel the old pending intent
+//            val startIntent = Intent(contextApp, StartTimeReceiver::class.java)
+//            val pendingIntentStart = PendingIntent.getBroadcast(
+//                contextApp,
+//                currTask.projectId.hashCode(),
+//                startIntent,
+//                PendingIntent.FLAG_IMMUTABLE
+//            )
+//            alarmManager1.cancel(pendingIntentStart)
+//            Log.i(TAG ,"Removing the old start Time Notification")
+//
+//            val endIntent = Intent(contextApp, EndTimeReceiver::class.java)
+//            val pendingIntentEnd = PendingIntent.getBroadcast(
+//                contextApp,
+//                currTask.taskId.hashCode(),
+//                endIntent,
+//                PendingIntent.FLAG_IMMUTABLE
+//            )
+//            Log.i(TAG ,"Removing the old End Time Notification")
+//            alarmManager1.cancel(pendingIntentEnd)
+//
+//
+//             addNotification(contextApp , currTask)
+//
+//
+//        }
+//
+//    }
 
-    fun updateNotification(contextApp: Context, currTask: ProjectTask) {
-
-        val alarmManager1 = contextApp.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        if (currTask.isRemind && currTask.taskStatus == TaskStatus.Active) {
-
-            // This is to cancel the old pending intent
-            val startIntent = Intent(contextApp, StartTimeReceiver::class.java)
-            val pendingIntentStart = PendingIntent.getBroadcast(
-                contextApp,
-                currTask.projectId.hashCode(),
-                startIntent,
-                0
-            )
-            alarmManager1.cancel(pendingIntentStart)
-            Log.i(TAG ,"Removing the old start Time Notification")
-
-            val endIntent = Intent(contextApp, EndTimeReceiver::class.java)
-            val pendingIntentEnd = PendingIntent.getBroadcast(
-                contextApp,
-                currTask.taskId.hashCode(),
-                endIntent,
-                0
-            )
-            Log.i(TAG ,"Removing the old End Time Notification")
-            alarmManager1.cancel(pendingIntentEnd)
-
-
-             addNotification(contextApp , currTask)
-
-
-        }
-
-    }
-
-    fun addGroupNotification(contextApp: Context, taskList : List<ProjectTask>){
-        for (task in taskList){
-            if (task.isRemind && task.taskStatus == TaskStatus.Active){
-                addNotification(contextApp , task)
-            }
-        }
-    }
+//    @RequiresApi(Build.VERSION_CODES.M)
+//    fun addGroupNotification(contextApp: Context, taskList : List<ProjectTask>){
+//        for (task in taskList){
+//            addNotification(contextApp , task)
+//        }
+//    }
 
 }
 
@@ -216,4 +216,3 @@ class EndTimeReceiver : BroadcastReceiver() {
 
     }
 }
-

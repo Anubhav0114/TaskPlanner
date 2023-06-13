@@ -173,7 +173,7 @@ class TaskFragment : Fragment() {
                     setupData()
 
                     // kabir
-                    notificationManager.updateNotification(contextApp , projectTask)
+                    //notificationManager.updateNotification(contextApp , projectTask)
                 }
             }
         }

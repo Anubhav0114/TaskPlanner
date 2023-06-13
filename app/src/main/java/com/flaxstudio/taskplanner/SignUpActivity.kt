@@ -42,6 +42,11 @@ class SignUpActivity : AppCompatActivity() {
         val text2 = "Joined us before? <font color=#1E7EE4>Login.</font>"
         binding.signUpLoginTextview.text = HtmlCompat.fromHtml(text2, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
+        binding.signUpLoginTextview.setOnClickListener {
+            finish()
+        }
+
+
 
         auth = Firebase.auth
 
