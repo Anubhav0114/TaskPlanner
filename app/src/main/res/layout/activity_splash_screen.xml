@@ -21,17 +21,17 @@
 
         <TextView
             android:id="@+id/tv_draw"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TASK PLANNER"
+            android:textAlignment="center"
+            android:text="@string/app_name"
             android:textSize="38sp"
             android:textStyle="bold"
-            android:textColor="#1E7EE4"
-            />
+            android:textColor="?colorPrimary" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="# getting things done"
+            android:text="@string/getting_things_done"
             android:id="@+id/tv_tagline"
             app:layout_constraintStart_toStartOf="@id/container_tv"
             app:layout_constraintTop_toBottomOf="@id/container_tv"
@@ -39,8 +39,7 @@
             android:layout_marginStart="15dp"
             android:textSize="26sp"
             android:layout_marginTop="-5dp"
-            android:textColor="#000000"
-            />
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
@@ -49,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="Developed by team flax studio"
+        android:text="@string/developed_by_team_flax_studio"
         android:textSize="@dimen/medium_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
