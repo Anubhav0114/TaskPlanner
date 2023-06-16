@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowInsets
 import androidx.lifecycle.lifecycleScope
 import com.flaxstudio.taskplanner.databinding.ActivitySplashScreenBinding
+import com.flaxstudio.taskplanner.utils.ThemeManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -20,6 +21,7 @@ class SplashScreen : AppCompatActivity() {
     private lateinit var auth : FirebaseAuth
     private lateinit var binding: ActivitySplashScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        applySavedTheme()
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
 
@@ -59,4 +61,9 @@ class SplashScreen : AppCompatActivity() {
             }
         }
     }
+    private fun applySavedTheme() {
+        val savedThemeMode = ThemeManager.getSavedThemeMode(this)
+        ThemeManager.applyTheme(this, savedThemeMode)
+    }
+
 }
