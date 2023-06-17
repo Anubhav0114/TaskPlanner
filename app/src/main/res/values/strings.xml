@@ -14,9 +14,9 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="loginText">Already \nhave an \nAccount?</string>
-    <string name="progressText">Please Wait ...</string>
+    <string name="progressText">Please Wait …</string>
     <string name="signup_new_account"><![CDATA[Don\'t have an Account? <font color="#FF0000">Register</font>]]></string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="delete">Delete</string>
     <string name="forgetPassword">Forgot\nPassword??</string>
     <string name="forgetText" tools:ignore="StringEscaping">Do not Worry it happens. please enter the email address associated with your account.</string>
@@ -29,4 +29,6 @@
     <string name="about">About</string>
     <string name="theme">Theme</string>
     <string name="share">Share</string>
+    <string name="getting_things_done"># Getting things done</string>
+    <string name="developed_by_team_flax_studio">Developed by team flax studio</string>
 </resources>
