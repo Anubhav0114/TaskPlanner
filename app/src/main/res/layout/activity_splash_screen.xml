@@ -28,18 +28,19 @@
             android:textSize="38sp"
             android:textStyle="bold"
             android:textColor="?colorPrimary" />
+
         <TextView
+            android:id="@+id/tv_tagline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/getting_things_done"
-            android:id="@+id/tv_tagline"
-            app:layout_constraintStart_toStartOf="@id/container_tv"
-            app:layout_constraintTop_toBottomOf="@id/container_tv"
-            app:layout_constraintEnd_toEndOf="@id/container_tv"
             android:layout_marginStart="15dp"
-            android:textSize="26sp"
             android:layout_marginTop="-5dp"
-            android:textColor="@color/black" />
+            android:text="Getting things done"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            app:layout_constraintEnd_toEndOf="@id/container_tv"
+            app:layout_constraintStart_toStartOf="@id/container_tv"
+            app:layout_constraintTop_toBottomOf="@id/container_tv" />
 
     </LinearLayout>
 
@@ -48,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="@string/developed_by_team_flax_studio"
+        android:text="Team Flax Studio"
         android:textSize="@dimen/medium_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
