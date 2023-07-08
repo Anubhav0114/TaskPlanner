@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.flaxstudio.taskplanner.databinding.ActivityMainBinding
 import com.flaxstudio.taskplanner.room.Users
@@ -30,7 +29,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
@@ -229,7 +227,7 @@ class MainActivity : AppCompatActivity() {
                 val name = "Hello, ${removeSurname(user.displayName)}"
                 userName.text = name
                 if(user.imageUrl.isBlank()){
-                    Glide.with(userImage.context).load(R.drawable.icon_profile).circleCrop().into(userImage)
+                    Glide.with(userImage.context).load(R.drawable.women_icon).circleCrop().into(userImage)
                 }else{
                     Glide.with(userImage.context).load(user.imageUrl).circleCrop().into(userImage)
                 }
@@ -246,8 +244,10 @@ class MainActivity : AppCompatActivity() {
         snackBar.view.setBackgroundColor(Color.TRANSPARENT)
         val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout
         snackBarLayout.setPadding(0, 0, 0, 0)
-        customSnackBarLayout.findViewById<TextView>(R.id.message).text = "Restart the application for seeing the change"
-        customSnackBarLayout.findViewById<Button>(R.id.button).text = "Restart"
+        val snakebite = "Restart the application for seeing the change"
+        customSnackBarLayout.findViewById<TextView>(R.id.message).text = snakebite
+        val snarkButton = "Restart"
+        customSnackBarLayout.findViewById<Button>(R.id.button).text =snarkButton
         customSnackBarLayout.findViewById<Button>(R.id.button).setOnClickListener {
             snackBar.dismiss()
             finish()
